@@ -47,9 +47,9 @@ package org.usfirst.frc.team3735.robot.settings;
 public class RobotMap {
 
 	public static class Drive{
-		public static int leftMotor1 =		5;//4
+		public static int leftMotor1 =		6;//4
 		public static int leftMotor2 = 		4;//5
-		public static int leftMotor3 = 		6;//6
+		public static int leftMotor3 = 		13;//6
 		
 		public static int rightMotor1 = 	11;//10
 		public static int rightMotor2 = 	10;//11

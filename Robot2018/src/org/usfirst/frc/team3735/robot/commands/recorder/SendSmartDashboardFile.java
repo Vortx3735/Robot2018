@@ -20,10 +20,7 @@ public class SendSmartDashboardFile extends Command {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.drive);
-    	requires(Robot.gearIntake);
     	requires(Robot.navigation);
-    	requires(Robot.scaler);
-    	requires(Robot.ultra);
     	requires(Robot.vision);
     }
 

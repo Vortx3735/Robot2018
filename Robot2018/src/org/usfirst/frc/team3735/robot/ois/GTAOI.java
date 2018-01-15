@@ -5,9 +5,6 @@ import org.usfirst.frc.team3735.robot.commands.*;
 import org.usfirst.frc.team3735.robot.commands.drive.ExpDrive;
 import org.usfirst.frc.team3735.robot.commands.drive.simple.DriveAddSensitiveLeft;
 import org.usfirst.frc.team3735.robot.commands.drive.simple.DriveAddSensitiveRight;
-import org.usfirst.frc.team3735.robot.commands.gearintake.*;
-import org.usfirst.frc.team3735.robot.commands.scaler.*;
-import org.usfirst.frc.team3735.robot.commands.sequences.GearIntakeDropOff;
 import org.usfirst.frc.team3735.robot.util.oi.DriveOI;
 import org.usfirst.frc.team3735.robot.util.oi.XboxController;
 
@@ -26,11 +23,6 @@ public class GTAOI implements DriveOI{
 		main.pov90.whileHeld(new DriveAddSensitiveRight());
 		main.pov270.whileHeld(new DriveAddSensitiveLeft());
 
-
-		main.b.whenPressed(new GearIntakeDropOff());
-		main.a.whileHeld(new GearIntakeFeeding());
-		main.x.whenPressed(new GearIntakeLiftDown());
-		main.y.whenPressed(new GearIntakeLiftUp());
 		main.start.whenPressed(new ExpDrive());
 //		main.x.whileHeld(new DriveAddSensitiveLeft());
 //		main.y.whileHeld(new DriveAddSensitiveRight());
@@ -39,10 +31,7 @@ public class GTAOI implements DriveOI{
 //		main.back.whenPressed(new DriveChangeToBallDirection());
 		
 		//CoDriver
-		co.y.whenPressed(new ScalerUp(1));
-		co.x.whenPressed(new ScalerOff());
-		co.a.whileHeld(new GearIntakeRollersIn());
-		co.b.whileHeld(new GearIntakeRollersOut());
+
 
 
 		
