@@ -5,7 +5,6 @@ public class Dms {
 	//all in inches
 
 	public class Bot{
-		
 		public class DriveBase{
 			//???
 			public static final double WIDTH = 28;
@@ -26,8 +25,15 @@ public class Dms {
 		public static final double HALFLENGTH = LENGTH/2.0;
 		public static final double WIDTH = 324;
 		public static final double HALFWIDTH = WIDTH/2.0;
-		public static final double BASELINE = 120;
+		public static final double BASELINE = 93.3;
 
+		public class AirShip{
+			public static final double SIDELENGTH = 0;
+			public static final double HALFSL = SIDELENGTH/2.0;
+			public static final double DISTANCEFROMWALL = 114;
+			public static final double MOUNTDISTANCEFROMWALL = 111;
+
+		}
 	}
 	
 	

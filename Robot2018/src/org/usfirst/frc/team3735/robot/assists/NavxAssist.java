@@ -2,19 +2,17 @@ package org.usfirst.frc.team3735.robot.assists;
 
 import org.usfirst.frc.team3735.robot.Robot;
 import org.usfirst.frc.team3735.robot.util.cmds.ComAssist;
-import org.usfirst.frc.team3735.robot.util.settings.Func;
 
 public class NavxAssist extends ComAssist{
 	
-	Func angle;
+	Double angle;
 	
-	public NavxAssist(Func yaw){
+	public NavxAssist(Double yaw){
 		angle = yaw;
-		requires(Robot.navigation);
 	}
 	
 	public NavxAssist(){
-		requires(Robot.navigation);
+		
 	}
 	
 	@Override
@@ -22,18 +20,13 @@ public class NavxAssist extends ComAssist{
 		if(angle == null){
 			Robot.navigation.getController().setSetpoint(Robot.navigation.getYaw());
 		}else{
-			Robot.navigation.getController().setSetpoint(angle.getValue());
+			Robot.navigation.getController().setSetpoint(angle.doubleValue());
 		}
 	}
 
 	@Override
 	public void execute() {
 		Robot.drive.setNavxAssist(Robot.navigation.getController().getError());
-	}
-
-	@Override
-	public void end() {
-		Robot.drive.setNavxAssist(0);
 	}
 	
 }

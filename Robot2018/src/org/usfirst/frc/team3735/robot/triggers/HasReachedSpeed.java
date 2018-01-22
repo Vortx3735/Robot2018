@@ -3,14 +3,6 @@ package org.usfirst.frc.team3735.robot.triggers;
 import org.usfirst.frc.team3735.robot.Robot;
 import org.usfirst.frc.team3735.robot.util.cmds.ComTrigger;
 
-/**
- * 
- * @author Andrew
- * 
- * Halts a command when the desired speed is reached, either from decelerating,
- * or from accelerating to pass by that speed
- *
- */
 public class HasReachedSpeed extends ComTrigger{
 	
 	private Double targetSpeed;
@@ -30,7 +22,7 @@ public class HasReachedSpeed extends ComTrigger{
 	}
 	
 	public boolean evaluateSpeed() {
-		return Robot.drive.getAverageSpeedInches() < targetSpeed;
+		return Robot.drive.getAverageSpeed() < targetSpeed;
 	}
 	@Override
 	public boolean get() {

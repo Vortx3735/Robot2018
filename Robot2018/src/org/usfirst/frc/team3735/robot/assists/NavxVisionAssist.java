@@ -1,38 +1,50 @@
 package org.usfirst.frc.team3735.robot.assists;
 
 import org.usfirst.frc.team3735.robot.Robot;
-import org.usfirst.frc.team3735.robot.subsystems.Vision.Target;
+import org.usfirst.frc.team3735.robot.subsystems.Navigation;
+import org.usfirst.frc.team3735.robot.subsystems.Vision;
+import org.usfirst.frc.team3735.robot.subsystems.Vision.Targets;
 import org.usfirst.frc.team3735.robot.util.calc.VortxMath;
 import org.usfirst.frc.team3735.robot.util.cmds.ComAssist;
 
 public class NavxVisionAssist extends ComAssist{
 
-    private Target target;
+    private Targets pipe;
+	private double prevWorking = 0;
 
-
-	public NavxVisionAssist(Target p){
-		this.target = p;
+	public NavxVisionAssist(Targets p){
+		this.pipe = p;
+    	prevWorking = 0;
     	requires(Robot.vision);
     	requires(Robot.navigation);
 	}
 	
 	@Override
 	public void initialize() {
-		Robot.navigation.getController().setSetpoint(
-				VortxMath.navLimit(
-						Robot.navigation.getYaw() + Robot.vision.getRelativeCXAngle(target)
-				)
-		);
+		prevWorking = 0;
 	}
 
 	@Override
 	public void execute() {
-    	Robot.drive.setNavxAssist((Robot.navigation.getController().getError()));
+		double input = Robot.vision.getRelativeCX(pipe);
+    	if(input != Vision.nullValue){
+    		if(input != prevWorking){
+		    	Robot.navigation.getController().setSetpoint(
+		    			VortxMath.continuousLimit(
+	        				Robot.navigation.getYaw() + (input * Robot.vision.dpp.getValue()),
+	        				-180, 180)
+				);
+				prevWorking = input;
+			}
+    		Robot.drive.setVisionAssist((Robot.navigation.getController().getError()/180.0) * Navigation.navVisCo.getValue());
+    	}else{
+    		Robot.drive.setVisionAssist(0);
+    	}
 	}
 	
 	@Override
 	public void end(){
-		Robot.drive.setNavxAssist(0);
+		Robot.drive.setVisionAssist(0);
 	}
 	
 //doy mun fuh = ???

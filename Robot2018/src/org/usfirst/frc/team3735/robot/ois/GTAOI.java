@@ -1,10 +1,8 @@
 package org.usfirst.frc.team3735.robot.ois;
 
-//import org.usfirst.frc.team3735.robot.commands.DriveTurnToAngleHyperbola;
-import org.usfirst.frc.team3735.robot.commands.*;
-import org.usfirst.frc.team3735.robot.commands.drive.ExpDrive;
 import org.usfirst.frc.team3735.robot.commands.drive.simple.DriveAddSensitiveLeft;
 import org.usfirst.frc.team3735.robot.commands.drive.simple.DriveAddSensitiveRight;
+
 import org.usfirst.frc.team3735.robot.util.oi.DriveOI;
 import org.usfirst.frc.team3735.robot.util.oi.XboxController;
 
@@ -18,26 +16,10 @@ public class GTAOI implements DriveOI{
 		main = new XboxController(0);
 		co = new XboxController(1);
 		main.rb.get();
-		//Baby Driver
-		//main.pov180.whenPressed(new DriveGoToPeg());
+
 		main.pov90.whileHeld(new DriveAddSensitiveRight());
 		main.pov270.whileHeld(new DriveAddSensitiveLeft());
 
-		main.start.whenPressed(new ExpDrive());
-//		main.x.whileHeld(new DriveAddSensitiveLeft());
-//		main.y.whileHeld(new DriveAddSensitiveRight());
-
-//		main.start.whenPressed(new DriveChangeToGearDirection());
-//		main.back.whenPressed(new DriveChangeToBallDirection());
-		
-		//CoDriver
-
-
-
-		
-		co.start.whenPressed(new InterruptOperations());
-		
-		
 		
 	}
 	

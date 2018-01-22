@@ -1,20 +1,22 @@
 package org.usfirst.frc.team3735.robot;
 
-import org.usfirst.frc.team3735.robot.commands.auto.DoNothing;
 import org.usfirst.frc.team3735.robot.commands.drive.positions.ResetPosition;
 import org.usfirst.frc.team3735.robot.commands.drive.positions.ZeroYaw;
 import org.usfirst.frc.team3735.robot.ois.GTAOI;
+import org.usfirst.frc.team3735.robot.settings.Dms;
 import org.usfirst.frc.team3735.robot.subsystems.Drive;
 import org.usfirst.frc.team3735.robot.subsystems.Navigation;
 import org.usfirst.frc.team3735.robot.subsystems.Vision;
 import org.usfirst.frc.team3735.robot.util.bases.VortxIterative;
+import org.usfirst.frc.team3735.robot.util.oi.DriveOI;
+import org.usfirst.frc.team3735.robot.util.profiling.Location;
 import org.usfirst.frc.team3735.robot.util.settings.BooleanSetting;
 import org.usfirst.frc.team3735.robot.util.settings.Setting;
 
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -26,67 +28,66 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * directory.
  */
 public class Robot extends VortxIterative {
+
+	SendableChooser<Command> autonomousChooser;
+	Command autonomousCommand;
 	
 	public static Drive drive;
 	public static Navigation navigation;
 	public static Vision vision;
 	
-	public static GTAOI oi;
+	public static DriveOI oi;
 	
-	SendableChooser<Command> autonomousChooser;
-	Command autonomousCommand;
+	private double dt;
+	private double prevTime = 0;
+
+
+	public static SendableChooser<Side> sideChooser;
+	public static Side side = Side.Left;
 	
-	public static SendableChooser<Alliance> allianceChooser;
-	public static Alliance alliance;
+	
+	
 	@Override
 	public void robotInit() {
-
 		drive = new Drive();
 		navigation = new Navigation();
 		vision = new Vision();
 		
 		oi = new GTAOI(); //MUST be instantiated after the subsystems
-		
-		
-		
-		autonomousChooser = new SendableChooser<>();
-			autonomousChooser.addDefault("Do Nothing", new DoNothing());
-		SmartDashboard.putData("Autonomous Select", autonomousChooser);
+			
+		autonomousChooser = new SendableChooser<Command>();
 
-		alliance = DriverStation.getInstance().getAlliance();
-		allianceChooser = new SendableChooser<>();
-			switch(alliance) {
-				case Red:
-				case Invalid:
-					allianceChooser.addDefault("Red", Alliance.Red);
-					allianceChooser.addObject("Blue", Alliance.Blue);
-					break;
-				case Blue:
-					allianceChooser.addDefault("Blue", Alliance.Blue);
-					allianceChooser.addObject("Red", Alliance.Red);
-					break;
-			}
-		SmartDashboard.putData("Side Selection", allianceChooser);	
+
+		SmartDashboard.putData("AUTONOMOUS SELECTION", autonomousChooser);
 		
-		
+		sideChooser = new SendableChooser<Side>();
+			sideChooser.addDefault("Red", Side.Left);
+			sideChooser.addObject("Blue", Side.Right);
+		SmartDashboard.putData("Side Selection", sideChooser);	
 		
 		SmartDashboard.putData("Reset Position", new ResetPosition());
-		SmartDashboard.putData("Zero Yaw", new ZeroYaw());
-//		SmartDashboard.putData(new RecordVoltageData());
-//		SmartDashboard.putData(new SendSDVoltage());
 
+		SmartDashboard.putData("Zero Yaw", new ZeroYaw());
+
+		side = Side.Left;
+		prevTime = Timer.getFPGATimestamp();
 	}
 	@Override
 	public void robotPeriodic() {		
 		Setting.fetchAround();
 		BooleanSetting.fetchAround();
-        Scheduler.getInstance().run();
+		
+        vision.debugLog();
+        //navigation.integrate();
         navigation.displayPosition();
-        //drive.debugLog();
+        drive.debugLog();
         log();       
 	}
 	@Override
 	public void robotContinuous() {
+//		dt = Timer.getFPGATimestamp() - prevTime;
+//		prevTime += dt;
+//		SmartDashboard.putNumber("dt", dt);
 		navigation.integrate();
 	}
 	
@@ -95,6 +96,8 @@ public class Robot extends VortxIterative {
 	@Override
 	public void autonomousInit() {
 		navigation.resetPosition();
+		retrieveSide();
+		Location.changeSide(side, Dms.Field.LENGTH);
         autonomousCommand = autonomousChooser.getSelected();
         if (autonomousCommand != null) autonomousCommand.start();
 	}
@@ -115,6 +118,7 @@ public class Robot extends VortxIterative {
     }
 	@Override
 	public void teleopPeriodic() {
+        Scheduler.getInstance().run();
 	}
 	@Override
 	public void teleopContinuous() {
@@ -125,7 +129,6 @@ public class Robot extends VortxIterative {
 
 	@Override
 	public void testPeriodic() {
-		
 	}
 	@Override
 	public void disabledInit() {
@@ -146,16 +149,34 @@ public class Robot extends VortxIterative {
 	
 	public void log(){
 		drive.log();
+		//shooter.log();
+		//ballIntake.log();
 		navigation.log();
+		//ultra.log();
 		vision.log();
 	}
 	
 	public void debugLog(){
 		drive.debugLog();
+		//shooter.debugLog();
+		//ballIntake.debugLog();
 		navigation.debugLog();
+		//ultra.debugLog();
 		vision.debugLog();
 	}
 	
+	
+	
+
+	
+	
+	public static void retrieveSide(){
+		if(sideChooser.getSelected() != null){
+			side = sideChooser.getSelected();
+		}else{
+			System.out.println("Error : sideChooser was found null when retrieving side.");
+		};
+	}
 
 
 }

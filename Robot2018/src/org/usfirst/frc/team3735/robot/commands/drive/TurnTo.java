@@ -3,11 +3,19 @@ package org.usfirst.frc.team3735.robot.commands.drive;
 import org.usfirst.frc.team3735.robot.Robot;
 
 import org.usfirst.frc.team3735.robot.subsystems.Navigation;
-import org.usfirst.frc.team3735.robot.subsystems.Vision.Target;
+import org.usfirst.frc.team3735.robot.subsystems.Vision.Targets;
+import org.usfirst.frc.team3735.robot.util.PIDCtrl;
+import org.usfirst.frc.team3735.robot.util.bases.VortxIterative.Side;
 import org.usfirst.frc.team3735.robot.util.calc.VortxMath;
 import org.usfirst.frc.team3735.robot.util.profiling.Location;
 import org.usfirst.frc.team3735.robot.util.settings.Func;
+import org.usfirst.frc.team3735.robot.util.settings.Setting;
+
+import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -28,14 +36,40 @@ public class TurnTo extends Command{
     	});
     }
 	
+	/**
+	 * 
+	 * @param angle	
+	 * @param flag	true if a relative angle, false if relative to actual field position (Side independent)
+	 */
+	public TurnTo(double angle, boolean flag) {
+		requires(Robot.drive);
+    	requires(Robot.navigation);
+    	
+    	if(flag) {
+    		getAngle = new Func() {
+	    		@Override
+				public double getValue() {
+					return VortxMath.navLimit(Robot.navigation.getYaw() + angle);
+				}
+	    	};
+    	}else {
+    		getAngle = new Func() {
+	    		@Override
+				public double getValue() {
+					return Robot.side.equals(Side.Right) ? VortxMath.navLimit(angle + 180) : angle;
+				}
+	    	};
+    	}
+		
+    }
 	
-	public TurnTo(Target p) {
+	public TurnTo(Targets p) {
     	this(new Func(){
 			@Override
 			public double getValue() {
-				return VortxMath.navLimit(
-	    				Robot.navigation.getYaw() + Robot.vision.getRelativeCXAngle(p)
-	    		);
+				return VortxMath.continuousLimit(
+	    				Robot.navigation.getYaw() + (Robot.vision.getRelativeCX(p) * Robot.vision.dpp.getValue()),
+	    				-180, 180);
 			}
     	});
     	requires(Robot.vision);
@@ -45,7 +79,7 @@ public class TurnTo extends Command{
 		this(new Func(){
 			@Override
 			public double getValue() {
-				return Robot.navigation.getAngleToLocation(loc);
+				return Robot.navigation.getAngleToLocationCorrected(loc);
 			}
     	});
     	

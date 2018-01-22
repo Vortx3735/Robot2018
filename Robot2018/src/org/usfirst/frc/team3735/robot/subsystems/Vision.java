@@ -1,9 +1,11 @@
 package org.usfirst.frc.team3735.robot.subsystems;
 
-
+import org.usfirst.frc.team3735.robot.util.settings.Setting;
+import org.usfirst.frc.team3735.robot.util.vision.VisionHandler;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -13,19 +15,16 @@ public class Vision extends Subsystem {
 
 	private static final int IMG_WIDTH = 320;
 	private static final int IMG_HEIGHT = 240;
+	public static Setting dpp = new Setting("Vision Degrees per Pixel", 0.13125);
 	
+	public static final double nullValue = -.0012345;
 	
 	private UsbCamera camera1;
 	private UsbCamera camera2;
 	
-	public enum Target{
-		Cubes,
-		Tape,
-		Exchange,
-		Portal
+	public enum Targets{
+		
 	}
-	
-	
 	public Vision(){
 		camera1 = CameraServer.getInstance().startAutomaticCapture(0);
 		camera2 = CameraServer.getInstance().startAutomaticCapture(1);
@@ -35,7 +34,9 @@ public class Vision extends Subsystem {
 		
 	    camera1.setResolution(IMG_WIDTH, IMG_HEIGHT);
 	    camera2.setResolution(IMG_WIDTH, IMG_HEIGHT);
+	    
 
+	    
 	    
 	    
 	}
@@ -50,19 +51,24 @@ public class Vision extends Subsystem {
 
 		
     }
-    
-    
-    //need to be made with the new vision targets, and with the new camera system
-    public double getRelativeCX(Target t){
+
+    public double getRelativeCX(Targets tar){
+//    	if(mainHandler.target.equals(VisionHandler.nullTarget)){
+//    		return nullValue;
+//    	}else{
+//        	return mainHandler.getCenterX() - IMG_WIDTH/2;
+//    	}
     	return 0;
     }
-    public double getWidth(Target t){
+    public double getWidth(Targets tar){
+//    	return mainHandler.getWidth();
     	return 0;
-    }
-    public double getRelativeCXAngle(Target t) {
-    	return 0; //use degrees per pixel function to calculate
     }
 
+
+	
+
+	
 
 
 	public void debugLog() {

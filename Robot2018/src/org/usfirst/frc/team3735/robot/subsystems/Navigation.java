@@ -3,6 +3,7 @@ package org.usfirst.frc.team3735.robot.subsystems;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
@@ -25,23 +26,27 @@ import org.usfirst.frc.team3735.robot.util.settings.Setting;
 
 
 public class Navigation extends Subsystem implements PIDSource, PIDOutput {
+	private static final int BUMP_THRESHOLD = 1;
 
 	private AHRS ahrs;
 	
 	private PIDCtrl controller;
-	
 	//PID Controller stuff
+	private static Setting outputExponent = new Setting("Nav Output Exponent", 1);
     public static Setting iZone = new Setting("Turning IZone", 10);
     public static Setting actingI = new Setting("Acting I Value", 0.004);
     
-    public static Setting hOffset = new Setting("Horizontal Offset", 0);
+    public static Setting verticalOffset = new Setting("Vertical Offset", 0);
     
+	public static Setting navCo = new Setting("Navx Assist Coeffecient", 5);
+	public static Setting navVisCo = new Setting("Navx Vision Assist Coeffecient", 5);
+
+	
 	Position pos = new Position(0,0,0);
 	private Object posLock = new Object();
 	
 	NetworkTable table;
 
-	//integration values
 	private double prevLeft = 0;
 	private double prevRight = 0;
 	private double curLeft;
@@ -60,8 +65,8 @@ public class Navigation extends Subsystem implements PIDSource, PIDOutput {
     	
     	SmartDashboard.putData("Navigation Turning Controller", controller);
     	
-		curLeft = Robot.drive.getLeftPositionInches();
-    	curRight = Robot.drive.getRightPositionInches();
+		curLeft = Robot.drive.getLeftPosition();
+    	curRight = Robot.drive.getRightPosition();
 	}
 
 	public synchronized void setPosition(Position p){
@@ -78,11 +83,16 @@ public class Navigation extends Subsystem implements PIDSource, PIDOutput {
     
     public synchronized void integrate(){
     	synchronized(posLock){
-    		curLeft = Robot.drive.getLeftPositionInches();
-        	curRight = Robot.drive.getRightPositionInches();
+    		curLeft = Robot.drive.getLeftPosition();
+        	curRight = Robot.drive.getRightPosition();
         	
         	double dd = ((curLeft-prevLeft) + (curRight-prevRight)) * .5;
         	double angle = getYaw();
+        	if(Robot.side.equals(Side.Left)){ //simplified version of getFieldYaw without limits
+        		angle *= -1;
+        	}else{
+        		angle = (angle + 180) * -1;
+        	}
     		pos.x += Math.cos(Math.toRadians(angle)) * dd;
     		pos.y += Math.sin(Math.toRadians(angle)) * dd;
     		pos.yaw = angle * -1;
@@ -94,26 +104,25 @@ public class Navigation extends Subsystem implements PIDSource, PIDOutput {
     	
     }
     
-    /**
-     * 
-     * @return	the robot yaw, in degrees, in range [-180, 180]
-     */
     public double getYaw(){
     	return ahrs.getYaw();
     }
     
-    
+    public double getFieldYaw() {
+    	if(Robot.side.equals(Side.Left)) {
+    		return getYaw();
+    	}else {
+    		return VortxMath.continuousLimit(getYaw() + 180, -180, 180);
+
+    	}
+   
+    }
     public void zeroYaw(){
     	ahrs.zeroYaw();
     }
     public void resetAhrs(){
     	ahrs.reset();
     }
-    
-    /**
-     * 
-     * @return	the rate of turning, someone please find the units
-     */
     public double getRate(){
     	return ahrs.getRate();
     }
@@ -132,12 +141,9 @@ public class Navigation extends Subsystem implements PIDSource, PIDOutput {
     }
     
     public void displayPosition(){
-//    	table.putNumberArray("centerX", new double[]{pos.x});
-//		table.putNumberArray("centerY", new double[]{pos.y});
-//		table.putNumberArray("angle", new double[]{pos.yaw});
-		table.getEntry("centerX").setDoubleArray(new double[]{pos.x});
-		table.getEntry("centerY").setDoubleArray(new double[]{pos.y});
-		table.getEntry("angle").setDoubleArray(new double[]{pos.yaw});
+    	table.getEntry("CenterX").setDoubleArray(new double[]{pos.x});
+    	table.getEntry("CenterY").setDoubleArray(new double[]{pos.y});
+    	table.getEntry("angle").setDoubleArray(new double[]{pos.yaw});
 
     }
     
@@ -251,25 +257,37 @@ public class Navigation extends Subsystem implements PIDSource, PIDOutput {
 
 	@Override
 	public void pidWrite(double output) {
+		output = VortxMath.curve(output, outputExponent.getValue());
 		Robot.drive.setLeftRight(output, -output);
 	}
 
+
+	public boolean isBumped() {
+		return getXYAcceleration() > BUMP_THRESHOLD;
+	}
 	
 	public double getXYAcceleration(){
 		return Math.hypot(ahrs.getWorldLinearAccelY(), ahrs.getWorldLinearAccelX());
 	}
 	
 	public Position getStartingPosition() {
-		return new Position(hOffset.getValue(), Dms.Bot.HALFLENGTH, 0);
+		if(Robot.side.equals(Side.Left)){
+			return new Position(Dms.Bot.HALFLENGTH, verticalOffset.getValue(), 0);
+		}else{
+			return new Position(Dms.Field.LENGTH - Dms.Bot.HALFLENGTH, verticalOffset.getValue(), 180);
+		}
 	}
 
 	public void debugLog() {
+		// TODO Auto-generated method stub
 		
 	}
 
 	public void resetPosition() {
 		zeroYaw();
+		Robot.retrieveSide();
 		setPosition(getStartingPosition());
+		Location.changeSide(Robot.side, Dms.Field.LENGTH);
 		System.out.println("Reseting Position...");
 	}
 	
@@ -280,7 +298,7 @@ public class Navigation extends Subsystem implements PIDSource, PIDOutput {
 	/**
 	 * 
 	 * @return	the quadrant the robot is in
-	 * 			follows the quadrant naming system of algebra, looking at the field from the alliance station
+	 * 			follows the quadrant naming system of algebra, looking at the field from Field Map.PNG
 	 */
 	public int getQuadrant() {
 		double xdif = pos.x - Waypoints.center.x;
@@ -300,7 +318,6 @@ public class Navigation extends Subsystem implements PIDSource, PIDOutput {
 		}
 
 	}
-	
 	public Location getClosestLocation(Location[] locs) {
 		if(locs != null && locs.length > 0) {
 			Location curPos = getPosition();
@@ -320,11 +337,25 @@ public class Navigation extends Subsystem implements PIDSource, PIDOutput {
 		}
 	}
 	
-	//THANK GOD THIS YEAR'S FIELD IS ROTATIONALLY SYMMETRIC -Andrew
 	public double getAngleToLocation(Location loc) {
 		return Math.toDegrees(-Math.atan2(loc.y - pos.y, loc.x - pos.x));
 	}
 	
+	/**
+	 * 
+	 * @param loc	the Location to reference
+	 * @return		the Angle to the location, meant for using with the TurnTo Command, 
+	 * 				where the angle from getYaw is used for turning
+	 */
+	public double getAngleToLocationCorrected(Location loc) {
+		double ans = Math.toDegrees(-Math.atan2(loc.y - pos.y, loc.x - pos.x));
+		if(Robot.side.equals(Side.Right)){
+			return VortxMath.continuousLimit(ans + 180, -180, 180);
+		}else {
+			return ans;
+		}
+		
+	}
     
 }
 

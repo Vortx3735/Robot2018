@@ -14,6 +14,7 @@ import org.usfirst.frc.team3735.robot.settings.RobotMap;
 import org.usfirst.frc.team3735.robot.util.settings.BooleanSetting;
 import org.usfirst.frc.team3735.robot.util.settings.Setting;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -56,17 +57,18 @@ public class Drive extends Subsystem {
 	public static Setting scaledMaxMove = new Setting("Scaled Max Move", Constants.Drive.scaledMaxMove);
 	public static Setting scaledMaxTurn = new Setting("Scaled Max Turn", Constants.Drive.scaledMaxTurn);
 	
-	public static BooleanSetting brakeEnabled = new BooleanSetting("Brake Mode On", false) {
+	public static BooleanSetting brakeEnabled = new BooleanSetting("Brake Mode On", false){
+
 		@Override
 		public void valueChanged(boolean val) {
 			if(Robot.drive != null) {
 				Robot.drive.setEnableBrake(val);
+				System.out.println("Brake mode " + val);
+
 			}
 		}
+		
 	};
-	
-	public static Setting navCo = new Setting("Navx Assist Coeff", 5);
-	public static Setting visCo = new Setting("Vision Assist Coeff", .0025);
 	
 
 	public Drive() {
@@ -77,17 +79,18 @@ public class Drive extends Subsystem {
 		r1 = new WPI_TalonSRX(RobotMap.Drive.rightMotor1);
 		r2 = new WPI_TalonSRX(RobotMap.Drive.rightMotor2);
 		r3 = new WPI_TalonSRX(RobotMap.Drive.rightMotor3);
-
+		System.out.println("Hello World");
+		brakeEnabled.setIsListening(true);
 		initSensors();
 		setupSlaves();
-		setEnableBrake(false);
+		setEnableBrake(true);
 	}
 
 	/*******************************
 	 * Default Command For Driving
 	 *******************************/
 	public void initDefaultCommand() {
-		setDefaultCommand(new ExpDrive());
+		setDefaultCommand(new DDxDrive());
 	}
 
 	/*******************************
@@ -95,14 +98,13 @@ public class Drive extends Subsystem {
 	 *******************************/
 	public void setupForPositionControl() {
 		l1.configAllowableClosedloopError(0, 0, 0);
-		setLeftPIDF(dP,dI,dD,dF);
 		l1.config_IntegralZone(0, iZone, 0);
 		
 		//slot, value, timeout
 		l1.configAllowableClosedloopError(0, 0, 0);
-		setLeftPIDF(dP,dI,dD,dF);
 		l1.config_IntegralZone(0, iZone, 0);
-		
+		this.setPIDFSettings(dP,dI,dD,dF);
+
 		setEnableBrake(true);		
 	}
 
@@ -110,7 +112,7 @@ public class Drive extends Subsystem {
 	 * Speed Control Setup
 	 *******************************/
 	public void setupDriveForSpeedControl() {
-		setEnableBrake(false);
+		//setEnableBrake(false);
 
 		this.setNavxAssist(0);
 		this.setVisionAssist(0);
@@ -129,98 +131,53 @@ public class Drive extends Subsystem {
 
 	public void initSensors() {
 		
-		//int absolutePosition = l1.getPulseWidthPosition() & 0xFFF;
 		int absolutePosition = l1.getSelectedSensorPosition(0) & 0xFFF;
 
-		//l1.reverseOutput(false); <--- setinverted does this instead
 		
-		//l1.setEncPosition(absolutePosition);
 		l1.setSelectedSensorPosition(absolutePosition, 0, 0);
-		
-		//l1.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
 		l1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
-		
-		//l1.reverseSensor(true);
 		l1.setSensorPhase(true);
 		
-		//l1.configNominalOutputVoltage(0.0, -0.0);
 		l1.configNominalOutputForward(0, 0);
 		l1.configNominalOutputReverse(0, 0);
-		l1.configPeakOutputForward(.5, 0);
-		l1.configPeakOutputReverse(.5, 0);
-		//l1.setPosition(0);
+		l1.configPeakOutputForward(1, 0);
+		l1.configPeakOutputReverse(-1, 0);
 		
-		
-//		absolutePosition = r1.getPulseWidthPosition() & 0xFFF;
-//		
-//		r1.reverseOutput(true);
-//		r1.setEncPosition(absolutePosition);
-//		r1.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
-//		r1.reverseSensor(false);
-//		r1.configNominalOutputVoltage(0.0f, -0.0);
-//		r1.configPeakOutputVoltage(5, -5);
-//		r1.setPosition(0);
-		
-		//int absolutePosition = l1.getPulseWidthPosition() & 0xFFF;
-		absolutePosition = l1.getSelectedSensorPosition(0) & 0xFFF;
+		absolutePosition = r1.getSelectedSensorPosition(0) & 0xFFF;
 
-		//l1.reverseOutput(false); <--- setinverted does this instead
 		
-		//l1.setEncPosition(absolutePosition);
-		l1.setSelectedSensorPosition(absolutePosition, 0, 0);
+		r1.setSelectedSensorPosition(absolutePosition, 0, 0);	
+		r1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);		
+		r1.setSensorPhase(true);
+
+		r1.configNominalOutputForward(0, 0);
+		r1.configNominalOutputReverse(0, 0);
+		r1.configPeakOutputForward(1, 0);
+		r1.configPeakOutputReverse(-1, 0);
 		
-		//l1.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
-		l1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
+		r1.setInverted(true);
+		r2.setInverted(true);
+		r3.setInverted(true);
 		
-		//l1.reverseSensor(true);
-		l1.setSensorPhase(false);
 		
-		//l1.configNominalOutputVoltage(0.0, -0.0);
-		l1.configNominalOutputForward(0, 0);
-		l1.configNominalOutputReverse(0, 0);
-		l1.configPeakOutputForward(.5, 0);
-		l1.configPeakOutputReverse(.5, 0);
-		//l1.setPosition(0);
+
 
 	}
 	
-	public void setPIDSettings(double kp, double ki, double kd){
-		setLeftPID(kp, ki, kd);
-		setRightPID(kp, ki, kd);
-	}
-	
+
 	public void setPIDFSettings(double kp, double ki, double kd, double kf){
-		setLeftPIDF(kp, ki, kd, kf);
-		setRightPIDF(kp, ki, kd, kf);
-	}
-	
-	public void setLeftPIDF(double kp, double ki, double kd, double kf) {
-		setLeftPID(kp,ki,kd);
-		l1.config_kF(0, kf, 0);
-	}
-	
-	public void setRightPIDF(double kp, double ki, double kd, double kf) {
-		setRightPID(kp,ki,kd);
-		r1.config_kF(0, kf, 0);
-	}
-
-	public void setLeftPID(double kp, double ki, double kd){
 		l1.config_kP(0, kp, 0);
 		l1.config_kI(0, ki, 0);
 		l1.config_kD(0, kd, 0);
-	}
-	public void setRightPID(double kp, double ki, double kd){
+		l1.config_kF(0, kf, 0);
+
 		r1.config_kP(0, kp, 0);
 		r1.config_kI(0, ki, 0);
 		r1.config_kD(0, kd, 0);
+		r1.config_kF(0, kf, 0);
+
 	}
-//	/******************************
-//	 * changing the Talon control mode
-//	 */
-//	public void changeControlMode(TalonControlMode t){
-//		l1.changeControlMode(t);
-//		r1.changeControlMode(t);
-//	}
+
 
 	/*********************************
 	 * Configuring left and right PID Peak Voltages
@@ -365,11 +322,11 @@ public class Drive extends Subsystem {
     public void setRightTurn(double turn){
     	rightAddTurn = turn;
     }
-	public void setVisionAssist(double error) {
-		navxAssist = (error/180.0) * visCo.getValue();
+	public void setVisionAssist(double j) {
+		visionAssist = j;
 	}	
 	public void setNavxAssist(double error) {
-		navxAssist = (error/180.0) * navCo.getValue();
+		this.navxAssist = (error/180.0) * Navigation.navCo.getValue();
 	}
 
 	
@@ -395,30 +352,23 @@ public class Drive extends Subsystem {
 
 	}
 	
-	public double getLeftErrorInches(){
-		return l1.getClosedLoopError(0) * Constants.Drive.InchesPerRotation ;
+	public double getLeftError(){
+		return l1.getClosedLoopError(0) * Constants.Drive.InchesPerTick ;
 	}
 
-	public double getRightErrorInches(){
-		return r1.getClosedLoopError(0)* Constants.Drive.InchesPerRotation ;
+	public double getRightError(){
+		return r1.getClosedLoopError(0)* Constants.Drive.InchesPerTick ;
 	}
 	/*********************************
 	 * Left and Right position getters
 	 *********************************/
+
 	public double getLeftPosition() {
-		return l1.getSelectedSensorPosition(0); //Multiply by (1/SensorUnitsPerRotation) to convert into rotations.
+		return l1.getSelectedSensorPosition(0) * Constants.Drive.InchesPerTick;
 	}
 
 	public double getRightPosition() {
-		return r1.getSelectedSensorPosition(0); //Multiply by (1/SensorUnitsPerRotation) to convert into rotations.
-	}
-
-	public double getLeftPositionInches() {
-		return getLeftPosition() * (Constants.Drive.InchesPerRotation);
-	}
-
-	public double getRightPositionInches() {
-		return getRightPosition() * (Constants.Drive.InchesPerRotation);
+		return r1.getSelectedSensorPosition(0) * Constants.Drive.InchesPerTick;
 	}
 	
 	/*
@@ -428,34 +378,23 @@ public class Drive extends Subsystem {
 	 *
 	 */
 
+	
 	public double getLeftSpeed() {
-		return l1.getSelectedSensorVelocity(0);
+		return l1.getSelectedSensorVelocity(0) * Constants.Drive.InchesPerTick * 10.0;
 	}
 	
 	public double getRightSpeed() {
-		return l1.getSelectedSensorVelocity(0);
+		return r1.getSelectedSensorVelocity(0) * Constants.Drive.InchesPerTick * 10.0;
 	}
-
+	
 	public double getAverageSpeed() {
 		return .5 * (getLeftSpeed() + getRightSpeed());
 	}
-	
-	public double getLeftSpeedInches() {
-		return (getLeftSpeed() * Constants.Drive.InchesPerRotation) /60.0;
-	}
-	
-	public double getRightSpeedInches() {
-		return (getRightSpeed() * Constants.Drive.InchesPerRotation) /60.0;
-	}
-	
-	public double getAverageSpeedInches() {
-		return (getAverageSpeed() * Constants.Drive.InchesPerRotation)/60.0;
-	}
 
 	public void setLeftRight(double left, double right) {
-		l1.set(left); 
-		r1.set(-right);
+		l1.set(ControlMode.PercentOutput, left);
 		
+		r1.set(ControlMode.PercentOutput, right);
 	}
 
 	/**
@@ -465,11 +404,11 @@ public class Drive extends Subsystem {
      * 			compensates for the deadzone using gathered data
      */
     public static double speedToPercent(double spd){
-    	double speed = (Math.abs(spd) *60.0) /Constants.Drive.InchesPerRotation;
+    	double speed = (Math.abs(spd) *60.0) /Constants.Drive.InchesPerTick;
     	return Math.copySign(slope*speed + minPct, spd);
     }
     public static double percentToSpeed(double pct){
-    	return Math.copySign((pct - minPct) / slope, pct) * Constants.Drive.InchesPerRotation/60.0;
+    	return Math.copySign((pct - minPct) / slope, pct) * Constants.Drive.InchesPerTick/60.0;
     }
     /**
      * @param 	percent [0,1] of the max speed to go
@@ -520,7 +459,7 @@ public class Drive extends Subsystem {
 		SmartDashboard.putNumber("Drive Left Get", l1.get());
 		SmartDashboard.putNumber("Drive Right Get", r1.get());
 		
-		SmartDashboard.putNumber("Drive avg speed inches", getAverageSpeedInches());
+		SmartDashboard.putNumber("Drive avg speed inches", getAverageSpeed());
 	}
 
 

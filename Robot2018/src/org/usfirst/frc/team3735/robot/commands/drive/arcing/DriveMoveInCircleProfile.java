@@ -3,7 +3,6 @@ package org.usfirst.frc.team3735.robot.commands.drive.arcing;
 import org.usfirst.frc.team3735.robot.Robot;
 import org.usfirst.frc.team3735.robot.commands.drive.movedistance.DriveMoveDistanceProfile;
 import org.usfirst.frc.team3735.robot.settings.Constants;
-import org.usfirst.frc.team3735.robot.settings.Dms;
 import org.usfirst.frc.team3735.robot.subsystems.Drive;
 import org.usfirst.frc.team3735.robot.triggers.HasMoved;
 import org.usfirst.frc.team3735.robot.triggers.HasReachedAngle;
@@ -17,7 +16,9 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class DriveMoveInCircleProfile extends VortxCommand {
 
+    private static final double DRIVE_WIDTH = 28;	//in inches
 
+	private static final double MAX_SPEED = 800 * Constants.Drive.InchesPerTick /60.0; //inches per sec
     
 	private HasReachedAngle angler;
 	private DriveMoveDistanceProfile profile;
@@ -41,15 +42,15 @@ public class DriveMoveInCircleProfile extends VortxCommand {
     	this.radius = radius;
     	angler = new HasReachedAngle(angle, isRelative);
     	distance = new Double(Math.PI * radius * (angle/180.0));
-    	if(Math.abs(v) > Math.abs(vMax(radius, Dms.Bot.DriveBase.WIDTH))){
-    		v = Math.signum(v) * Math.abs(vMax(radius, Dms.Bot.DriveBase.WIDTH));
+    	if(Math.abs(v) > Math.abs(vMax(radius, DRIVE_WIDTH))){
+    		v = Math.signum(v) * Math.abs(vMax(radius, DRIVE_WIDTH));
     		System.out.println("The Cruise Velocity was too great. Reducing to " + v);
     	}
     	profile = new DriveMoveDistanceProfile(distance, v, a, exitV);
     	addT(angler);
     	
-    	leftMult = 1.0 + (Dms.Bot.DriveBase.WIDTH/radius);
-    	rightMult = 1.0 - (Dms.Bot.DriveBase.WIDTH/radius);
+    	leftMult = 1.0 + (DRIVE_WIDTH/radius);
+    	rightMult = 1.0 - (DRIVE_WIDTH/radius);
     	
     }
 	
@@ -88,6 +89,6 @@ public class DriveMoveInCircleProfile extends VortxCommand {
     }
     
     private double vMax(double r, double w){
-    	return (Constants.Drive.MAX_SPEED* Math.abs(r)) / (Math.abs(r) + w);
+    	return (MAX_SPEED * Math.abs(r)) / (Math.abs(r) + w);
     }
 }

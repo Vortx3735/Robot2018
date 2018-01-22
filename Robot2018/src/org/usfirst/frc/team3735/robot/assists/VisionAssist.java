@@ -2,16 +2,18 @@ package org.usfirst.frc.team3735.robot.assists;
 
 
 import org.usfirst.frc.team3735.robot.Robot;
-import org.usfirst.frc.team3735.robot.subsystems.Vision.Target;
+import org.usfirst.frc.team3735.robot.subsystems.Vision;
+import org.usfirst.frc.team3735.robot.subsystems.Vision.Targets;
 import org.usfirst.frc.team3735.robot.util.cmds.ComAssist;
 
 public class VisionAssist extends ComAssist{
 	
-	Target target;
+	Targets pipe;
+	private double prevWorking = 0;
 
-	public VisionAssist(Target p){
+	public VisionAssist(Targets p){
 		requires(Robot.vision);
-		this.target = p;
+		this.pipe = p;
 	}
 
 	@Override
@@ -20,12 +22,13 @@ public class VisionAssist extends ComAssist{
 
 	@Override
 	public void execute() {
-        Robot.drive.setVisionAssist(Robot.vision.getRelativeCX(target));
-	}
-
-	@Override
-	public void end() {
-        Robot.drive.setVisionAssist(0);
+		double in = Robot.vision.getRelativeCX(pipe);
+    	if(in == Vision.nullValue){
+    		Robot.drive.setVisionAssist(0);
+    	}else{
+    		prevWorking = in;
+        	Robot.drive.setVisionAssist(in * .0025);
+    	}
 	}
 	
 	
