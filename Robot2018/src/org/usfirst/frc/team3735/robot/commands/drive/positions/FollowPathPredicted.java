@@ -108,21 +108,34 @@ public class FollowPathPredicted extends Command {
     	if(targetIndex >= locs.length) {
     		return false;
     	}
+    	//set predicted turn value
 		wantedDadx = computeTurn(targetIndex);
+		//compute move value based on turning value
 		wantedDxdt = Drive.percentToSpeed(maxP / (1 + Math.abs(wantedDadx)*Dms.Bot.DriveBase.HALFWIDTH));
     	cutoffLine = new HasPassedWaypoint(locs[targetIndex], locs[targetIndex-1]);
     	cutoffLine.initialize();
+		//make line between current index and last index to follow
     	toFollow = new Line(locs[targetIndex], locs[targetIndex-1]);
     	return true;
     }
     
-    //the index of the waypoint we're targeting
+    /**
+     * 
+     * @param 	index the index that we're targeting
+     * @return	the computed turn value
+     * 
+     * 
+     */
     public double computeTurn(int index) {
     	double da = .5 * (angleChanges[index] + angleChanges[index-1]);
     	double dx = locs[index].distanceFrom(locs[index-1]);
     	return da/dx;
     }
     
+    /**
+     * 	Draws a line between the robot and the next waypoint, and sets the nav controller angle 
+     * 	to the corresponding angle.
+     */
 	public void setControllerAngle() {
 		Position p = Robot.navigation.getPosition();
 		double targetAngle = Math.toDegrees(-Math.atan2(locs[targetIndex].y - p.y, locs[targetIndex].x - p.x));

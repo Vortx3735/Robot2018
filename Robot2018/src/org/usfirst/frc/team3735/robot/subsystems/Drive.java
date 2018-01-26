@@ -395,7 +395,16 @@ public class Drive extends Subsystem {
 		l1.set(ControlMode.PercentOutput, left);
 		
 		r1.set(ControlMode.PercentOutput, right);
+		
 	}
+	
+	public double getLeft() {
+		return l1.getMotorOutputPercent();
+	}
+	public double getRight() {
+		return r1.getMotorOutputPercent();
+	}
+	
 
 	/**
      * 

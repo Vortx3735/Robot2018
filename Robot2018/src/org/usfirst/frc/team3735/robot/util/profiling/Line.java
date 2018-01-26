@@ -1,5 +1,7 @@
 package org.usfirst.frc.team3735.robot.util.profiling;
 
+import org.usfirst.frc.team3735.robot.util.calc.VortxMath;
+
 public class Line {
 	
 	public double m = 0;
@@ -45,6 +47,32 @@ public class Line {
 			return loc.distanceFrom(new Location(x2,y2));
 		}else {
 			return Math.abs(loc.x - this.xOffset);
+		}
+	}
+	
+	/**
+	 * 
+	 * @return	angle in degrees
+	 */
+	public double getAngle() {
+		return Math.toDegrees(-Math.atan(m)) + 90;
+	}
+	
+	public double smallAngleWith(Line other) {
+		double a = Math.abs(VortxMath.navLimit(getAngle() - other.getAngle()));
+		if(a > 90) {
+			return 180 - a;
+		}else {
+			return a;
+		}
+	}
+	
+	public double smallAngleWith(double yaw) {
+		double a = Math.abs(VortxMath.navLimit(getAngle() - yaw));
+		if(a > 90) {
+			return 180 - a;
+		}else {
+			return a;
 		}
 	}
 	

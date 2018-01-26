@@ -41,4 +41,15 @@ public class Location {
 		}
 	}
 	
+	public String toString() {
+		return "XLoc:" + String.format("%.2f", x) + "# YLoc:" + String.format("%.2f", y) + "#";
+	}
+	
+	public static Location fromString(String s) {
+		return new Location(
+				Double.parseDouble(s.substring(s.indexOf("XLoc:") + 4).substring(0, s.indexOf("#"))),
+				Double.parseDouble(s.substring(s.indexOf("YLoc:") + 4).substring(0, s.indexOf("#")))
+		);
+	}
+	
 }

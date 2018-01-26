@@ -80,4 +80,5 @@ public class VortxMath {
 	public static double curveAround(double value, double exponent, double stagnant){
 		return curve(value / stagnant, exponent) * stagnant;
 	}
+	
 }
