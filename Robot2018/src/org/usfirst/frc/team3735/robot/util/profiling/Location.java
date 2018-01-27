@@ -32,6 +32,10 @@ public class Location {
 		return Math.hypot(this.x - other.x, this.y - other.y);
 	}
 	
+	public double yawTo(Location other) {
+		return Math.toDegrees(Math.atan2(other.x - x, other.y - y));
+	}
+	
 	public static void changeSide(Side side, double fieldLength) {
 		if((side == Side.Left) != onLeftSide) {
 			for(Location loc : staticLocations) {

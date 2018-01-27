@@ -23,6 +23,7 @@ import org.usfirst.frc.team3735.robot.util.calc.VortxMath;
 import org.usfirst.frc.team3735.robot.util.profiling.Line;
 import org.usfirst.frc.team3735.robot.util.profiling.Location;
 import org.usfirst.frc.team3735.robot.util.profiling.Position;
+import org.usfirst.frc.team3735.robot.util.profiling.Ray;
 import org.usfirst.frc.team3735.robot.util.settings.Setting;
 
 
@@ -109,19 +110,10 @@ public class Navigation extends Subsystem implements PIDSource, PIDOutput {
     	return ahrs.getYaw();
     }
     
-    public Line getLine() {
-    	return new Line(getPosition(), Math.tan(Math.toRadians(-getYaw())));
+    public Ray getRay() {
+    	return new Ray(getPosition(), getYaw());
     }
     
-    public double getFieldYaw() {
-    	if(Robot.side.equals(Side.Left)) {
-    		return getYaw();
-    	}else {
-    		return VortxMath.continuousLimit(getYaw() + 180, -180, 180);
-
-    	}
-   
-    }
     public void zeroYaw(){
     	ahrs.zeroYaw();
     }

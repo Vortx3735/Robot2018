@@ -7,7 +7,9 @@ import java.util.Scanner;
 
 import org.usfirst.frc.team3735.robot.Robot;
 import org.usfirst.frc.team3735.robot.util.DriveState;
+import org.usfirst.frc.team3735.robot.util.calc.VortxMath;
 import org.usfirst.frc.team3735.robot.util.profiling.Line;
+import org.usfirst.frc.team3735.robot.util.profiling.Ray;
 import org.usfirst.frc.team3735.robot.util.settings.Setting;
 import org.usfirst.frc.team3735.robot.util.settings.StringSetting;
 
@@ -34,12 +36,12 @@ public class SendProfile extends Command {
     double angleError = 0;	//	degrees/180
     double distError = 0;	//	inches
     DriveState curState;
-    Line toFollow;
+    Ray toFollow;
 	
-	private static Setting lookCo = new Setting("Forward Look Co", 1);
-//	private static Setting indexLookCo = new Setting("Index Look Co", 1);
+	private static Setting lookCo = new Setting("Forward Look Co", 0);
+	private static Setting angleLookCo = new Setting("Angle Look Co", 0);
 	private static Setting angleErrorCo = new Setting("Angle Error Co", 1);
-	private static Setting distErrorCo = new Setting("Dist Error Co", 1);
+	private static Setting distErrorCo = new Setting("Dist Error Co", 0);
 
 	
     public SendProfile(String file) {
@@ -83,27 +85,33 @@ public class SendProfile extends Command {
 			  Robot.navigation.getPosition().distanceFrom(arr.get(limitIndex(index+1)).pos)){
 			index++;
 		}
-    	toFollow = new Line(arr.get(index).pos, arr.get(index).pos);
 		curState = arr.get(index);
+		if(index != 0) {
+	    	toFollow = new Ray(curState.pos, arr.get(index - 1).pos);
+		}else {
+			toFollow = new Ray(arr.get(index + 1).pos, curState.pos);
+		}
 		
 		Robot.navigation.getController().setSetpoint(curState.pos.yaw);
 		
-		//compute lookahead error
 		if(limitIndex(index+lookAmount) != index+lookAmount) {
-			forwardLook = Robot.navigation.getLine().smallAngleWith(new Line(Robot.navigation.getPosition(), arr.get(limitIndex(index+lookAmount)).pos)) / 180.0;
+			//compute lookahead error
+			forwardLook = Robot.navigation.getRay().angleTo(new Ray(Robot.navigation.getPosition(), arr.get(limitIndex(index + lookAmount)).pos))/ 180.0;
+			//compute lookahead by indexing the angle of i+lookahead?
+			angleLook = Robot.navigation.getRay().angleTo(arr.get(index + lookAmount).pos) / 180.0;
 		}else {
 			forwardLook = 0;
+			angleLook = 0;
 		}
 		
-		//compute lookahead by indexing the angle of i+lookahead?
 		
 		//computer angle error
-		angleError = Robot.navigation.getLine().smallAngleWith(curState.pos.yaw) * Math.signum(Robot.navigation.getController().getError());
+		angleError = VortxMath.navLimit(Robot.navigation.getYaw() - arr.get(index).pos.yaw) / 180.0;
 		
 		//compute distance from profile error
-		distError = toFollow.distanceFrom(Robot.navigation.getPosition()) * Math.signum(Robot.navigation.getController().getError());
+		distError = toFollow.distanceFrom(Robot.navigation.getPosition());
 		
-		double turn = curState.getTurn() + angleError * angleErrorCo.getValue() + forwardLook * lookCo.getValue() + distError * distErrorCo.getValue();
+		double turn = curState.getTurn() + angleError * angleErrorCo.getValue() + forwardLook * lookCo.getValue() + distError * distErrorCo.getValue() + angleLook * angleLookCo.getValue();
 		Robot.drive.normalDrive(curState.getMove(), turn);
     }
     
