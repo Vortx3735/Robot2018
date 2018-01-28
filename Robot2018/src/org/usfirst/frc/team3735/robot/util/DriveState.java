@@ -15,14 +15,14 @@ public class DriveState {
 	}
 	
 	public String toString() {
-		return "Left:" + left + "# Right:" + right + "#" + pos.toString();
+		return Filer.make("Left", left, 5) + Filer.make("Right", right, 5) + pos.toString();
 	}
 	
 	public static DriveState fromString(String s) {
 		return new DriveState(
 				Position.fromString(s),
-				Double.parseDouble(s.substring(s.indexOf("Left:") + 5).substring(0, s.indexOf("#"))),
-				Double.parseDouble(s.substring(s.indexOf("Right:") + 6).substring(0, s.indexOf("#")))
+				Filer.getDouble("Left", s),
+				Filer.getDouble("Right", s)
 		);
 	}
 	

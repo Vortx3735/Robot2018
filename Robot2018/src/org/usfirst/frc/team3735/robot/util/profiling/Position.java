@@ -1,5 +1,7 @@
 package org.usfirst.frc.team3735.robot.util.profiling;
 
+import org.usfirst.frc.team3735.robot.util.Filer;
+
 public class Position extends Location {
 	public double yaw;
 	
@@ -14,13 +16,13 @@ public class Position extends Location {
 	}
 	
 	public String toString() {
-		return "Yaw:" + yaw + "#" + super.toString();
+		return Filer.make("Yaw", yaw, 4) + super.toString();
 	}
 	
 	public static Position fromString(String s) {
 		 return new Position(
 				 Location.fromString(s), 
-				 Double.parseDouble(s.substring(s.indexOf("Yaw:") + 4).substring(0, s.indexOf("#")))
+				 Filer.getDouble("Yaw", s)
 		 );
 	}
 	

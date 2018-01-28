@@ -30,7 +30,6 @@ public class SendProfile extends Command {
 	
 	int index;
 	
-    // Called repeatedly when this Command is scheduled to run
     double forwardLook = 0; //	degrees/180
     double angleLook = 0;	// 	degrees/180
     double angleError = 0;	//	degrees/180
@@ -47,14 +46,13 @@ public class SendProfile extends Command {
     public SendProfile(String file) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	
     	if(file != null) {
     		loadFile(file);
     	}else {
     		needsLoading = true;
     	}
-    	requires(Robot.drive);
-    	requires(Robot.navigation);
+    	//requires(Robot.drive);
+    	//requires(Robot.navigation);
     }
 
     // Called just before this Command runs the first time
@@ -64,9 +62,13 @@ public class SendProfile extends Command {
     	}
     }
     
+
+    
     public void loadFile(String name) {
     	arr = new ArrayList<>();
 		filePath = "/home/lvuser/"  + name + ".txt";
+		//filePath = "C:\\Users\\Andrew\\Desktop\\"  + name + ".txt";
+
 		try{
 			sc = new Scanner(new File(filePath));
 		}catch(Exception e){

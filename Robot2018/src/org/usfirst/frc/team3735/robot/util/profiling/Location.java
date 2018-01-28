@@ -2,6 +2,7 @@ package org.usfirst.frc.team3735.robot.util.profiling;
 
 import java.util.ArrayList;
 
+import org.usfirst.frc.team3735.robot.util.Filer;
 import org.usfirst.frc.team3735.robot.util.bases.VortxIterative.Side;
 
 public class Location {
@@ -46,14 +47,15 @@ public class Location {
 	}
 	
 	public String toString() {
-		return "XLoc:" + String.format("%.2f", x) + "# YLoc:" + String.format("%.2f", y) + "#";
+		return Filer.make("Xloc", x, 2) + Filer.make("Yloc", y, 2);
 	}
 	
 	public static Location fromString(String s) {
 		return new Location(
-				Double.parseDouble(s.substring(s.indexOf("XLoc:") + 4).substring(0, s.indexOf("#"))),
-				Double.parseDouble(s.substring(s.indexOf("YLoc:") + 4).substring(0, s.indexOf("#")))
+			Filer.getDouble("Xloc", s),
+			Filer.getDouble("Yloc", s)
 		);
+		
 	}
 	
 }

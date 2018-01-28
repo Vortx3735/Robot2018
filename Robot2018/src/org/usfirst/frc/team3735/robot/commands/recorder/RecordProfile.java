@@ -6,6 +6,7 @@ import javax.tools.JavaFileObject;
 
 import org.usfirst.frc.team3735.robot.Robot;
 import org.usfirst.frc.team3735.robot.util.DriveState;
+import org.usfirst.frc.team3735.robot.util.profiling.Position;
 import org.usfirst.frc.team3735.robot.util.settings.StringSetting;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -15,16 +16,16 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class RecordProfile extends Command {
 
-	public static StringSetting fileName = new StringSetting("Recording Profile File", "defaultfile");
+	public static StringSetting fileName = new StringSetting("Recording Profile File", "defaultfile", false);
 	private static String filePath;
 	private static Formatter formatter;
-
 	
 
     public RecordProfile() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
+    
 
     // Called just before this Command runs the first time
     protected void initialize() {
@@ -35,6 +36,7 @@ public class RecordProfile extends Command {
 			e.printStackTrace();
 		}
     }
+    
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
@@ -46,6 +48,7 @@ public class RecordProfile extends Command {
     protected boolean isFinished() {
         return false;
     }
+    
 
     // Called once after isFinished returns true
     protected void end() {
