@@ -51,8 +51,14 @@ public class SendProfile extends Command {
     	}else {
     		needsLoading = true;
     	}
-    	//requires(Robot.drive);
-    	//requires(Robot.navigation);
+    	requires(Robot.drive);
+    	requires(Robot.navigation);
+    }
+    
+    public SendProfile() {
+    	needsLoading = true;
+    	requires(Robot.drive);
+    	requires(Robot.navigation);
     }
 
     // Called just before this Command runs the first time
@@ -60,6 +66,7 @@ public class SendProfile extends Command {
     	if(needsLoading) {
     		loadFile(fileName.getValue());
     	}
+    	index = 0;
     }
     
 
@@ -75,7 +82,7 @@ public class SendProfile extends Command {
 			e.printStackTrace();
 		}
     	while(sc.hasNextLine()) {
-    		arr.add(DriveState.fromString(sc.nextLine().trim()));
+    		arr.add(DriveState.fromString(sc.nextLine()));
     	}
     }
 
@@ -83,11 +90,15 @@ public class SendProfile extends Command {
     
     protected void execute() {
     	//update to closest position data point
-		while(Robot.navigation.getPosition().distanceFrom(arr.get(index).pos) > 
-			  Robot.navigation.getPosition().distanceFrom(arr.get(limitIndex(index+1)).pos)){
-			index++;
-		}
-		curState = arr.get(index);
+    	index++;
+//		while(Robot.navigation.getPosition().distanceFrom(arr.get(index).pos) > 
+//			  Robot.navigation.getPosition().distanceFrom(arr.get(limitIndex(index+1)).pos)){
+//			index++;
+//		}
+		curState = arr.get(limitIndex(index));
+//		if(index >= arr.size()) {
+//			index--;
+//		}
 		if(index != 0) {
 	    	toFollow = new Ray(curState.pos, arr.get(index - 1).pos);
 		}else {
@@ -109,12 +120,15 @@ public class SendProfile extends Command {
 		
 		//computer angle error
 		angleError = VortxMath.navLimit(Robot.navigation.getYaw() - arr.get(index).pos.yaw) / 180.0;
-		
+		System.out.println("Angle Error: " + angleError);
 		//compute distance from profile error
 		distError = toFollow.distanceFrom(Robot.navigation.getPosition());
 		
 		double turn = curState.getTurn() + angleError * angleErrorCo.getValue() + forwardLook * lookCo.getValue() + distError * distErrorCo.getValue() + angleLook * angleLookCo.getValue();
 		Robot.drive.normalDrive(curState.getMove(), turn);
+		System.out.println("Move: " + curState.getMove() + " Turn: " + turn);
+
+		
     }
     
     public int limitIndex(int i) {
@@ -123,7 +137,7 @@ public class SendProfile extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return index >= arr.size() - 1;
+        return index >= arr.size() - 4;
     }
 
     // Called once after isFinished returns true

@@ -2,6 +2,8 @@ package org.usfirst.frc.team3735.robot;
 
 import org.usfirst.frc.team3735.robot.commands.drive.positions.ResetPosition;
 import org.usfirst.frc.team3735.robot.commands.drive.positions.ZeroYaw;
+import org.usfirst.frc.team3735.robot.commands.recorder.RecordProfile;
+import org.usfirst.frc.team3735.robot.commands.recorder.SendProfile;
 import org.usfirst.frc.team3735.robot.ois.GTAOI;
 import org.usfirst.frc.team3735.robot.settings.Dms;
 import org.usfirst.frc.team3735.robot.subsystems.Drive;
@@ -68,8 +70,12 @@ public class Robot extends VortxIterative {
 		SmartDashboard.putData("Reset Position", new ResetPosition());
 
 		SmartDashboard.putData("Zero Yaw", new ZeroYaw());
+		SmartDashboard.putData(new SendProfile("defaultfile"));
+		SmartDashboard.putData(new RecordProfile());
+
 
 		side = Side.Left;
+		
 		prevTime = Timer.getFPGATimestamp();
 	}
 	@Override

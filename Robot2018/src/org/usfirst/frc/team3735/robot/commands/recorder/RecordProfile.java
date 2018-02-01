@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class RecordProfile extends Command {
 
-	public static StringSetting fileName = new StringSetting("Recording Profile File", "defaultfile", false);
+	public static StringSetting fileName = new StringSetting("Recording Profile File", "defaultfile");
 	private static String filePath;
 	private static Formatter formatter;
 	

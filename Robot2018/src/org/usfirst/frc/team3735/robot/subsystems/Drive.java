@@ -395,6 +395,7 @@ public class Drive extends Subsystem {
 		l1.set(ControlMode.PercentOutput, left);
 		
 		r1.set(ControlMode.PercentOutput, right);
+//		System.out.println("Left: " + left + "Right: " + right);
 		
 	}
 	

@@ -36,7 +36,7 @@ public class DriveState {
 	}
 	
 	public double getTurn() {
-		return (left - right)/2.0;
+		return (left - right) * .5;
 	}
 	
 }
