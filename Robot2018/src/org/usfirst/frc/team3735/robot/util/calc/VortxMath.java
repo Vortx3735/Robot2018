@@ -81,4 +81,7 @@ public class VortxMath {
 		return curve(value / stagnant, exponent) * stagnant;
 	}
 	
+	public static double squish(double num, double halfway) {
+		return Math.atan(num/halfway) * 2 / Math.PI;
+	}
 }

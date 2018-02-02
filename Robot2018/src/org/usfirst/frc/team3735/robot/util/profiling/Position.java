@@ -1,5 +1,7 @@
 package org.usfirst.frc.team3735.robot.util.profiling;
 
+import java.io.Serializable;
+
 import org.usfirst.frc.team3735.robot.util.Filer;
 
 public class Position extends Location {

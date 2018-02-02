@@ -1,11 +1,12 @@
 package org.usfirst.frc.team3735.robot.util.profiling;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import org.usfirst.frc.team3735.robot.util.Filer;
 import org.usfirst.frc.team3735.robot.util.bases.VortxIterative.Side;
 
-public class Location {
+public class Location implements Serializable{
 	public double x,y;
 	private static ArrayList<Location> staticLocations = new ArrayList<Location>();
 	private static boolean onLeftSide = true;

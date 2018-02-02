@@ -26,7 +26,7 @@ public class SendProfile extends Command {
 	private ArrayList<DriveState> arr;
 	boolean needsLoading = false;
 	
-	private static int lookAmount = 3;
+	private static int lookAmount = 8;
 	
 	int index;
 	
@@ -41,6 +41,7 @@ public class SendProfile extends Command {
 	private static Setting angleLookCo = new Setting("Angle Look Co", 0);
 	private static Setting angleErrorCo = new Setting("Angle Error Co", 1);
 	private static Setting distErrorCo = new Setting("Dist Error Co", 0);
+	private static Setting halfWay = new Setting("Half Way Co", 20);
 
 	
     public SendProfile(String file) {
@@ -84,30 +85,32 @@ public class SendProfile extends Command {
     	while(sc.hasNextLine()) {
     		arr.add(DriveState.fromString(sc.nextLine()));
     	}
+    	
+    	//bring to closest point
+		while(Robot.navigation.getPosition().distanceFrom(arr.get(index).pos) > 
+			Robot.navigation.getPosition().distanceFrom(arr.get(limitIndex(index+1)).pos)){
+			index++;
+		}
     }
 
 
     
     protected void execute() {
-    	//update to closest position data point
-    	index++;
-//		while(Robot.navigation.getPosition().distanceFrom(arr.get(index).pos) > 
-//			  Robot.navigation.getPosition().distanceFrom(arr.get(limitIndex(index+1)).pos)){
-//			index++;
-//		}
+
 		curState = arr.get(limitIndex(index));
-//		if(index >= arr.size()) {
-//			index--;
-//		}
+		//draw line between current point and previous point
 		if(index != 0) {
 	    	toFollow = new Ray(curState.pos, arr.get(index - 1).pos);
 		}else {
 			toFollow = new Ray(arr.get(index + 1).pos, curState.pos);
 		}
-		
+		//set controller to the correct angle
 		Robot.navigation.getController().setSetpoint(curState.pos.yaw);
 		
-		if(limitIndex(index+lookAmount) != index+lookAmount) {
+		
+		
+		//if forward and angle look is available, calculate it
+		if(limitIndex(index + lookAmount) == (index + lookAmount)){
 			//compute lookahead error
 			forwardLook = Robot.navigation.getRay().angleTo(new Ray(Robot.navigation.getPosition(), arr.get(limitIndex(index + lookAmount)).pos))/ 180.0;
 			//compute lookahead by indexing the angle of i+lookahead?
@@ -119,16 +122,21 @@ public class SendProfile extends Command {
 		
 		
 		//computer angle error
-		angleError = VortxMath.navLimit(Robot.navigation.getYaw() - arr.get(index).pos.yaw) / 180.0;
+		angleError = VortxMath.navLimit(curState.pos.yaw - Robot.navigation.getYaw()) / 180.0;
 		System.out.println("Angle Error: " + angleError);
 		//compute distance from profile error
 		distError = toFollow.distanceFrom(Robot.navigation.getPosition());
 		
-		double turn = curState.getTurn() + angleError * angleErrorCo.getValue() + forwardLook * lookCo.getValue() + distError * distErrorCo.getValue() + angleLook * angleLookCo.getValue();
-		Robot.drive.normalDrive(curState.getMove(), turn);
-		System.out.println("Move: " + curState.getMove() + " Turn: " + turn);
-
 		
+		
+//		double turn = curState.getTurn() + angleError * angleErrorCo.getValue() + forwardLook * lookCo.getValue() + distError * distErrorCo.getValue() + angleLook * angleLookCo.getValue();
+		
+		double p = VortxMath.squish(distError, halfWay.getValue());
+		double turn = p * forwardLook * lookCo.getValue() + (1-p) * angleError * angleErrorCo.getValue();
+		Robot.drive.normalDrive(curState.getMove(), turn);
+		System.out.println("Move: " + curState.getMove() + "\t Turn: " + turn);
+		
+    	index++;
     }
     
     public int limitIndex(int i) {
@@ -137,7 +145,7 @@ public class SendProfile extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return index >= arr.size() - 4;
+        return index >= arr.size();
     }
 
     // Called once after isFinished returns true
