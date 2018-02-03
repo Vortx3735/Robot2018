@@ -1,5 +1,6 @@
 package org.usfirst.frc.team3735.robot.util.profiling;
 
+import org.usfirst.frc.team3735.robot.util.Filer;
 import org.usfirst.frc.team3735.robot.util.calc.VortxMath;
 
 public class Line {
@@ -78,5 +79,9 @@ public class Line {
 	
 	public double func(double x) {
 		return m * x + b;
+	}
+	
+	public String toString() {
+		return Filer.make("lineM", m, 3) + Filer.make("lineB", b, 3);
 	}
 }

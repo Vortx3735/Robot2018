@@ -15,7 +15,7 @@ public class DriveState {
 	}
 	
 	public String toString() {
-		return Filer.make("Left", left, 5) + Filer.make("Right", right, 5) + pos.toString();
+		return Filer.make("Left", left, 3) + Filer.make("Right", right, 3) + pos.toString();
 	}
 	
 	public static DriveState fromString(String s) {

@@ -37,15 +37,7 @@ public class Location implements Serializable{
 	public double yawTo(Location other) {
 		return Math.toDegrees(Math.atan2(other.x - x, other.y - y));
 	}
-	
-	public static void changeSide(Side side, double fieldLength) {
-		if((side == Side.Left) != onLeftSide) {
-			for(Location loc : staticLocations) {
-				loc.x = fieldLength - loc.x;
-			}
-			onLeftSide = !onLeftSide;
-		}
-	}
+
 	
 	public String toString() {
 		return Filer.make("Xloc", x, 2) + Filer.make("Yloc", y, 2);

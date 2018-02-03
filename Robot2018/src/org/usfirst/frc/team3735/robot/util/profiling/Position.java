@@ -18,7 +18,7 @@ public class Position extends Location {
 	}
 	
 	public String toString() {
-		return Filer.make("Yaw", yaw, 4) + super.toString();
+		return Filer.make("Yaw", yaw, 1) + super.toString();
 	}
 	
 	public static Position fromString(String s) {

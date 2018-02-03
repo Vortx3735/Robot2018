@@ -84,4 +84,8 @@ public class VortxMath {
 	public static double squish(double num, double halfway) {
 		return Math.atan(num/halfway) * 2 / Math.PI;
 	}
+	
+	public static double swapYawAngle(double angle) {
+		return 90.0 - angle;
+	}
 }

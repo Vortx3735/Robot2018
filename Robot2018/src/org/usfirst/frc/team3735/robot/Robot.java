@@ -17,6 +17,7 @@ import org.usfirst.frc.team3735.robot.util.settings.Setting;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -70,7 +71,15 @@ public class Robot extends VortxIterative {
 		SmartDashboard.putData("Reset Position", new ResetPosition());
 
 		SmartDashboard.putData("Zero Yaw", new ZeroYaw());
-		SmartDashboard.putData(new SendProfile("defaultfile"));
+		SendProfile s = new SendProfile("defaultfile");
+		SmartDashboard.putData(s);
+		SmartDashboard.putData("Load File", new InstantCommand() {
+			@Override
+			protected void initialize() {
+				s.loadFile("defaultfile");
+			}
+			
+		});
 		SmartDashboard.putData(new RecordProfile());
 
 
@@ -103,7 +112,6 @@ public class Robot extends VortxIterative {
 	public void autonomousInit() {
 		navigation.resetPosition();
 		retrieveSide();
-		Location.changeSide(side, Dms.Field.LENGTH);
         autonomousCommand = autonomousChooser.getSelected();
         if (autonomousCommand != null) autonomousCommand.start();
 	}

@@ -89,18 +89,17 @@ public class Navigation extends Subsystem implements PIDSource, PIDOutput {
         	curRight = Robot.drive.getRightPosition();
         	
         	double dd = ((curLeft-prevLeft) + (curRight-prevRight)) * .5;
-        	double angle = getYaw();
-        	if(Robot.side.equals(Side.Left)){ //simplified version of getFieldYaw without limits
-        		angle *= -1;
-        	}else{
-        		angle = (angle + 180) * -1;
-        	}
+        	
+        	pos.yaw = getYaw();
+        	double angle = VortxMath.swapYawAngle(pos.yaw);
+
     		pos.x += Math.cos(Math.toRadians(angle)) * dd;
     		pos.y += Math.sin(Math.toRadians(angle)) * dd;
-    		pos.yaw = angle * -1;
+    		
     		
         	prevLeft = curLeft;
         	prevRight = curRight;
+        	
     	}
     	
     	
@@ -129,6 +128,9 @@ public class Navigation extends Subsystem implements PIDSource, PIDOutput {
     }
     public void log(){
     	SmartDashboard.putNumber("Navigation Gyro Yaw", ahrs.getYaw());
+    	SmartDashboard.putNumber("Loc X", pos.x);
+    	SmartDashboard.putNumber("Loc Y", pos.x);
+
 //    	SmartDashboard.putNumber("Gyro Acceleration X", ahrs.getWorldLinearAccelX());
 //    	SmartDashboard.putNumber("Gyro Acceleration Y", ahrs.getWorldLinearAccelY());
 //    	SmartDashboard.putNumber("Gyro Accel XY Vector", getXYAcceleration());
@@ -268,11 +270,9 @@ public class Navigation extends Subsystem implements PIDSource, PIDOutput {
 	}
 	
 	public Position getStartingPosition() {
-		if(Robot.side.equals(Side.Left)){
-			return new Position(Dms.Bot.HALFLENGTH, verticalOffset.getValue(), 0);
-		}else{
-			return new Position(Dms.Field.LENGTH - Dms.Bot.HALFLENGTH, verticalOffset.getValue(), 180);
-		}
+			return new Position(verticalOffset.getValue(), Dms.Bot.HALFLENGTH, 0);
+
+		
 	}
 
 	public void debugLog() {
@@ -284,7 +284,6 @@ public class Navigation extends Subsystem implements PIDSource, PIDOutput {
 		zeroYaw();
 		Robot.retrieveSide();
 		setPosition(getStartingPosition());
-		Location.changeSide(Robot.side, Dms.Field.LENGTH);
 		System.out.println("Reseting Position...");
 	}
 	

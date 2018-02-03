@@ -1,5 +1,6 @@
 package org.usfirst.frc.team3735.robot.util.profiling;
 
+import org.usfirst.frc.team3735.robot.util.Filer;
 import org.usfirst.frc.team3735.robot.util.calc.VortxMath;
 
 public class Ray extends Line{
@@ -7,7 +8,7 @@ public class Ray extends Line{
 
 	public Ray(Location from, Location to) {
 		super(from, to);
-		yaw = Math.toDegrees(Math.atan2(to.x - from.x, to.y - from.y));
+		yaw = Math.toDegrees(Math.atan2(to.x - from.x, to.y - from.y ));
 	}
 	
 	public Ray(Location loc, double yaw) {
@@ -47,8 +48,11 @@ public class Ray extends Line{
 					return -d;
 				}
 			}
-			
 		}
-
+		
+	}
+	
+	public String toString() {
+		return Filer.make("LYaw", yaw, 2) + super.toString();
 	}
 }

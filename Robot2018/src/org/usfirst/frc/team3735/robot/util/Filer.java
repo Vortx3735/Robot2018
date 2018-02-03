@@ -16,7 +16,7 @@ public class Filer {
 	public static double getDouble(String name, String s) {
 		String st = getValue(name, s);
 		double d = Double.parseDouble(st);
-		System.out.println("Parsing " + st + " as "  + d);
+		//System.out.println("Parsing " + st + " as "  + d);
 		return d;
 	}
 	
