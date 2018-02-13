@@ -39,8 +39,7 @@ public class SinusoidalProfile extends VortxCommand {
         
     }
     
-    public double getV() {
-    	double t = this.timeSinceInitialized();
+    public double getV() {    	double t = this.timeSinceInitialized();
     	return (vd/2) * (-Math.cos(t * scale) + 1) + initialV;
     }
     

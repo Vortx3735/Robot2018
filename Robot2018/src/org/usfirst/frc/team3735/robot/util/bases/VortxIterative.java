@@ -60,7 +60,7 @@ public class VortxIterative extends RobotBase {
   }
   
 	public static enum Side{
-		Left,Right
+		RED,BLUE
 	}
 
   /**

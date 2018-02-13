@@ -9,6 +9,13 @@ import org.usfirst.frc.team3735.robot.util.profiling.Location;
 import org.usfirst.frc.team3735.robot.util.profiling.Position;
 import org.usfirst.frc.team3735.robot.util.settings.Setting;
 
+/**
+ * 
+ * @author Andrew
+ * 
+ * This class 
+ *
+ */
 public class HitWaypoint extends VortxCommand{
 	
 	public Location target;
@@ -20,6 +27,8 @@ public class HitWaypoint extends VortxCommand{
 	private double maxSpeed = .5;
 	private double minSpeed = .2;
 	
+	private static Setting maxTurn = new Setting("Max Turn Profiling", 40);
+
 	public HitWaypoint(Location target, boolean rev) {
 		this(target, null, rev);
 		
@@ -40,7 +49,6 @@ public class HitWaypoint extends VortxCommand{
 
 	}
 	
-	private static Setting maxTurn = new Setting("Max Turn Profiling", 40);
 
 	@Override
 	protected void execute() {
@@ -49,6 +57,8 @@ public class HitWaypoint extends VortxCommand{
 		setControllerAngle();
 		
 		double err = Robot.navigation.getController().getError();
+		
+		//lower the speed for greater turn values
 		speed =((maxSpeed-minSpeed)*Math.exp(-Math.abs(.05*err))) + minSpeed;
 		if(isReversed) {
 			speed *= -1;
@@ -61,11 +71,11 @@ public class HitWaypoint extends VortxCommand{
 	
 	public void setControllerAngle() {
 		Position p = Robot.navigation.getPosition();
-		double targetAngle = Math.toDegrees(-Math.atan2(target.y - p.y, target.x - p.x));
+		double targetYaw = Robot.navigation.getYawToLocation(target);
 		if(isReversed) {
-			targetAngle = VortxMath.navLimit(targetAngle + 180);
+			targetYaw = VortxMath.navLimit(targetYaw + 180);
 		}
-		Robot.navigation.getController().setSetpoint(targetAngle);
+		Robot.navigation.getController().setSetpoint(targetYaw);
 	}
 
 	@Override

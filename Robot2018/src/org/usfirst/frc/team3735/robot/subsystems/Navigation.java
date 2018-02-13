@@ -35,13 +35,20 @@ public class Navigation extends Subsystem implements PIDSource, PIDOutput {
 	private PIDCtrl controller;
 	//PID Controller stuff
 	private static Setting outputExponent = new Setting("Nav Output Exponent", 1);
-    public static Setting iZone = new Setting("Turning IZone", 10);
-    public static Setting actingI = new Setting("Acting I Value", 0.004);
+    public static Setting iZone = 			new Setting("Turning IZone", 10) {
+    	@Override
+    	public void valueChanged(double c) {
+    		if(Robot.navigation.controller != null) {
+    			Robot.navigation.controller.setIZone(c);
+    		}
+    	}
+    };
+    public static Setting actingI = 		new Setting("Acting I Value", 0.004);
     
-    public static Setting verticalOffset = new Setting("Vertical Offset", 0);
+    public static Setting hInitialOffset =	new Setting("Horizontal Offset", 0);
     
-	public static Setting navCo = new Setting("Navx Assist Coeffecient", 5);
-	public static Setting navVisCo = new Setting("Navx Vision Assist Coeffecient", 5);
+	public static Setting navCo = 			new Setting("Navx Assist Coeffecient", 5);
+	public static Setting navVisCo = 		new Setting("Navx Vision Assist Coeffecient", 5);
 
 	
 	Position pos = new Position(0,0,0);
@@ -129,7 +136,7 @@ public class Navigation extends Subsystem implements PIDSource, PIDOutput {
     public void log(){
     	SmartDashboard.putNumber("Navigation Gyro Yaw", ahrs.getYaw());
     	SmartDashboard.putNumber("Loc X", pos.x);
-    	SmartDashboard.putNumber("Loc Y", pos.x);
+    	SmartDashboard.putNumber("Loc Y", pos.y);
 
 //    	SmartDashboard.putNumber("Gyro Acceleration X", ahrs.getWorldLinearAccelX());
 //    	SmartDashboard.putNumber("Gyro Acceleration Y", ahrs.getWorldLinearAccelY());
@@ -270,9 +277,7 @@ public class Navigation extends Subsystem implements PIDSource, PIDOutput {
 	}
 	
 	public Position getStartingPosition() {
-			return new Position(verticalOffset.getValue(), Dms.Bot.HALFLENGTH, 0);
-
-		
+			return new Position(hInitialOffset.getValue(), Dms.Bot.HALFLENGTH, 0);
 	}
 
 	public void debugLog() {
@@ -282,7 +287,6 @@ public class Navigation extends Subsystem implements PIDSource, PIDOutput {
 
 	public void resetPosition() {
 		zeroYaw();
-		Robot.retrieveSide();
 		setPosition(getStartingPosition());
 		System.out.println("Reseting Position...");
 	}
@@ -334,24 +338,13 @@ public class Navigation extends Subsystem implements PIDSource, PIDOutput {
 	}
 	
 	public double getAngleToLocation(Location loc) {
-		return Math.toDegrees(-Math.atan2(loc.y - pos.y, loc.x - pos.x));
+		return Math.toDegrees(Math.atan2(loc.y - pos.y, loc.x - pos.x));
 	}
 	
-	/**
-	 * 
-	 * @param loc	the Location to reference
-	 * @return		the Angle to the location, meant for using with the TurnTo Command, 
-	 * 				where the angle from getYaw is used for turning
-	 */
-	public double getAngleToLocationCorrected(Location loc) {
-		double ans = Math.toDegrees(-Math.atan2(loc.y - pos.y, loc.x - pos.x));
-		if(Robot.side.equals(Side.Right)){
-			return VortxMath.continuousLimit(ans + 180, -180, 180);
-		}else {
-			return ans;
-		}
-		
+	public double getYawToLocation(Location loc) {
+		return VortxMath.swapYawAngle(getAngleToLocation(loc));
 	}
+	
     
 }
 

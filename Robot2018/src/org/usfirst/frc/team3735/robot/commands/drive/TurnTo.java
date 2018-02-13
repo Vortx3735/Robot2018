@@ -27,49 +27,21 @@ public class TurnTo extends Command{
 
 	Func getAngle;
 
-	public TurnTo(double angle) {
+	public TurnTo(double yaw) {
     	this(new Func(){
 			@Override
 			public double getValue() {
-				return angle;
+				return yaw;
 			}
     	});
     }
 	
-	/**
-	 * 
-	 * @param angle	
-	 * @param flag	true if a relative angle, false if relative to actual field position (Side independent)
-	 */
-	public TurnTo(double angle, boolean flag) {
-		requires(Robot.drive);
-    	requires(Robot.navigation);
-    	
-    	if(flag) {
-    		getAngle = new Func() {
-	    		@Override
-				public double getValue() {
-					return VortxMath.navLimit(Robot.navigation.getYaw() + angle);
-				}
-	    	};
-    	}else {
-    		getAngle = new Func() {
-	    		@Override
-				public double getValue() {
-					return Robot.side.equals(Side.Right) ? VortxMath.navLimit(angle + 180) : angle;
-				}
-	    	};
-    	}
-		
-    }
 	
 	public TurnTo(Targets p) {
     	this(new Func(){
 			@Override
 			public double getValue() {
-				return VortxMath.continuousLimit(
-	    				Robot.navigation.getYaw() + (Robot.vision.getRelativeCX(p) * Robot.vision.dpp.getValue()),
-	    				-180, 180);
+				return VortxMath.navLimit(Robot.navigation.getYaw() + (Robot.vision.getRelativeCX(p) * Robot.vision.dpp.getValue()) );
 			}
     	});
     	requires(Robot.vision);
@@ -79,7 +51,7 @@ public class TurnTo extends Command{
 		this(new Func(){
 			@Override
 			public double getValue() {
-				return Robot.navigation.getAngleToLocationCorrected(loc);
+				return Robot.navigation.getAngleToLocation(loc);
 			}
     	});
     	

@@ -30,7 +30,7 @@ public class RecordAverageSpeed extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	roll.compute();
-    	SmartDashboard.putNumber("Average Speed", roll.getAverage());
+    	SmartDashboard.putNumber("Rolling Average Speed", roll.getAverage());
 
     }
 

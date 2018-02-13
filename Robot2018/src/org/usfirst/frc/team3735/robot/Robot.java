@@ -2,8 +2,8 @@ package org.usfirst.frc.team3735.robot;
 
 import org.usfirst.frc.team3735.robot.commands.drive.positions.ResetPosition;
 import org.usfirst.frc.team3735.robot.commands.drive.positions.ZeroYaw;
-import org.usfirst.frc.team3735.robot.commands.recorder.RecordProfile;
-import org.usfirst.frc.team3735.robot.commands.recorder.SendProfile;
+import org.usfirst.frc.team3735.robot.commands.drive.recorder.RecordProfile;
+import org.usfirst.frc.team3735.robot.commands.drive.recorder.SendProfile;
 import org.usfirst.frc.team3735.robot.ois.GTAOI;
 import org.usfirst.frc.team3735.robot.settings.Dms;
 import org.usfirst.frc.team3735.robot.subsystems.Drive;
@@ -46,7 +46,7 @@ public class Robot extends VortxIterative {
 
 
 	public static SendableChooser<Side> sideChooser;
-	public static Side side = Side.Left;
+	public static Side side = Side.RED;
 	
 	
 	
@@ -64,8 +64,8 @@ public class Robot extends VortxIterative {
 		SmartDashboard.putData("AUTONOMOUS SELECTION", autonomousChooser);
 		
 		sideChooser = new SendableChooser<Side>();
-			sideChooser.addDefault("Red", Side.Left);
-			sideChooser.addObject("Blue", Side.Right);
+			sideChooser.addDefault("Red", Side.RED);
+			sideChooser.addObject("Blue", Side.BLUE);
 		SmartDashboard.putData("Side Selection", sideChooser);	
 		
 		SmartDashboard.putData("Reset Position", new ResetPosition());
@@ -83,7 +83,7 @@ public class Robot extends VortxIterative {
 		SmartDashboard.putData(new RecordProfile());
 
 
-		side = Side.Left;
+		side = Side.RED;
 		
 		prevTime = Timer.getFPGATimestamp();
 	}
@@ -111,7 +111,6 @@ public class Robot extends VortxIterative {
 	@Override
 	public void autonomousInit() {
 		navigation.resetPosition();
-		retrieveSide();
         autonomousCommand = autonomousChooser.getSelected();
         if (autonomousCommand != null) autonomousCommand.start();
 	}
@@ -179,18 +178,6 @@ public class Robot extends VortxIterative {
 		vision.debugLog();
 	}
 	
-	
-	
-
-	
-	
-	public static void retrieveSide(){
-		if(sideChooser.getSelected() != null){
-			side = sideChooser.getSelected();
-		}else{
-			System.out.println("Error : sideChooser was found null when retrieving side.");
-		};
-	}
 
 
 }
