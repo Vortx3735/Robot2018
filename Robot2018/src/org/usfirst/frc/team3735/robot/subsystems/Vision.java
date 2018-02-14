@@ -15,9 +15,9 @@ public class Vision extends Subsystem {
 
 	private static final int IMG_WIDTH = 320;
 	private static final int IMG_HEIGHT = 240;
+	
 	public static Setting dpp = new Setting("Vision Degrees per Pixel", 0.13125);
 	
-	public static final double nullValue = -.0012345;
 	
 	private UsbCamera camera1;
 	private UsbCamera camera2;
@@ -52,17 +52,17 @@ public class Vision extends Subsystem {
 		
     }
 
-    public double getRelativeCX(Targets tar){
+    public Double getRelativeCX(Targets tar){
 //    	if(mainHandler.target.equals(VisionHandler.nullTarget)){
 //    		return nullValue;
 //    	}else{
 //        	return mainHandler.getCenterX() - IMG_WIDTH/2;
 //    	}
-    	return 0;
+    	return 0.0;
     }
-    public double getWidth(Targets tar){
+    public Double getWidth(Targets tar){
 //    	return mainHandler.getWidth();
-    	return 0;
+    	return 0.0;
     }
 
 

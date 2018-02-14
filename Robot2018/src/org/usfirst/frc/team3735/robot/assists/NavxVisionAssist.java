@@ -26,8 +26,8 @@ public class NavxVisionAssist extends ComAssist{
 
 	@Override
 	public void execute() {
-		double input = Robot.vision.getRelativeCX(pipe);
-    	if(input != Vision.nullValue){
+		Double input = Robot.vision.getRelativeCX(pipe);
+    	if(input != null){
     		if(input != prevWorking){
 		    	Robot.navigation.getController().setSetpoint(
 		    			VortxMath.continuousLimit(

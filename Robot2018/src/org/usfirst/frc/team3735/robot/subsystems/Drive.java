@@ -322,8 +322,8 @@ public class Drive extends Subsystem {
     public void setRightTurn(double turn){
     	rightAddTurn = turn;
     }
-	public void setVisionAssist(double j) {
-		visionAssist = j;
+	public void setVisionAssist(double error) {
+		visionAssist = (error * Vision.dpp.getValue()/180.0) * Navigation.navVisCo.getValue();
 	}	
 	public void setNavxAssist(double error) {
 		this.navxAssist = (error/180.0) * Navigation.navCo.getValue();

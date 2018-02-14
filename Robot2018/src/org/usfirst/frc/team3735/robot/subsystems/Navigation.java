@@ -3,7 +3,6 @@ package org.usfirst.frc.team3735.robot.subsystems;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
@@ -18,9 +17,7 @@ import org.usfirst.frc.team3735.robot.Robot;
 import org.usfirst.frc.team3735.robot.settings.Dms;
 import org.usfirst.frc.team3735.robot.settings.Waypoints;
 import org.usfirst.frc.team3735.robot.util.PIDCtrl;
-import org.usfirst.frc.team3735.robot.util.bases.VortxIterative.Side;
 import org.usfirst.frc.team3735.robot.util.calc.VortxMath;
-import org.usfirst.frc.team3735.robot.util.profiling.Line;
 import org.usfirst.frc.team3735.robot.util.profiling.Location;
 import org.usfirst.frc.team3735.robot.util.profiling.Position;
 import org.usfirst.frc.team3735.robot.util.profiling.Ray;
@@ -63,6 +60,7 @@ public class Navigation extends Subsystem implements PIDSource, PIDOutput {
 	
 	public Navigation(){
 		table = NetworkTableInstance.getDefault().getTable("MAP");
+		
 		ahrs = new AHRS(SPI.Port.kMXP);
 		controller = new PIDCtrl(.016,0.0,0.061,this,this);
     	controller.setOutputRange(-.5, .5);
@@ -72,10 +70,12 @@ public class Navigation extends Subsystem implements PIDSource, PIDOutput {
     	controller.setIZone(10);
     	controller.setAbsoluteTolerance(1);
     	
-    	SmartDashboard.putData("Navigation Turning Controller", controller);
+    	SmartDashboard.putData("Turning Controller", controller);
     	
 		curLeft = Robot.drive.getLeftPosition();
     	curRight = Robot.drive.getRightPosition();
+    	prevLeft = curLeft;
+    	prevRight = curRight;
 	}
 
 	public synchronized void setPosition(Position p){

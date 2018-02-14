@@ -22,8 +22,8 @@ public class VisionAssist extends ComAssist{
 
 	@Override
 	public void execute() {
-		double in = Robot.vision.getRelativeCX(pipe);
-    	if(in == Vision.nullValue){
+		Double in = Robot.vision.getRelativeCX(pipe);
+    	if(in == null){
     		Robot.drive.setVisionAssist(0);
     	}else{
     		prevWorking = in;

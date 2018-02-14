@@ -9,6 +9,8 @@ import org.usfirst.frc.team3735.robot.settings.Dms;
 import org.usfirst.frc.team3735.robot.subsystems.Drive;
 import org.usfirst.frc.team3735.robot.subsystems.Navigation;
 import org.usfirst.frc.team3735.robot.subsystems.Vision;
+import org.usfirst.frc.team3735.robot.util.Side;
+import org.usfirst.frc.team3735.robot.util.SideChooser;
 import org.usfirst.frc.team3735.robot.util.bases.VortxIterative;
 import org.usfirst.frc.team3735.robot.util.oi.DriveOI;
 import org.usfirst.frc.team3735.robot.util.profiling.Location;
@@ -41,12 +43,7 @@ public class Robot extends VortxIterative {
 	
 	public static DriveOI oi;
 	
-	private double dt;
-	private double prevTime = 0;
-
-
-	public static SendableChooser<Side> sideChooser;
-	public static Side side = Side.RED;
+	public static SideChooser sideChooser;
 	
 	
 	
@@ -58,21 +55,20 @@ public class Robot extends VortxIterative {
 		
 		oi = new GTAOI(); //MUST be instantiated after the subsystems
 			
+		
+		
 		autonomousChooser = new SendableChooser<Command>();
 
 
-		SmartDashboard.putData("AUTONOMOUS SELECTION", autonomousChooser);
+		SmartDashboard.putData("Autonomous", autonomousChooser);
+		SmartDashboard.putData("Side", sideChooser);	
 		
-		sideChooser = new SendableChooser<Side>();
-			sideChooser.addDefault("Red", Side.RED);
-			sideChooser.addObject("Blue", Side.BLUE);
-		SmartDashboard.putData("Side Selection", sideChooser);	
 		
 		SmartDashboard.putData("Reset Position", new ResetPosition());
-
-		SmartDashboard.putData("Zero Yaw", new ZeroYaw());
+		SmartDashboard.putData("Reset Yaw", new ZeroYaw());
+		
+		
 		SendProfile s = new SendProfile("defaultfile");
-		SmartDashboard.putData(s);
 		SmartDashboard.putData("Load File", new InstantCommand() {
 			@Override
 			protected void initialize() {
@@ -83,9 +79,7 @@ public class Robot extends VortxIterative {
 		SmartDashboard.putData(new RecordProfile());
 
 
-		side = Side.RED;
 		
-		prevTime = Timer.getFPGATimestamp();
 	}
 	@Override
 	public void robotPeriodic() {		
@@ -100,9 +94,6 @@ public class Robot extends VortxIterative {
 	}
 	@Override
 	public void robotContinuous() {
-//		dt = Timer.getFPGATimestamp() - prevTime;
-//		prevTime += dt;
-//		SmartDashboard.putNumber("dt", dt);
 		navigation.integrate();
 	}
 	

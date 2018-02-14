@@ -59,9 +59,7 @@ public class VortxIterative extends RobotBase {
     m_testInitialized = false;
   }
   
-	public static enum Side{
-		RED,BLUE
-	}
+
 
   /**
    * Provide an alternate "main loop" via startCompetition().
