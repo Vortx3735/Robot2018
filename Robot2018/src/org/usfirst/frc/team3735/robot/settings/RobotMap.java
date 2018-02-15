@@ -55,29 +55,5 @@ public class RobotMap {
 		public static int rightMotor2 = 	10;//11
 		public static int rightMotor3 = 	12;//12
 	}
-	public static class GearIntake{
-		public static int topRoller = 		8;
-		public static final boolean topRollerInverted = true;
-		public static int liftSolenoid = 			1;
-	}
-//	public static class Shooter{
-//		public static int drum = 			2;
-//		public static int drum2 = 			7;
-//		public static final boolean drumInverted = false;
-//		public static int agitator =   		13;
-//		public static final boolean agitatorInverted = false;
-//	}
-//	public static class BallIntake{
-//		public static int roller = 			1;
-//		public static final boolean rollerInverted = true;
-//	}
-	public static class Scaler{
-		public static int motor = 			3;
-		public static final int motor2 = 	9;
-		public static final boolean scalerInverted = true;
-
-	}
-	
-	//1 2 5 7
 		
 }

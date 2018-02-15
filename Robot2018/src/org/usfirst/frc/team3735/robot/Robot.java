@@ -1,5 +1,9 @@
 package org.usfirst.frc.team3735.robot;
 
+import org.usfirst.frc.team3735.robot.assists.NavxAssist;
+import org.usfirst.frc.team3735.robot.commands.auto.DoNothing;
+import org.usfirst.frc.team3735.robot.commands.auto.RightScaleRight;
+import org.usfirst.frc.team3735.robot.commands.drive.MoveDDx;
 import org.usfirst.frc.team3735.robot.commands.drive.positions.ResetPosition;
 import org.usfirst.frc.team3735.robot.commands.drive.positions.ZeroYaw;
 import org.usfirst.frc.team3735.robot.commands.drive.recorder.RecordProfile;
@@ -34,7 +38,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends VortxIterative {
 
-	SendableChooser<Command> autonomousChooser;
+	SendableChooser<Command> autoChooser;
 	Command autonomousCommand;
 	
 	public static Drive drive;
@@ -57,18 +61,22 @@ public class Robot extends VortxIterative {
 			
 		
 		
-		autonomousChooser = new SendableChooser<Command>();
+		autoChooser = new SendableChooser<Command>();
+			autoChooser.addDefault("Do Nothing", new DoNothing()); 
+			autoChooser.addObject("Right Scale Right", new RightScaleRight());
+			
+			
+		sideChooser = new SideChooser();
 
-
-		SmartDashboard.putData("Autonomous", autonomousChooser);
+		SmartDashboard.putData("Autonomous", autoChooser);
 		SmartDashboard.putData("Side", sideChooser);	
 		
 		
 		SmartDashboard.putData("Reset Position", new ResetPosition());
 		SmartDashboard.putData("Reset Yaw", new ZeroYaw());
+		SmartDashboard.putData(new MoveDDx(100, .8, .03).addA(new NavxAssist()));
 		
-		
-		SendProfile s = new SendProfile("defaultfile");
+		SendProfile s = new SendProfile();
 		SmartDashboard.putData("Load File", new InstantCommand() {
 			@Override
 			protected void initialize() {
@@ -77,7 +85,6 @@ public class Robot extends VortxIterative {
 			
 		});
 		SmartDashboard.putData(new RecordProfile());
-
 
 		
 	}
@@ -102,7 +109,7 @@ public class Robot extends VortxIterative {
 	@Override
 	public void autonomousInit() {
 		navigation.resetPosition();
-        autonomousCommand = autonomousChooser.getSelected();
+        autonomousCommand = autoChooser.getSelected();
         if (autonomousCommand != null) autonomousCommand.start();
 	}
 	@Override
@@ -153,19 +160,13 @@ public class Robot extends VortxIterative {
 	
 	public void log(){
 		drive.log();
-		//shooter.log();
-		//ballIntake.log();
 		navigation.log();
-		//ultra.log();
 		vision.log();
 	}
 	
 	public void debugLog(){
 		drive.debugLog();
-		//shooter.debugLog();
-		//ballIntake.debugLog();
 		navigation.debugLog();
-		//ultra.debugLog();
 		vision.debugLog();
 	}
 	

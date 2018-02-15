@@ -26,7 +26,7 @@ public class SendProfile extends Command {
 	private ArrayList<DriveState> array;
 	boolean needsLoading = false;
 	
-	private static int lookAmount = 10;
+	private static int lookAmount = 25; //.5 seconds
 	
 	int index;
 	
@@ -38,9 +38,9 @@ public class SendProfile extends Command {
     Ray toFollow;
 	
 	private static Setting forwardLookCo = new Setting("Forward Look Co", .8);
-	private static Setting angleLookCo = new Setting("Angle Look Co", 0);
+//	private static Setting angleLookCo = new Setting("Angle Look Co", 0);
 	private static Setting angleErrorCo = new Setting("Angle Error Co", 3);
-	private static Setting distErrorCo = new Setting("Dist Error Co", 0);
+//	private static Setting distErrorCo = new Setting("Dist Error Co", 0);
 	private static Setting halfWay = new Setting("Half Way Co", 20);
 
 	
@@ -126,18 +126,22 @@ public class SendProfile extends Command {
 			//compute lookahead error
 			Ray r = new Ray(Robot.navigation.getPosition(), arr.get(limitIndex(arr, index + lookAmount)).pos);
 			forwardLook = Robot.navigation.getRay().angleTo(r)/ 180.0;
-			System.out.println("Robot Angle: " + Robot.navigation.getRay().yaw + "Target Ray Angle: " + r.yaw);
+			//System.out.println("Robot Angle: " + Robot.navigation.getRay().yaw + "Target Ray Angle: " + r.yaw);
 			//compute lookahead by indexing the angle of i+lookahead?
 			//angleLook = Robot.navigation.getRay().angleTo(arr.get(index + lookAmount).pos) / 180.0;
+			if(Robot.navigation.getPosition().distanceFrom(arr.get(limitIndex(arr, index + lookAmount)).pos) < 10) {
+				forwardLook = 0;
+			}
+				
 		}else {
 			forwardLook = 0;
 			angleLook = 0;
 		}
-		
-		
+		System.out.println("Forward Look: " + forwardLook);
+
 		//computer angle error
 		angleError = VortxMath.navLimit(Robot.navigation.getController().getError()) / 180.0;
-		System.out.println("Angle Error: " + angleError);
+		//System.out.println("Angle Error: " + angleError);
 		//compute distance from profile error
 		distError = toFollow.distanceFrom(Robot.navigation.getPosition());
 		
@@ -146,7 +150,7 @@ public class SendProfile extends Command {
 //		double turn = curState.getTurn() + angleError * angleErrorCo.getValue() + forwardLook * lookCo.getValue() + distError * distErrorCo.getValue() + angleLook * angleLookCo.getValue();
 		
 		double p = Math.abs(VortxMath.squish(distError, halfWay.getValue()));
-		System.out.println("P: " + p);
+		//System.out.println("P: " + p);
 
 		double turn =  p * forwardLook * forwardLookCo.getValue() +  (1-p) * angleError * angleErrorCo.getValue();
 //		if(Double.isNaN(turn)) {

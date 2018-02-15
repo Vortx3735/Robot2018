@@ -249,6 +249,18 @@ public class Drive extends Subsystem {
 	}
 	
 	/**
+	 * 
+	 * @param ips	the desired speed, in inches per second
+	 * @param dps	the desired turn rate, in degrees per second
+	 */
+	public void velocityDrive(double ips, double dps) {
+    	double left = ips + (Math.toRadians(dps) * Dms.Bot.DriveBase.HALFWIDTH);
+    	double right = ips - (Math.toRadians(dps) * Dms.Bot.DriveBase.HALFWIDTH);
+    
+		Robot.drive.setLeftRightPlus(Drive.speedToPercent(left), Drive.speedToPercent(right));
+	}
+	
+	/**
 	 * Limits the left and right speeds so that rotation is consistent
 	 * across all move values. Modifies speed for consistent rotation.
 	 * @param move
@@ -399,10 +411,15 @@ public class Drive extends Subsystem {
 		
 	}
 	
-	public double getLeft() {
+	public void setLeftRightPlus(double left, double right) {
+		l1.set(left + getTurnAdditions());
+		r1.set(right - getTurnAdditions());
+	}
+	
+	public double getLeftPercent() {
 		return l1.getMotorOutputPercent();
 	}
-	public double getRight() {
+	public double getRightPercent() {
 		return r1.getMotorOutputPercent();
 	}
 	
@@ -410,11 +427,11 @@ public class Drive extends Subsystem {
 	/**
      * 
      * @param spd	the target speed in inches per second
-     * @return	the percent, which converts spd into normal getspeed units (rpm), and then
+     * @return	the percent, which converts spd into normal getspeed units, and then
      * 			compensates for the deadzone using gathered data
      */
     public static double speedToPercent(double spd){
-    	double speed = (Math.abs(spd) *60.0) /Constants.Drive.InchesPerTick;
+    	double speed = Math.abs(spd) * (0.1) / Constants.Drive.InchesPerTick;
     	return Math.copySign(slope*speed + minPct, spd);
     }
     public static double percentToSpeed(double pct){
@@ -447,9 +464,13 @@ public class Drive extends Subsystem {
     	return speedToPercent(getAverageSpeed());
     }
     
-    public double getSpeedInchesFromCurrent() {
-    	double pct = .5 * (l1.getOutputCurrent() + r1.getOutputCurrent());
-    	return Math.abs(pct) > minPct ? (pct-Math.signum(pct)*minPct)/slope : 0;
+    /**
+     * 
+     * @return the speed from the current on motors -- needs to be tested and made
+     * This is for a backup if encoders fail
+     */
+    public double getSpeedFromCurrent() {
+    	return 0;
     }
 
 	/******************************************

@@ -39,7 +39,7 @@ public class HasMoved extends ComTrigger{
 		if(lsd == null && rsd == null) {
 			isIntegrating = true;
 			integrator = new Integrator(0);
-			integrator.init(Robot.drive.getSpeedInchesFromCurrent());
+			integrator.init(Robot.drive.getSpeedFromCurrent());
 		}
 
 	}
@@ -47,7 +47,7 @@ public class HasMoved extends ComTrigger{
 	@Override
 	public void execute() {
 		if(isIntegrating) {
-			integrator.feed(Robot.drive.getSpeedInchesFromCurrent());
+			integrator.feed(Robot.drive.getSpeedFromCurrent());
 		}
 	}
 	

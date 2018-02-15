@@ -40,7 +40,7 @@ public class RecordProfile extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-		formatter.format("%s", new DriveState(Robot.navigation.getPosition(), Robot.drive.getLeft(), Robot.drive.getRight()).toString());
+		formatter.format("%s", new DriveState(Robot.navigation.getPosition(), Robot.drive.getLeftPercent(), Robot.drive.getRightPercent()).toString());
 		formatter.format("%s", System.getProperty("line.separator"));
     }
 

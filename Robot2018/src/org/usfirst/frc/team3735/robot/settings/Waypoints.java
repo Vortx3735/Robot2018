@@ -9,13 +9,23 @@ public class Waypoints {
 	public static final Location bottomRight = new Location(Dms.Field.LENGTH, -Dms.Field.HALFWIDTH);
 	public static final Location bottomLeft = new Location(0, -Dms.Field.HALFWIDTH);
 
+	public static String leftScaleLeft = "leftScaleLeft";
+	public static String leftScaleRight = "leftScaleRight";
+	public static String leftSwitchLeft = "leftSwitchLeft";
+
 	
-	public static String rightScaleRight = "RightScaleRight";
-	public static String rightScaleLeft = "RightScaleRight";
-	public static String middleSwitchRight = "RightScaleRight";
-	public static String middleSwitchLeft = "RightScaleRight";
-	public static String leftScaleRight = "RightScaleRight";
-	public static String rScaleRight = "RightScaleRight";
+	public static String middleSwitchRight = "middleSwitchRight";
+	public static String middleSwitchLeft = "middleSwitchLeft";
+	public static String middleScaleLeft = "middleScaleLeft";
+	public static String middleScaleRight = "middleScaleRight";
+
+	
+	
+	public static String rightScaleLeft = "rightScaleLeft";
+	public static String rightScaleRight = "rightScaleRight";
+	public static String rightSwitchRight = "rightSwitchRight";
+	public static String rightScaleRight2 = "rightScaleRight2";
+
 
 	//public static String rightScaleRight = "RightScaleRight";
 
