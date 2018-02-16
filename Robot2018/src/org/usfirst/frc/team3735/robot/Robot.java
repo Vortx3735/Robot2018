@@ -1,7 +1,6 @@
 package org.usfirst.frc.team3735.robot;
 
 import org.usfirst.frc.team3735.robot.assists.NavxAssist;
-import org.usfirst.frc.team3735.robot.commands.auto.DoNothing;
 import org.usfirst.frc.team3735.robot.commands.auto.RightScaleRight;
 import org.usfirst.frc.team3735.robot.commands.drive.MoveDDx;
 import org.usfirst.frc.team3735.robot.commands.drive.positions.ResetPosition;
@@ -13,6 +12,8 @@ import org.usfirst.frc.team3735.robot.settings.Dms;
 import org.usfirst.frc.team3735.robot.subsystems.Drive;
 import org.usfirst.frc.team3735.robot.subsystems.Navigation;
 import org.usfirst.frc.team3735.robot.subsystems.Vision;
+import org.usfirst.frc.team3735.robot.util.AutoChooser;
+import org.usfirst.frc.team3735.robot.util.DoNothing;
 import org.usfirst.frc.team3735.robot.util.Side;
 import org.usfirst.frc.team3735.robot.util.SideChooser;
 import org.usfirst.frc.team3735.robot.util.bases.VortxIterative;
@@ -38,8 +39,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends VortxIterative {
 
-	SendableChooser<Command> autoChooser;
-	Command autonomousCommand;
 	
 	public static Drive drive;
 	public static Navigation navigation;
@@ -47,8 +46,10 @@ public class Robot extends VortxIterative {
 	
 	public static DriveOI oi;
 	
-	public static SideChooser sideChooser;
 	
+	public static SideChooser sideChooser;
+	public static AutoChooser autoChooser;
+
 	
 	
 	@Override
@@ -61,8 +62,7 @@ public class Robot extends VortxIterative {
 			
 		
 		
-		autoChooser = new SendableChooser<Command>();
-			autoChooser.addDefault("Do Nothing", new DoNothing()); 
+		autoChooser = new AutoChooser();
 			autoChooser.addObject("Right Scale Right", new RightScaleRight());
 			
 			
@@ -74,7 +74,7 @@ public class Robot extends VortxIterative {
 		
 		SmartDashboard.putData("Reset Position", new ResetPosition());
 		SmartDashboard.putData("Reset Yaw", new ZeroYaw());
-		SmartDashboard.putData(new MoveDDx(100, .8, .03).addA(new NavxAssist()));
+		SmartDashboard.putData(new MoveDDx(100, .6, .03).addA(new NavxAssist()));
 		
 		SendProfile s = new SendProfile();
 		SmartDashboard.putData("Load File", new InstantCommand() {
@@ -94,9 +94,9 @@ public class Robot extends VortxIterative {
 		BooleanSetting.fetchAround();
 		
         vision.debugLog();
-        //navigation.integrate();
         navigation.displayPosition();
         drive.debugLog();
+        
         log();       
 	}
 	@Override
@@ -109,8 +109,7 @@ public class Robot extends VortxIterative {
 	@Override
 	public void autonomousInit() {
 		navigation.resetPosition();
-        autonomousCommand = autoChooser.getSelected();
-        if (autonomousCommand != null) autonomousCommand.start();
+        autoChooser.startSelected();
 	}
 	@Override
 	public void autonomousPeriodic() {
@@ -125,7 +124,7 @@ public class Robot extends VortxIterative {
 
 	@Override
     public void teleopInit() {
-        if (autonomousCommand != null) autonomousCommand.cancel();
+        autoChooser.cancel();
     }
 	@Override
 	public void teleopPeriodic() {
@@ -143,8 +142,7 @@ public class Robot extends VortxIterative {
 	}
 	@Override
 	public void disabledInit() {
-		if (autonomousCommand != null)
-			autonomousCommand.cancel();
+		autoChooser.cancel();
 	}
 	@Override
 	public void disabledPeriodic() {

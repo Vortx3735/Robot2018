@@ -149,7 +149,7 @@ public class Navigation extends Subsystem implements PIDSource, PIDOutput {
     public void displayPosition(){
     	table.getEntry("CenterX").setDoubleArray(new double[]{pos.x});
     	table.getEntry("CenterY").setDoubleArray(new double[]{pos.y});
-    	table.getEntry("angle").setDoubleArray(new double[]{pos.yaw});
+    	table.getEntry("Yaw").setDoubleArray(new double[]{pos.yaw});
 
     }
     

@@ -16,6 +16,7 @@ public class SideChooser extends SendableChooser<Side> {
 	public Side getSelected() {
 		Side s = super.getSelected();
 		if(s == null) {
+			System.out.println("Null Side detected... returning Red");
 			return Side.RED;
 		}else {
 			return s;
