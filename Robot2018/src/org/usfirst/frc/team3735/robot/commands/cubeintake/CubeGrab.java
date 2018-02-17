@@ -1,4 +1,4 @@
-package org.usfirst.frc.team3735.robot.commands.climber;
+package org.usfirst.frc.team3735.robot.commands.cubeintake;
 
 import org.usfirst.frc.team3735.robot.Robot;
 
@@ -7,12 +7,12 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class ArmOut extends Command {
+public class CubeGrab extends Command {
 
-    public ArmOut() {
+    public CubeGrab() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.climber);
+    	
     }
 
     // Called just before this Command runs the first time
@@ -21,7 +21,8 @@ public class ArmOut extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.climber.solenoidOut();
+    	Robot.cubeIntake.grab();
+
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -31,10 +32,12 @@ public class ArmOut extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+    	Robot.cubeIntake.release();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    	end();
     }
 }

@@ -18,19 +18,17 @@ public class Carriage extends Subsystem {
 	WPI_TalonSRX carriageRight;
 	
 	Solenoid solenoid;
-	private boolean solenoidOut;
+	private boolean raised;
 	
-	private Setting carriageSpeed;
 	
 	public Carriage(){
 		carriageLeft = new WPI_TalonSRX(RobotMap.Carriage.carriageLeft);
 		carriageRight = new WPI_TalonSRX(RobotMap.Carriage.carraigeRight);
-		carriageSpeed = new Setting("Carriage Speed", Constants.Carriage.carriageSpeed);
 		
 		solenoid = new Solenoid(RobotMap.Carriage.solenoid);
 		
 		carriageRight.setInverted(true);
-		solenoidOut = false;
+		raised = false;
 	}
 	
 	public void setCarriageLeftCurrent(double speed){
@@ -46,28 +44,24 @@ public class Carriage extends Subsystem {
 		setCarriageRightCurrent(speed);
 	}
 	
-	public void solenoidOut(){
+	public void raise(){
 		solenoid.set(true);
-		solenoidOut = true;
+		raised = true;
 	}
 	
-	public void solenoidIn(){
+	public void lower(){
 		solenoid.set(false);
-		solenoidOut = false;
+		raised = false;
 	}
 	
 	public void switchSolenoid(){
-		if(solenoidOut){
-			solenoidIn();
+		if(raised){
+			lower();
 		}else{
-			solenoidOut();
+			raise();
 		}
 	}
 	
-	 public double getCarriageSpeedSmartDashboard(){
-	    	return carriageSpeed.getValue();
-	    }
-
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());

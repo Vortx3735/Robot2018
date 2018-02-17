@@ -21,7 +21,6 @@ public class ElevatorSetPosition extends Command {
     	});
     	requires(Robot.elevator);
     	
-    	
     }
     
     public ElevatorSetPosition(Func f) {

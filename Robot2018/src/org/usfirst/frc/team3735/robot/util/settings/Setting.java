@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+
 public class Setting extends Func{
 	
 	private String name;
@@ -107,6 +108,15 @@ public class Setting extends Func{
 	//Override me if you want!
 	public void valueChanged(double val) {
 		
+	}
+	
+	public Func reverse() {
+		return new Func() {
+			@Override
+			public double getValue() {
+				return -getValueFetched();
+			}
+		};
 	}
 	
 }

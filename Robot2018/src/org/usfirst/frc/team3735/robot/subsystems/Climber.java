@@ -35,11 +35,11 @@ public class Climber extends Subsystem {
 		motor1.set(speed);
 	}
 	
-	public void solenoidOut(){
+	public void extend(){
 		solenoid.set(true);
 	}
 	
-	public void solenoidIn(){
+	public void retract(){
 		solenoid.set(false);
 	}
 	
