@@ -21,25 +21,21 @@ public class CubeIntake extends Subsystem {
 	private WPI_VictorSPX leftMotor;
 	private WPI_VictorSPX rightMotor;
 	
-	private Solenoid leftSolenoid;
-	private Solenoid rightSolenoid;
+	private Solenoid solenoid;
 	
 	private Setting cubeIntakeSpeed;
 	
-	private boolean leftSolenoidOut;
-	private boolean rightSolenoidOut;
+	private boolean solenoidOut;
 	
 	public CubeIntake(){
 		leftMotor = new WPI_VictorSPX(RobotMap.CubeIntake.leftMotor);
 		rightMotor = new WPI_VictorSPX(RobotMap.CubeIntake.rightMotor);
 		
-		leftSolenoid = new Solenoid(RobotMap.CubeIntake.leftSolenoid);
-		rightSolenoid = new Solenoid(RobotMap.CubeIntake.rightSolenoid);
+		solenoid = new Solenoid(RobotMap.CubeIntake.solenoid);
 		
 		cubeIntakeSpeed = new Setting("Cube Intake Speed", Constants.CubeIntake.cubeIntakeSpeed);
 		
-		leftSolenoidOut = false;
-		rightSolenoidOut = false;
+		solenoidOut = false;
 		
 		rightMotor.setInverted(true);
 	}
@@ -61,60 +57,24 @@ public class CubeIntake extends Subsystem {
 		return cubeIntakeSpeed.getValueFetched();
 	}
 	
-	public void leftSolenoidOut(){
-		leftSolenoid.set(true);
-		leftSolenoidOut = true;
+	
+	
+	public void solenoidOut(){
+		solenoid.set(true);
+		solenoidOut = true;
 	}
 	
-	public void rightSolenoidOut(){
-		rightSolenoid.set(true);
-		rightSolenoidOut = true;
+	public void solenoidIn(){
+		solenoid.set(false);
+		solenoidOut = false;
 	}
 	
-	public void leftSolenoidIn(){
-		leftSolenoid.set(false);
-		leftSolenoidOut = false;
-	}
-	
-	public void rightSolenoidIn(){
-		rightSolenoid.set(false);
-		rightSolenoidOut = false;
-	}
-	
-	public void switchLeftSolenoid(){
-		if(leftSolenoidOut){
-			leftSolenoidIn();
+	public void switchSolenoid(){
+		if(solenoidOut){
+			solenoidIn();
 		}else{
-			leftSolenoidOut();
-		}
-	}
-	
-	public void switchRightSolenoid(){
-		if(rightSolenoidOut){
-			rightSolenoidIn();
-		}else{
-			rightSolenoidOut();
-		}
-	}
-	
-	public void solenoidsOut(){
-		leftSolenoidOut();
-		rightSolenoidOut();
-	}
-	
-	public void solenoidsIn(){
-		leftSolenoidIn();
-		rightSolenoidIn();
-	}
-	
-	public void switchSolenoids(){
-		if(leftSolenoidOut && rightSolenoidOut){
-			solenoidsIn();
-		}
-		if((!leftSolenoidOut) && (!rightSolenoidOut)){
-			solenoidsOut();
-		}
-		
+			solenoidOut();
+		}	
 	}
 	
     public void initDefaultCommand() {
