@@ -25,15 +25,13 @@ public class Dms {
 		public static final double HALFLENGTH = LENGTH/2.0;
 		public static final double WIDTH = 324;
 		public static final double HALFWIDTH = WIDTH/2.0;
-		public static final double BASELINE = 93.3;
+		
+		//width of the alliance wall, since field is an octagon
+		public static final double WALLWIDTH = 264.0;
+		public static final double HALFWALLWIDTH = WALLWIDTH/2.0;
+		
+		public static final double TOBASELINE = 93.3;
 
-		public class AirShip{
-			public static final double SIDELENGTH = 0;
-			public static final double HALFSL = SIDELENGTH/2.0;
-			public static final double DISTANCEFROMWALL = 114;
-			public static final double MOUNTDISTANCEFROMWALL = 111;
-
-		}
 	}
 	
 	

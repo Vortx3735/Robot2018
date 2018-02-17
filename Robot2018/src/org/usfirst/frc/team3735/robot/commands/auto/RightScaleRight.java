@@ -12,8 +12,8 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class RightScaleRight extends CommandGroup {
 
     public RightScaleRight() {
-    	addSequential(new SendProfile(Waypoints.rightScaleRight));
+    	addSequential(new SendProfile(Waypoints.Auto.rightScaleRight));
     	addSequential(new Wait(1));
-    	addSequential(new SendProfile(Waypoints.rightScaleRight2));
+    	addSequential(new SendProfile(Waypoints.Auto.rightScaleRight2));
     }
 }

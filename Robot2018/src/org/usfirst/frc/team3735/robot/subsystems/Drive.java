@@ -11,6 +11,7 @@ import org.usfirst.frc.team3735.robot.commands.drive.ExpDrive;
 import org.usfirst.frc.team3735.robot.settings.Constants;
 import org.usfirst.frc.team3735.robot.settings.Dms;
 import org.usfirst.frc.team3735.robot.settings.RobotMap;
+import org.usfirst.frc.team3735.robot.util.VortxTalon;
 import org.usfirst.frc.team3735.robot.util.settings.BooleanSetting;
 import org.usfirst.frc.team3735.robot.util.settings.Setting;
 
@@ -26,14 +27,13 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 public class Drive extends Subsystem {
 
-	private WPI_TalonSRX l1;
-	private WPI_TalonSRX l2;
-	private WPI_TalonSRX l3;
 	
-	private WPI_TalonSRX r1;
-	private WPI_TalonSRX r2;
-	private WPI_TalonSRX r3;
-		
+	private VortxTalon[] left;
+	private VortxTalon[] right;
+
+	private VortxTalon l1;
+	private VortxTalon r1;
+
 	private static double dP = 1.0;
 	private static double dI = 0.0;
 	private static double dD = 0.0;
@@ -72,14 +72,22 @@ public class Drive extends Subsystem {
 	
 
 	public Drive() {
-		l1 = new WPI_TalonSRX(RobotMap.Drive.leftMotor1);
-		l2 = new WPI_TalonSRX(RobotMap.Drive.leftMotor2);
-		l3 = new WPI_TalonSRX(RobotMap.Drive.leftMotor3);
-
-		r1 = new WPI_TalonSRX(RobotMap.Drive.rightMotor1);
-		r2 = new WPI_TalonSRX(RobotMap.Drive.rightMotor2);
-		r3 = new WPI_TalonSRX(RobotMap.Drive.rightMotor3);
-		System.out.println("Hello World");
+//		l1 = new WPI_TalonSRX(RobotMap.Drive.leftMotor1);
+//		l2 = new WPI_TalonSRX(RobotMap.Drive.leftMotor2);
+//		l3 = new WPI_TalonSRX(RobotMap.Drive.leftMotor3);
+//
+//		r1 = new WPI_TalonSRX(RobotMap.Drive.rightMotor1);
+//		r2 = new WPI_TalonSRX(RobotMap.Drive.rightMotor2);
+//		r3 = new WPI_TalonSRX(RobotMap.Drive.rightMotor3);
+		
+		for(int i = 0; i < RobotMap.Drive.leftTrain.length; i++) {
+			left[i] = new VortxTalon(RobotMap.Drive.leftTrain[i]);
+		}
+		for(int i = 0; i < RobotMap.Drive.rightTrain.length; i++) {
+			right[i] = new VortxTalon(RobotMap.Drive.rightTrain[i]);
+		}
+		l1 = left[0];
+		r1 = right[0];
 		brakeEnabled.setIsListening(true);
 		initSensors();
 		setupSlaves();
@@ -122,11 +130,13 @@ public class Drive extends Subsystem {
 	 * Slaves Setup
 	 *******************************/
 	public void setupSlaves() {
-		l2.follow(l1);
-		l3.follow(l1);
+		for(int i = 1; i < left.length; i++) {
+			left[i].follow(l1);
+		}
+		for(int i = 1; i < right.length; i++) {
+			right[i].follow(r1);
+		}
 		
-		r2.follow(r1);
-		r3.follow(r1);
 	}
 
 	public void initSensors() {
@@ -155,9 +165,10 @@ public class Drive extends Subsystem {
 		r1.configPeakOutputForward(1, 0);
 		r1.configPeakOutputReverse(-1, 0);
 		
-		r1.setInverted(true);
-		r2.setInverted(true);
-		r3.setInverted(true);
+		for(int i = 0; i < right.length; i++) {
+			right[i].setInverted(true);
+		}
+
 		
 		
 
@@ -347,19 +358,20 @@ public class Drive extends Subsystem {
 	 *******************************/
 	public void setEnableBrake(boolean b) {
 		if(b) {
-			l1.setNeutralMode(NeutralMode.Brake);
-			l2.setNeutralMode(NeutralMode.Brake);
-			l3.setNeutralMode(NeutralMode.Brake);
-			r1.setNeutralMode(NeutralMode.Brake);
-			r2.setNeutralMode(NeutralMode.Brake);
-			r3.setNeutralMode(NeutralMode.Brake);
+			for(int i = 0; i < left.length; i++) {
+				left[i].setNeutralMode(NeutralMode.Brake);
+			}
+			for(int i = 0; i < right.length; i++) {
+				right[i].setNeutralMode(NeutralMode.Brake);
+			}
+
 		}else {
-			l1.setNeutralMode(NeutralMode.Coast);
-			l2.setNeutralMode(NeutralMode.Coast);
-			l3.setNeutralMode(NeutralMode.Coast);
-			r1.setNeutralMode(NeutralMode.Coast);
-			r2.setNeutralMode(NeutralMode.Coast);
-			r3.setNeutralMode(NeutralMode.Coast);
+			for(int i = 0; i < left.length; i++) {
+				left[i].setNeutralMode(NeutralMode.Coast);
+			}
+			for(int i = 0; i < right.length; i++) {
+				right[i].setNeutralMode(NeutralMode.Coast);
+			}
 		}
 
 	}

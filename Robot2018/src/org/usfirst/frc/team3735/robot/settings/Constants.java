@@ -25,29 +25,35 @@ public class Constants {
 
 	}
 	
-	public class GearIntake{
-		//these arent voltage anymore
-		public final static double rollerOutVoltage = .25;
-		public final static double rollerInVoltage = -.85;
-		public final static double feedingVoltage = -.5;
+	public class CubeIntake{
+		public static final double cubeIntakeSpeed = .5;
 	}
 	
-	public class Scaler{
-		public final static double upCurrent = 1.0;
-		public final static double powerMax = 20000; //350
-		public static final double rampRate = .02;
-	}
-	
-	public class BallIntake{
-		public final static double rollerInSpeed = .7;
-	}
-	
-	public class Shooter{
-		public final static double shootSpeed = 32000;	//in rpms
+	public class Elevator{
+		public static final double elevatorSpeed = 0.5;
+		public static final double carriageSpeed = 1.0;
 		
-		public static final double lowAgitatorVoltage = 3;
-		public static final double agitatorVoltage = 7;
-		public static final double highAgitatorVoltage = 12;
+		public static final double elevatorMultiplier = 0.2;//.5
+		public static final double correctionMultiplier = 0.1;//.12
+		
+		public static final double ticksPerInch =835.22; 
+		
+		public static final double dPLeft = 80;
+		public static final double dILeft = .15;
+		public static final double dDLeft = 60;
+		public static final double dFLeft = 0.0;
+		public static final int iZoneLeft = 2;
+		
+		public static final double dPRight = 80;
+		public static final double dIRight = .15;
+		public static final double dDRight = 60;
+		public static final double dFRight = 0.0;
+		public static final int iZoneRight = 2;
+	}
+	
+	public class Climber{
+		public static final double initialSpeed = 0.5;
+		public static final double tensionSpeed = 1.0;		
 	}
 
 }

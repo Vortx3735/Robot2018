@@ -9,7 +9,10 @@ import org.usfirst.frc.team3735.robot.commands.drive.recorder.RecordProfile;
 import org.usfirst.frc.team3735.robot.commands.drive.recorder.SendProfile;
 import org.usfirst.frc.team3735.robot.ois.GTAOI;
 import org.usfirst.frc.team3735.robot.settings.Dms;
+import org.usfirst.frc.team3735.robot.subsystems.Climber;
+import org.usfirst.frc.team3735.robot.subsystems.CubeIntake;
 import org.usfirst.frc.team3735.robot.subsystems.Drive;
+import org.usfirst.frc.team3735.robot.subsystems.Elevator;
 import org.usfirst.frc.team3735.robot.subsystems.Navigation;
 import org.usfirst.frc.team3735.robot.subsystems.Vision;
 import org.usfirst.frc.team3735.robot.util.AutoChooser;
@@ -43,6 +46,9 @@ public class Robot extends VortxIterative {
 	public static Drive drive;
 	public static Navigation navigation;
 	public static Vision vision;
+	public static CubeIntake cubeIntake;
+	public static Elevator elevator;
+	public static Climber climber;
 	
 	public static DriveOI oi;
 	
@@ -57,6 +63,9 @@ public class Robot extends VortxIterative {
 		drive = new Drive();
 		navigation = new Navigation();
 		vision = new Vision();
+		cubeIntake = new CubeIntake();
+		elevator = new Elevator();
+		climber = new Climber();
 		
 		oi = new GTAOI(); //MUST be instantiated after the subsystems
 			

@@ -301,8 +301,8 @@ public class Navigation extends Subsystem implements PIDSource, PIDOutput {
 	 * 			follows the quadrant naming system of algebra, looking at the field from Field Map.PNG
 	 */
 	public int getQuadrant() {
-		double xdif = pos.x - Waypoints.center.x;
-		double ydif = pos.y - Waypoints.center.y;
+		double xdif = pos.x - Waypoints.Verticies.center.x;
+		double ydif = pos.y - Waypoints.Verticies.center.y;
 		if(xdif > 0) {
 			if(ydif > 0) {
 				return 1;

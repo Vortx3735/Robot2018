@@ -45,6 +45,9 @@ public class GTAOI implements DriveOI{
 		return 0;
 	}
 
+	public double getElevatorMove() {
+		return main.getRightY();
+	}
 	
 	public boolean isOverriddenByDrive(){
 		return Math.abs(getDriveMove()) > .4 || Math.abs(getDriveTurn()) > .4;
