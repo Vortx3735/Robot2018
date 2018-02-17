@@ -9,6 +9,7 @@ import org.usfirst.frc.team3735.robot.commands.drive.recorder.RecordProfile;
 import org.usfirst.frc.team3735.robot.commands.drive.recorder.SendProfile;
 import org.usfirst.frc.team3735.robot.ois.GTAOI;
 import org.usfirst.frc.team3735.robot.settings.Dms;
+import org.usfirst.frc.team3735.robot.subsystems.Carriage;
 import org.usfirst.frc.team3735.robot.subsystems.Climber;
 import org.usfirst.frc.team3735.robot.subsystems.CubeIntake;
 import org.usfirst.frc.team3735.robot.subsystems.Drive;
@@ -49,6 +50,7 @@ public class Robot extends VortxIterative {
 	public static CubeIntake cubeIntake;
 	public static Elevator elevator;
 	public static Climber climber;
+	public static Carriage carriage;
 	
 	public static DriveOI oi;
 	
@@ -66,6 +68,7 @@ public class Robot extends VortxIterative {
 		cubeIntake = new CubeIntake();
 		elevator = new Elevator();
 		climber = new Climber();
+		carriage = new Carriage();
 		
 		oi = new GTAOI(); //MUST be instantiated after the subsystems
 			

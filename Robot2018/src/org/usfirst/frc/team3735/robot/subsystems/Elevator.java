@@ -24,10 +24,7 @@ public class Elevator extends Subsystem {
 	VortxTalon elevatorLeft;
 	VortxTalon elevatorRight;
 	
-	WPI_TalonSRX carriageLeft;
-	WPI_TalonSRX carriageRight;
-	
-	private Setting carriageSpeed;
+	//private Setting carriageSpeed;
 	
 	private Setting elevatorMultiplier;
 	private Setting correctionMultiplier;
@@ -44,30 +41,9 @@ public class Elevator extends Subsystem {
 		elevatorRight.setNeutralMode(NeutralMode.Brake);
 		
 		elevatorRight.setInverted(true);
-		carriageRight.setInverted(true);
 		
 		setUpSensors();
 		resetEncoderPositions();
-		
-		carriageLeft = new WPI_TalonSRX(RobotMap.Elevator.carriageLeft);
-		carriageRight = new WPI_TalonSRX(RobotMap.Elevator.carraigeRight);
-		carriageSpeed = new Setting("Carriage Speed", Constants.Elevator.carriageSpeed);
-
-		//setupForPositionControl();
-		//setUpSlaves();
-	}
-	
-	public void setCarriageLeftCurrent(double speed){
-		carriageLeft.set(speed);
-	}
-	
-	public void setCarriageRightCurrent(double speed){
-		carriageRight.set(speed);
-	}
-	
-	public void setCarriageCurrent(double speed){
-		setCarriageLeftCurrent(speed);
-		setCarriageRightCurrent(speed);
 	}
 	
 	public void setUpSensors(){
@@ -117,10 +93,6 @@ public class Elevator extends Subsystem {
 //		elevatorRight.set(ControlMode.Position, ticksToMove);
 //	}
 
-	
-    public double getCarriageSpeedSmartDashboard(){
-    	return carriageSpeed.getValue();
-    }
     
     public double getMultiplierSmartDashboard(){
     	return elevatorMultiplier.getValue();

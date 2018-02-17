@@ -31,7 +31,6 @@ public class Constants {
 	
 	public class Elevator{
 		public static final double elevatorSpeed = 0.5;
-		public static final double carriageSpeed = 1.0;
 		
 		public static final double elevatorMultiplier = 0.2;//.5
 		public static final double correctionMultiplier = 0.1;//.12
@@ -49,6 +48,10 @@ public class Constants {
 		public static final double dDRight = 60;
 		public static final double dFRight = 0.0;
 		public static final int iZoneRight = 2;
+	}
+	
+	public class Carriage{
+		public static final double carriageSpeed = 1.0;
 	}
 	
 	public class Climber{

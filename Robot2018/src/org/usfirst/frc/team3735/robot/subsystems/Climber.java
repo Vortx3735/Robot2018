@@ -25,7 +25,7 @@ public class Climber extends Subsystem {
 	
 	public Climber(){
 		motor1 = new WPI_TalonSRX(RobotMap.Climber.motor);
-		solenoid = new Solenoid(RobotMap.Climber.solendoid);
+		solenoid = new Solenoid(RobotMap.Climber.solenoid);
 		
 		initialSpeed = new Setting("Initial Climber Speed", Constants.Climber.initialSpeed);
 		tensionSpeed = new Setting("Tension Climber Speed", Constants.Climber.tensionSpeed);

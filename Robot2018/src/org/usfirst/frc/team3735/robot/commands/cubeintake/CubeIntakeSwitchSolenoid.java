@@ -1,4 +1,4 @@
-package org.usfirst.frc.team3735.robot.commands.elevator;
+package org.usfirst.frc.team3735.robot.commands.cubeintake;
 
 import org.usfirst.frc.team3735.robot.Robot;
 
@@ -7,12 +7,12 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class CarriageRollersOut extends Command {
+public class CubeIntakeSwitchSolenoid extends Command {
 
-    public CarriageRollersOut() {
+    public CubeIntakeSwitchSolenoid() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.elevator);
+    	requires(Robot.cubeIntake);
     }
 
     // Called just before this Command runs the first time
@@ -21,7 +21,7 @@ public class CarriageRollersOut extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.elevator.setCarriageCurrent(-(Robot.elevator.getCarriageSpeedSmartDashboard()));
+    	Robot.cubeIntake.switchSolenoid();
     }
 
     // Make this return true when this Command no longer needs to run execute()
