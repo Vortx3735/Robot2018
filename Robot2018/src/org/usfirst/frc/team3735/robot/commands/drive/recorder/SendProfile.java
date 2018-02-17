@@ -7,6 +7,8 @@ import java.util.Scanner;
 
 import org.usfirst.frc.team3735.robot.Robot;
 import org.usfirst.frc.team3735.robot.util.DriveState;
+import org.usfirst.frc.team3735.robot.util.calc.Average;
+import org.usfirst.frc.team3735.robot.util.calc.RollingAverage;
 import org.usfirst.frc.team3735.robot.util.calc.VortxMath;
 import org.usfirst.frc.team3735.robot.util.profiling.Line;
 import org.usfirst.frc.team3735.robot.util.profiling.Ray;
@@ -14,6 +16,7 @@ import org.usfirst.frc.team3735.robot.util.settings.Setting;
 import org.usfirst.frc.team3735.robot.util.settings.StringSetting;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -43,6 +46,7 @@ public class SendProfile extends Command {
 //	private static Setting distErrorCo = new Setting("Dist Error Co", 0);
 	private static Setting halfWay = new Setting("Half Way Co", 20);
 
+	Average roll;
 	
     public SendProfile(String file) {
         // Use requires() here to declare subsystem dependencies
@@ -69,6 +73,7 @@ public class SendProfile extends Command {
 //    	}
     	index = 0;
     	
+    	roll = new Average();
     	//bring to closest point
 
     	
@@ -146,7 +151,7 @@ public class SendProfile extends Command {
 		distError = toFollow.distanceFrom(Robot.navigation.getPosition());
 		
 		
-		
+		roll.add(distError);
 //		double turn = curState.getTurn() + angleError * angleErrorCo.getValue() + forwardLook * lookCo.getValue() + distError * distErrorCo.getValue() + angleLook * angleLookCo.getValue();
 		
 		double p = Math.abs(VortxMath.squish(distError, halfWay.getValue()));
@@ -164,6 +169,7 @@ public class SendProfile extends Command {
 //		System.out.print("forward look" + forwardLook + "\t\t\t");
 //		System.out.println("lookco" + forwardLookCo.getValue() + "\t\t");
     	index++;
+    	SmartDashboard.putNumber("Average Dist Error", roll.getAverage());
     }
     
     public int limitIndex(ArrayList<DriveState> a, int i) {

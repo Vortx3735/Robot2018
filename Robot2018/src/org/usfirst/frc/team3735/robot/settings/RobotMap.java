@@ -47,7 +47,6 @@ package org.usfirst.frc.team3735.robot.settings;
 public class RobotMap {
 
 	public static class Drive{
-
 		
 		public static int[] leftTrain = {2,3};
 		public static int[] rightTrain = {11,10};
