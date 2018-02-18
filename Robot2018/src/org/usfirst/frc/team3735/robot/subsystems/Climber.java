@@ -6,6 +6,8 @@ import org.usfirst.frc.team3735.robot.util.settings.Setting;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -18,14 +20,14 @@ public class Climber extends Subsystem {
     // here. Call these from Commands.
 	
 	private WPI_TalonSRX motor1;
-	private Solenoid solenoid;
+	private DoubleSolenoid solenoid;
 	
 	Setting initialSpeed;
 	Setting tensionSpeed;
 	
 	public Climber(){
 		motor1 = new WPI_TalonSRX(RobotMap.Climber.motor);
-		solenoid = new Solenoid(RobotMap.Climber.solenoid);
+		solenoid = new DoubleSolenoid(0, 1);
 		
 		initialSpeed = new Setting("Initial Climber Speed", Constants.Climber.initialSpeed);
 		tensionSpeed = new Setting("Tension Climber Speed", Constants.Climber.tensionSpeed);
@@ -36,11 +38,11 @@ public class Climber extends Subsystem {
 	}
 	
 	public void extend(){
-		solenoid.set(true);
+		solenoid.set(Value.kForward);
 	}
 	
 	public void retract(){
-		solenoid.set(false);
+		solenoid.set(Value.kReverse);
 	}
 	
 	public double getInitialSpeedSmartDashboard(){

@@ -9,29 +9,32 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
  * A standard interface for interacting with a controller that is programmed as shown
  */
 public class GraysWheel extends Joystick{
-	public Button mid, left, right, trig;
+	//public Button mid, left, right, trig;
 	public Button pov0,pov45,pov90,pov135,pov180,pov225,pov270,pov315;
+	public Button x, circle, triangle, square;
+	public Button start, select, r1, r2, r3, l1, l2, l3;
+	Button plus, minus;
 	
 	public GraysWheel(int p){
 		super(p);
-//		a = new JoystickButton(this, 1);
-//		b = new JoystickButton(this, 2);
-//		x = new JoystickButton(this, 3);
-//		y = new JoystickButton(this, 4);
-//		lb = new JoystickButton(this, 5);
-//		rb = new JoystickButton(this, 6);
-//		back = new JoystickButton(this, 7);
-//		start = new JoystickButton(this, 8);
-//		ls = new JoystickButton(this, 9);
-//		rs = new JoystickButton(this, 10);
-//		lt = new JoystickTriggerButton(this, false, .3);
-//		rt = new JoystickTriggerButton(this, true, .3);
-		trig = new JoystickButton(this, 1);
-		left = new JoystickButton(this, 2);
-		mid = new JoystickButton(this, 3);
-		right = new JoystickButton(this, 4);
+		x = new JoystickButton(this, 1);
+		circle = new JoystickButton(this, 3);
+		triangle = new JoystickButton(this, 4);
+		square = new JoystickButton(this, 2);
 		
+		r1 = new JoystickButton(this, 5);
+		r2 = new JoystickButton(this, 7);
+		r3 = new JoystickButton(this, 11);
+		l1 = new JoystickButton(this, 6);
+		l2 = new JoystickButton(this, 8);
+		l3 = new JoystickButton(this, 12);
+		
+		start = new JoystickButton(this, 10);
+		select = new JoystickButton(this, 9);
 
+		plus = new JoystickButton(this, 13);
+		minus = new JoystickButton(this, 14);
+		
 		pov0 = new JoystickPOVButton(this, 0);
 		pov45 = new JoystickPOVButton(this, 45);
 		pov90 = new JoystickPOVButton(this, 90);

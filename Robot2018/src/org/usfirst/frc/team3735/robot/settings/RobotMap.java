@@ -58,7 +58,8 @@ public class RobotMap {
 		public static int leftMotor = 1;
 		public static int rightMotor = 12;
 		
-		public static int solenoid = 1;
+		public static int solenoid = 2;
+		
 	}
 	
 	public static class Elevator{
@@ -71,12 +72,12 @@ public class RobotMap {
 		public static int carriageLeft = 4;
 		public static int carraigeRight = 5;
 		
-		public static int solenoid = 2;
+		public static int solenoid = 3;
 	}
 	
 	public static class Climber{
 		public static int motor = 7;
 		
-		public static int solenoid = 3;
+		public static int solenoid = 1;
 	}
 }

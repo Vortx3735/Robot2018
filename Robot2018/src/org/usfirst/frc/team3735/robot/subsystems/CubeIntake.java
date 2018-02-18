@@ -1,5 +1,6 @@
 package org.usfirst.frc.team3735.robot.subsystems;
 
+import org.usfirst.frc.team3735.robot.commands.cubeintake.CubeRollerSet;
 import org.usfirst.frc.team3735.robot.settings.Constants;
 import org.usfirst.frc.team3735.robot.settings.RobotMap;
 import org.usfirst.frc.team3735.robot.util.settings.Setting;
@@ -35,8 +36,8 @@ public class CubeIntake extends Subsystem {
 //		cubeIntakeSpeed = new Setting("Cube Intake Speed", Constants.CubeIntake.cubeIntakeSpeed);
 		
 		isGripping = false;
-		
-		rightMotor.setInverted(true);
+		leftMotor.setInverted(false);
+		rightMotor.setInverted(false);
 	}
 	
 	public void setLeftMotorCurrent(double speed){
@@ -78,7 +79,7 @@ public class CubeIntake extends Subsystem {
 	
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
+        setDefaultCommand(new CubeRollerSet(0));
     }
 }
 

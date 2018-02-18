@@ -28,7 +28,7 @@ public class ElevatorMove extends Command {
 //			Robot.elevator.setElevatorMotorsCurrent(Robot.oi.getElevatorMove()*Robot.elevator.getMultiplierSmartDashboard());
 //		}
 			
-		Robot.elevator.setElevatorMotorsCurrent(Robot.oi.getElevatorMove()*Robot.elevator.getMultiplierSmartDashboard());
+		Robot.elevator.setElevatorMotorsCurrent(Robot.oi.getElevatorMove());
 
 
 	}

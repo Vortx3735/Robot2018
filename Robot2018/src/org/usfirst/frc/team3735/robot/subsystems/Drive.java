@@ -79,9 +79,13 @@ public class Drive extends Subsystem {
 //		r1 = new WPI_TalonSRX(RobotMap.Drive.rightMotor1);
 //		r2 = new WPI_TalonSRX(RobotMap.Drive.rightMotor2);
 //		r3 = new WPI_TalonSRX(RobotMap.Drive.rightMotor3);
-		
+		left = new VortxTalon[RobotMap.Drive.leftTrain.length];
+		right = new VortxTalon[RobotMap.Drive.rightTrain.length];
+
 		for(int i = 0; i < RobotMap.Drive.leftTrain.length; i++) {
+			System.out.println(RobotMap.Drive.leftTrain[i]);
 			left[i] = new VortxTalon(RobotMap.Drive.leftTrain[i]);
+			
 		}
 		for(int i = 0; i < RobotMap.Drive.rightTrain.length; i++) {
 			right[i] = new VortxTalon(RobotMap.Drive.rightTrain[i]);
