@@ -2,15 +2,17 @@ package org.usfirst.frc.team3735.robot.commands.elevator;
 
 import org.usfirst.frc.team3735.robot.Robot;
 import org.usfirst.frc.team3735.robot.util.settings.Func;
+import org.usfirst.frc.team3735.robot.util.settings.PIDSetting;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class ElevatorSetPosition extends Command {
+public class ElevatorSetPositionSetting extends Command {
 	Func inches;
-    public ElevatorSetPosition(double inches) {
+	PIDSetting setting;
+    public ElevatorSetPositionSetting(double inches, PIDSetting setting) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	this(new Func() {
@@ -20,10 +22,10 @@ public class ElevatorSetPosition extends Command {
     		}
     	});
     	requires(Robot.elevator);
-    	
+    	this.setting = setting;
     }
     
-    public ElevatorSetPosition(Func f) {
+    public ElevatorSetPositionSetting(Func f) {
     	this.inches = f;
     }
 
@@ -33,7 +35,7 @@ public class ElevatorSetPosition extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.elevator.setElevatorPosition(inches.getValue());
+    	Robot.elevator.setElevatorPosition(inches.getValue(), setting);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -43,12 +45,10 @@ public class ElevatorSetPosition extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.elevator.setElevatorMotorsCurrent(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	end();
     }
 }

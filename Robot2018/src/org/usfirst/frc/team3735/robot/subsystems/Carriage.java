@@ -27,7 +27,7 @@ public class Carriage extends Subsystem {
 		
 		solenoid = new Solenoid(RobotMap.Carriage.solenoid);
 		
-		carriageRight.setInverted(true);
+		carriageLeft.setInverted(true);
 		raised = false;
 	}
 	

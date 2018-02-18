@@ -5,6 +5,7 @@ import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorMove;
 import org.usfirst.frc.team3735.robot.settings.Constants;
 import org.usfirst.frc.team3735.robot.settings.RobotMap;
 import org.usfirst.frc.team3735.robot.util.VortxTalon;
+import org.usfirst.frc.team3735.robot.util.settings.PIDSetting;
 import org.usfirst.frc.team3735.robot.util.settings.Setting;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -75,17 +76,24 @@ public class Elevator extends Subsystem {
 		elevatorRight.set(ControlMode.PercentOutput, speed);
 	} 
 	
-	public void setElevatorLeftPosition(double position){
+	public void setElevatorLeftPosition(double position, PIDSetting setting){
+		elevatorLeft.setPIDFR(setting);
 		elevatorLeft.set(ControlMode.Position, position);	
 	}
 	
-	public void setElevatorRightPosition(double position){
+	public void setElevatorRightPosition(double position, PIDSetting setting){
+		elevatorLeft.setPIDFR(setting);
 		elevatorRight.set(ControlMode.Position, position);
 	}
 	
-	public void setElevatorPostion(double position){
-		setElevatorLeftPosition(position);
-		setElevatorRightPosition(position);
+	public void setElevatorPosition(double position){
+		setElevatorLeftPosition(position, elevatorLeft.getPIDSetting());
+		setElevatorRightPosition(position, elevatorRight.getPIDSetting());
+	}
+	
+	public void setElevatorPosition(double position, PIDSetting setting){
+		setElevatorLeftPosition(position, setting);
+		setElevatorRightPosition(position, setting);
 	}
 //	public void moveElevatorInches(double inches){
 //		double ticksToMove = (inches*Constants.Elevator.ticksPerInch);

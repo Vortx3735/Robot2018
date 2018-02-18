@@ -1,5 +1,6 @@
 package org.usfirst.frc.team3735.robot.util;
 import org.usfirst.frc.team3735.robot.commands.elevator.BlankPID;
+import org.usfirst.frc.team3735.robot.util.settings.PIDSetting;
 import org.usfirst.frc.team3735.robot.util.settings.Setting;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -17,12 +18,14 @@ public class VortxTalon extends WPI_TalonSRX{
 	private Setting rampRate;
 	
 	
-	double P = 0;
-	double I = 0;
-	double D = 0;
-	double F = 0;
+//	double P = 0;
+//	double I = 0;
+//	double D = 0;
+//	double F = 0;
 	double iZ = 0;
-	double ramp = 1;
+	//double ramp = 1;
+	
+	private PIDSetting pSet = new PIDSetting(0,0,0,0,1);
 	
 	
 	double ticksPerInch = 1;
@@ -35,15 +38,15 @@ public class VortxTalon extends WPI_TalonSRX{
 		super(id);
 		this.id = id;
 		this.name= name;
-		PID = new PIDController(P, I, D, new BlankPID(), new BlankPID());
+		PID = new PIDController(pSet.getP(), pSet.getI(), pSet.getD(), new BlankPID(), new BlankPID());
 
 		if(onDash){
 			iZone = new Setting("iZoneLeft", iZ);
 			SmartDashboard.putData(PID);
-			rampRate = new Setting(name + "Ramp", ramp);
+			rampRate = new Setting(name + "Ramp", pSet.getRampRate());
 		}else{
 			iZone = new Setting(name + "iZone", iZ, false);
-			rampRate = new Setting(name + "Ramp", ramp, false);
+			rampRate = new Setting(name + "Ramp", pSet.getRampRate(), false);
 
 		}
 	}
@@ -53,15 +56,29 @@ public class VortxTalon extends WPI_TalonSRX{
 		this.config_kI(0, ki, 0);
 		this.config_kD(0, kd, 0);
 		
-		this.P = kp;
-		this.I = ki;
-		this.D = kd;
+//		this.P = kp;
+//		this.I = ki;
+//		this.D = kd;	
+		pSet.setP(kp);
+		pSet.setI(ki);
+		pSet.setD(kd);
+		
+		PID.setPID(kp, ki, kd);
 	}
 	
 	public void setPIDF(double kp, double ki, double kd, double kf) {
-		setPID(kp,ki,kd);
+		this.setPID(kp,ki,kd);
 		this.config_kF(0, kf, 0);
-		this.F = kf;
+//		this.F = kf;
+		pSet.setF(kf);
+		
+		PID.setF(kf);
+	}
+	
+	public void setPIDFR(PIDSetting setting){
+		this.setPIDF(setting.getP(), setting.getI(), setting.getD(), setting.getF());
+		rampRate.setValue(setting.getRampRate());
+		pSet = setting;
 	}
 	
 	public void setTicksPerInch(double ticks){
@@ -99,6 +116,10 @@ public class VortxTalon extends WPI_TalonSRX{
 	
 	public PIDController getPIDController(){
 		return PID;
+	}
+	
+	public PIDSetting getPIDSetting(){
+		return pSet;
 	}
 
 	public void printToDashboard(){

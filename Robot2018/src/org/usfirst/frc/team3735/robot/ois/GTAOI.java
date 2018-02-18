@@ -12,10 +12,16 @@ import org.usfirst.frc.team3735.robot.commands.drive.simple.DriveAddSensitiveLef
 import org.usfirst.frc.team3735.robot.commands.drive.simple.DriveAddSensitiveRight;
 import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorCorrectLeft;
 import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorCorrectRight;
+import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorDown;
+import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorSetPositionSetting;
+import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorUp;
 import org.usfirst.frc.team3735.robot.settings.Constants;
 import org.usfirst.frc.team3735.robot.util.oi.DriveOI;
 import org.usfirst.frc.team3735.robot.util.oi.XboxController;
+import org.usfirst.frc.team3735.robot.util.settings.PIDSetting;
 import org.usfirst.frc.team3735.robot.util.settings.Setting;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class GTAOI implements DriveOI{
 
@@ -27,7 +33,7 @@ public class GTAOI implements DriveOI{
 		main = new XboxController(0);
 		co = new XboxController(1);
 		
-		main.rb.whileHeld(new CubeGrab());
+		main.lb.whileHeld(new CubeGrab());
 
 		main.pov90.whileHeld(new DriveAddSensitiveRight());
 		main.pov270.whileHeld(new DriveAddSensitiveLeft());
@@ -54,6 +60,12 @@ public class GTAOI implements DriveOI{
 		
 		co.pov90.whileHeld(new ElevatorCorrectRight());
 		co.pov270.whileHeld(new ElevatorCorrectLeft());
+		co.pov0.whileHeld(new ElevatorUp());
+		co.pov180.whileHeld(new ElevatorDown());
+		
+		Setting position = new Setting("Position", 0);
+		PIDSetting setting = new PIDSetting(80, .15, 60, 0 ,0);
+		SmartDashboard.putData(new ElevatorSetPositionSetting(position.getValue(), setting));
 	}
 	
 	
