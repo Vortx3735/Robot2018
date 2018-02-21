@@ -2,6 +2,7 @@ package org.usfirst.frc.team3735.robot.ois;
 
 import org.usfirst.frc.team3735.robot.commands.carriage.CarriageRaise;
 import org.usfirst.frc.team3735.robot.commands.carriage.CarriageRollerSet;
+import org.usfirst.frc.team3735.robot.commands.carriage.CarriageRollerSetCheck;
 import org.usfirst.frc.team3735.robot.commands.climber.ClimberExtend;
 import org.usfirst.frc.team3735.robot.commands.climber.ClimberRetract;
 import org.usfirst.frc.team3735.robot.commands.climber.ClimberSetSpeed;
@@ -39,7 +40,7 @@ public class GTAOI implements DriveOI{
 		main.pov270.whileHeld(new DriveAddSensitiveLeft());
 
 		
-		main.a.whileHeld(new CarriageRollerSet(new Setting("Carriage Intake Speed", -.5)));
+		main.a.whileHeld(new CarriageRollerSetCheck(new Setting("Carriage Intake Speed", -.5)));
 		main.a.whileHeld(new CubeRollerSet(new Setting("Cube Intake Speed", -.5)));
 		main.b.whileHeld(new CubeRollerSet(new Setting("Cube Outtake Speed", .5)));
 		
@@ -65,7 +66,7 @@ public class GTAOI implements DriveOI{
 		
 		Setting position = new Setting("Position", 0);
 		PIDSetting setting = new PIDSetting(80, .15, 60, 0 ,0);
-		SmartDashboard.putData(new ElevatorSetPositionSetting(position.getValue(), setting));
+		SmartDashboard.putData(new ElevatorSetPositionSetting(position, setting));
 	}
 	
 	
@@ -91,8 +92,9 @@ public class GTAOI implements DriveOI{
 	}
 
 	public double getElevatorMove() {
-		return main.getRightY();
+		return main.getRightY()+ co.getRightY();
 	}
+	
 	
 	public boolean isOverriddenByDrive(){
 		return Math.abs(getDriveMove()) > .4 || Math.abs(getDriveTurn()) > .4;

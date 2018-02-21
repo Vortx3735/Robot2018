@@ -1,5 +1,6 @@
 package org.usfirst.frc.team3735.robot.subsystems;
 
+import org.usfirst.frc.team3735.robot.commands.carriage.CarriageRollerSet;
 import org.usfirst.frc.team3735.robot.settings.Constants;
 import org.usfirst.frc.team3735.robot.settings.RobotMap;
 import org.usfirst.frc.team3735.robot.util.settings.Setting;
@@ -8,6 +9,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -20,6 +22,7 @@ public class Carriage extends Subsystem {
 	Solenoid solenoid;
 	private boolean raised;
 	
+	private boolean gripping;
 	
 	public Carriage(){
 		carriageLeft = new WPI_TalonSRX(RobotMap.Carriage.carriageLeft);
@@ -44,6 +47,24 @@ public class Carriage extends Subsystem {
 		setCarriageRightCurrent(speed);
 	}
 	
+	public void setCarriageCurrentCheck(double speed){
+		if(getPower() > 20){
+			gripping = true; 
+			speed = 0;
+			setCarriageLeftCurrent(speed);
+			setCarriageRightCurrent(speed);
+		}else{
+			gripping = false;
+			setCarriageLeftCurrent(speed);
+			setCarriageRightCurrent(speed);
+		}
+		
+	}
+	
+	public double getPower(){
+		return Math.abs(carriageLeft.getOutputCurrent() * carriageLeft.getMotorOutputVoltage());
+	}
+	
 	public void raise(){
 		solenoid.set(true);
 		raised = true;
@@ -62,9 +83,13 @@ public class Carriage extends Subsystem {
 		}
 	}
 	
+	public void log(){
+		SmartDashboard.putNumber("Carriage Power", getPower());
+	}
+	
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
+        setDefaultCommand(new CarriageRollerSet(0));
     }
 }
 

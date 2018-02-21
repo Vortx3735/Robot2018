@@ -20,13 +20,13 @@ public class ElevatorSetPositionSetting extends Command {
     		public double getValue() {
     			return inches;
     		}
-    	});
-    	requires(Robot.elevator);
-    	this.setting = setting;
+    	}, setting); 	
     }
     
-    public ElevatorSetPositionSetting(Func f) {
+    public ElevatorSetPositionSetting(Func f, PIDSetting setting) {
+    	requires(Robot.elevator);
     	this.inches = f;
+    	this.setting = setting;
     }
 
     // Called just before this Command runs the first time

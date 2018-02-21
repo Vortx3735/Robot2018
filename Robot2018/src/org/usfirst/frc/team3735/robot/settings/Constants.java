@@ -4,8 +4,10 @@ public class Constants {
 	
 	public class Drive{
 		
-		public static final double InchesPerTick = .00309196;	//in inches
+//		public static final double InchesPerTick = .00309196;	//in inches (bempest)
 		
+		public static final double InchesPerTick = .00309196;	//in inches (jamal)
+
 		//exp drive
 		public static final double moveReactivity = 1;	//(0,1] (least reactive, most reactive]
 		public static final double turnReactivity = 1;	//(0,1] (least reactive, most reactive]	

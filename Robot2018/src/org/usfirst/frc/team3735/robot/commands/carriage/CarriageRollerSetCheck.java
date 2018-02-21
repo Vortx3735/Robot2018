@@ -8,17 +8,17 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class CarriageRollerSet extends Command {
+public class CarriageRollerSetCheck extends Command {
 
 	Func speed;
-    public CarriageRollerSet(Func speed) {
+    public CarriageRollerSetCheck(Func speed) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.carriage);
     	this.speed = speed;
     }
     
-    public CarriageRollerSet(double spd) {
+    public CarriageRollerSetCheck(double spd) {
     	this(Func.getFunc(spd));
     }
 
@@ -28,8 +28,7 @@ public class CarriageRollerSet extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.carriage.setCarriageCurrent(speed.getValue());
-    	//System.out.println("Power: " + Robot.carriage.getPower());
+    	Robot.carriage.setCarriageCurrentCheck(speed.getValue());
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -45,6 +44,5 @@ public class CarriageRollerSet extends Command {
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	end();
     }
 }

@@ -173,6 +173,7 @@ public class Robot extends VortxIterative {
 		navigation.log();
 		vision.log();
 		elevator.log();
+		carriage.log();
 	}
 	
 	public void debugLog(){
