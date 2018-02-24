@@ -7,12 +7,12 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 import org.usfirst.frc.team3735.robot.Robot;
-import org.usfirst.frc.team3735.robot.util.DriveState;
 import org.usfirst.frc.team3735.robot.util.calc.Average;
 import org.usfirst.frc.team3735.robot.util.calc.RollingAverage;
 import org.usfirst.frc.team3735.robot.util.calc.VortxMath;
 import org.usfirst.frc.team3735.robot.util.profiling.Line;
 import org.usfirst.frc.team3735.robot.util.profiling.Ray;
+import org.usfirst.frc.team3735.robot.util.recording.DriveState;
 import org.usfirst.frc.team3735.robot.util.settings.Setting;
 import org.usfirst.frc.team3735.robot.util.settings.StringSetting;
 

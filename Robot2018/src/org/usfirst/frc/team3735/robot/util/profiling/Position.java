@@ -2,7 +2,7 @@ package org.usfirst.frc.team3735.robot.util.profiling;
 
 import java.io.Serializable;
 
-import org.usfirst.frc.team3735.robot.util.Filer;
+import org.usfirst.frc.team3735.robot.util.recording.Filer;
 
 public class Position extends Location {
 	public double yaw;

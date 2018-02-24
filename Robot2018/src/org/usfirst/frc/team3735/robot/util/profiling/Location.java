@@ -2,7 +2,7 @@ package org.usfirst.frc.team3735.robot.util.profiling;
 
 import java.util.ArrayList;
 
-import org.usfirst.frc.team3735.robot.util.Filer;
+import org.usfirst.frc.team3735.robot.util.recording.Filer;
 
 public class Location{
 	public double x,y;
