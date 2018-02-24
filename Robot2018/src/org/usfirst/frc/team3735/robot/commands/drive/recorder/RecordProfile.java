@@ -5,8 +5,8 @@ import java.util.Formatter;
 import javax.tools.JavaFileObject;
 
 import org.usfirst.frc.team3735.robot.Robot;
-import org.usfirst.frc.team3735.robot.util.DriveState;
 import org.usfirst.frc.team3735.robot.util.profiling.Position;
+import org.usfirst.frc.team3735.robot.util.recording.DriveState;
 import org.usfirst.frc.team3735.robot.util.settings.StringSetting;
 
 import edu.wpi.first.wpilibj.command.Command;

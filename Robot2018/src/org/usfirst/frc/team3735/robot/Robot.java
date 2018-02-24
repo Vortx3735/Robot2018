@@ -4,6 +4,7 @@ import org.usfirst.frc.team3735.robot.assists.NavxAssist;
 import org.usfirst.frc.team3735.robot.commands.auto.*;
 import org.usfirst.frc.team3735.robot.commands.drive.MoveDDx;
 import org.usfirst.frc.team3735.robot.commands.drive.positions.ResetPosition;
+import org.usfirst.frc.team3735.robot.commands.drive.positions.SetToLastPosition;
 import org.usfirst.frc.team3735.robot.commands.drive.positions.ZeroYaw;
 import org.usfirst.frc.team3735.robot.commands.drive.recorder.RecordProfile;
 import org.usfirst.frc.team3735.robot.commands.drive.recorder.SendProfile;
@@ -105,6 +106,7 @@ public class Robot extends VortxIterative {
 			
 		});
 		SmartDashboard.putData(new RecordProfile());
+		SmartDashboard.putData(new SetToLastPosition());
 
 		
 	}
