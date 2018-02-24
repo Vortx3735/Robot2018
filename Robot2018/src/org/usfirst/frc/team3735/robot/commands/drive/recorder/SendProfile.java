@@ -3,6 +3,7 @@ package org.usfirst.frc.team3735.robot.commands.drive.recorder;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Formatter;
+import java.util.HashMap;
 import java.util.Scanner;
 
 import org.usfirst.frc.team3735.robot.Robot;
@@ -26,20 +27,21 @@ public class SendProfile extends Command {
 	public static StringSetting fileName = new StringSetting("Sending Profile File", "defaultfile");
 	private String filePath;
 	private Scanner sc;
-	private ArrayList<DriveState> array;
 	boolean needsLoading = false;
-	
-	private static int lookAmount = 25; //.5 seconds
-	
-	int index;
+	private String file;
+	private static HashMap<String, SendProfile> comms = new HashMap<>();
 	
     double forwardLook = 0; //	degrees/180
     double angleLook = 0;	// 	degrees/180
     double angleError = 0;	//	degrees/180
     double distError = 0;	//	inches
+    
+	private ArrayList<DriveState> array;
+	int index;
     DriveState curState;
     Ray toFollow;
 	
+	private static int lookAmount = 25; //.5 seconds
 	private static Setting forwardLookCo = new Setting("Forward Look Co", .8);
 //	private static Setting angleLookCo = new Setting("Angle Look Co", 0);
 	private static Setting angleErrorCo = new Setting("Angle Error Co", 3);
@@ -52,7 +54,9 @@ public class SendProfile extends Command {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	if(file != null) {
+    		this.file = file;
     		loadFile(file);
+    		comms.put(file, this);
     	}else {
     		needsLoading = true;
     	}
@@ -60,23 +64,24 @@ public class SendProfile extends Command {
     	requires(Robot.navigation);
     }
     
+    /**
+     * loads the default file on initialization, for testing
+     */
     public SendProfile() {
-    	needsLoading = true;
-    	requires(Robot.drive);
-    	requires(Robot.navigation);
+    	this(null);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-//    	if(needsLoading) {
-//    		loadFile(fileName.getValue());
-//    	}
+    	if(needsLoading) {
+    		loadFile(fileName.getValue());
+    	}
+    	
     	index = 0;
     	
     	roll = new Average();
-    	//bring to closest point
-
     	
+    	//bring to closest point
 //		while(Robot.navigation.getPosition().distanceFrom(arr.get(index).pos) > 
 //			Robot.navigation.getPosition().distanceFrom(arr.get(limitIndex(index+1)).pos)){
 //			index++;
@@ -84,6 +89,9 @@ public class SendProfile extends Command {
     }
     
 
+    public void loadFile() {
+    	loadFile(file);
+    }
     
     public void loadFile(String name) {
     	
@@ -105,8 +113,6 @@ public class SendProfile extends Command {
     		}
     	};
     	n.start();
-
-    	
 
     }
 
@@ -192,5 +198,13 @@ public class SendProfile extends Command {
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    }
+    
+    public static void loadCommand(String fileName) {
+    	SendProfile c = comms.get(fileName);
+    	if(c != null) {
+    		c.loadFile();
+    	}
+    	
     }
 }

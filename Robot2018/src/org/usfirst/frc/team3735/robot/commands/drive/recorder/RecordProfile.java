@@ -54,6 +54,8 @@ public class RecordProfile extends Command {
     protected void end() {
 		formatter.flush();
 		formatter.close();
+		
+		SendProfile.loadCommand(fileName.getValue());
     }
 
     // Called when another command which requires one or more of the same

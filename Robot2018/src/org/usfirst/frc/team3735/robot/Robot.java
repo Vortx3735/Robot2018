@@ -1,14 +1,13 @@
 package org.usfirst.frc.team3735.robot;
 
 import org.usfirst.frc.team3735.robot.assists.NavxAssist;
-import org.usfirst.frc.team3735.robot.commands.auto.RightScaleRight;
+import org.usfirst.frc.team3735.robot.commands.auto.*;
 import org.usfirst.frc.team3735.robot.commands.drive.MoveDDx;
 import org.usfirst.frc.team3735.robot.commands.drive.positions.ResetPosition;
 import org.usfirst.frc.team3735.robot.commands.drive.positions.ZeroYaw;
 import org.usfirst.frc.team3735.robot.commands.drive.recorder.RecordProfile;
 import org.usfirst.frc.team3735.robot.commands.drive.recorder.SendProfile;
 import org.usfirst.frc.team3735.robot.ois.GTAOI;
-import org.usfirst.frc.team3735.robot.settings.Dms;
 import org.usfirst.frc.team3735.robot.subsystems.Carriage;
 import org.usfirst.frc.team3735.robot.subsystems.Climber;
 import org.usfirst.frc.team3735.robot.subsystems.CubeIntake;
@@ -17,21 +16,14 @@ import org.usfirst.frc.team3735.robot.subsystems.Elevator;
 import org.usfirst.frc.team3735.robot.subsystems.Navigation;
 import org.usfirst.frc.team3735.robot.subsystems.Vision;
 import org.usfirst.frc.team3735.robot.util.AutoChooser;
-import org.usfirst.frc.team3735.robot.util.DoNothing;
-import org.usfirst.frc.team3735.robot.util.Side;
 import org.usfirst.frc.team3735.robot.util.SideChooser;
 import org.usfirst.frc.team3735.robot.util.bases.VortxIterative;
 import org.usfirst.frc.team3735.robot.util.oi.DriveOI;
-import org.usfirst.frc.team3735.robot.util.profiling.Location;
 import org.usfirst.frc.team3735.robot.util.settings.BooleanSetting;
 import org.usfirst.frc.team3735.robot.util.settings.Setting;
 
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -73,9 +65,25 @@ public class Robot extends VortxIterative {
 		oi = new GTAOI(); //MUST be instantiated after the subsystems
 			
 		
-		
+		/*
+		 * Selections:
+		 * Side: Red, Blue
+		 * Pos: Left, Mid, Right
+		 * Priority: Scale, Switch
+		 * Complexity: Simple, Complex
+		 * 
+		 */
 		autoChooser = new AutoChooser();
+			autoChooser.addObject("Left Scale Left", new LeftScaleLeft());
+			autoChooser.addObject("Left Scale Right", new LeftScaleRight());
+			autoChooser.addObject("Left Switch Left", new LeftSwitchLeft());
+			autoChooser.addObject("Mid Scale Left", new MidScaleLeft());
+			autoChooser.addObject("Mid Scale Right", new MidScaleRight());
+			autoChooser.addObject("Mid Switch Left", new MidSwitchLeft());
+			autoChooser.addObject("Mid Switch Right", new MidSwitchRight());
+			autoChooser.addObject("Right Scale Left", new RightScaleLeft());
 			autoChooser.addObject("Right Scale Right", new RightScaleRight());
+			autoChooser.addObject("Right Switch Right", new RightSwitchRight());
 			
 			
 		sideChooser = new SideChooser();
