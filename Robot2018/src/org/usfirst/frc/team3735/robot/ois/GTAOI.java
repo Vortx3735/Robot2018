@@ -65,7 +65,7 @@ public class GTAOI implements DriveOI{
 		co.pov180.whileHeld(new ElevatorDown());
 		
 		Setting position = new Setting("Position", 0);
-		PIDSetting setting = new PIDSetting(80, .15, 60, 0 ,0);
+		PIDSetting setting = new PIDSetting(80, .15, 60, 0 ,0, 0, "PID Setting", true);
 		SmartDashboard.putData(new ElevatorSetPositionSetting(position, setting));
 	}
 	

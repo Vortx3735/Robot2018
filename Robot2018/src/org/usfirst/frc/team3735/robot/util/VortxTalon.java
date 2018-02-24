@@ -11,44 +11,24 @@ import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard; 
 
 public class VortxTalon extends WPI_TalonSRX{
-	int id;
-	String name;
-	private PIDController PID;
-	private Setting iZone;
-	private Setting rampRate;
 	
-	
-//	double P = 0;
-//	double I = 0;
-//	double D = 0;
-//	double F = 0;
-	double iZ = 0;
-	//double ramp = 1;
-	
-	private PIDSetting pSet = new PIDSetting(0,0,0,0,1);
-	
+	private PIDSetting setting; 
+	private String name;
 	
 	double ticksPerInch = 1;
 	
 	public VortxTalon(int id){
-		this(id, "Motor " + id + " PID", false);
+		this(id, new PIDSetting(0,0,0,0,0,0, "", false));
 	}
 	
 	public VortxTalon(int id, String name, boolean onDash){
+		this(id, new PIDSetting(0,0,0,0,0,0, name, onDash));
+	}
+	
+	public VortxTalon(int id, PIDSetting setting){
 		super(id);
-		this.id = id;
-		this.name= name;
-		PID = new PIDController(pSet.getP(), pSet.getI(), pSet.getD(), new BlankPID(), new BlankPID());
-
-		if(onDash){
-			iZone = new Setting("iZoneLeft", iZ);
-			SmartDashboard.putData(PID);
-			rampRate = new Setting(name + "Ramp", pSet.getRampRate());
-		}else{
-			iZone = new Setting(name + "iZone", iZ, false);
-			rampRate = new Setting(name + "Ramp", pSet.getRampRate(), false);
-
-		}
+		this.name = setting.getName();
+		this.setting = setting;
 	}
 
 	public void setPID(double kp, double ki, double kd){
@@ -56,29 +36,21 @@ public class VortxTalon extends WPI_TalonSRX{
 		this.config_kI(0, ki, 0);
 		this.config_kD(0, kd, 0);
 		
-//		this.P = kp;
-//		this.I = ki;
-//		this.D = kd;	
-		pSet.setP(kp);
-		pSet.setI(ki);
-		pSet.setD(kd);
-		
-		PID.setPID(kp, ki, kd);
+		setting.setPID(kp, ki, kd);
 	}
 	
 	public void setPIDF(double kp, double ki, double kd, double kf) {
 		this.setPID(kp,ki,kd);
 		this.config_kF(0, kf, 0);
-//		this.F = kf;
-		pSet.setF(kf);
-		
-		PID.setF(kf);
+
+		setting.setPID(kp, ki, kd, kf);
 	}
 	
-	public void setPIDFR(PIDSetting setting){
+	public void setPIDSetting(PIDSetting setting){
 		this.setPIDF(setting.getP(), setting.getI(), setting.getD(), setting.getF());
-		rampRate.setValue(setting.getRampRate());
-		pSet = setting;
+		this.config_IntegralZone(0, (int)(setting.getiZone()*ticksPerInch), 0);
+		this.configClosedloopRamp(setting.getRampRate(), 0);
+		this.setting = setting;
 	}
 	
 	public void setTicksPerInch(double ticks){
@@ -99,27 +71,21 @@ public class VortxTalon extends WPI_TalonSRX{
 		this.setSelectedSensorPosition(0, 0, 0);
 	}
 	
-	public void updatePID() {
-    	this.setPIDF(PID.getP()/ticksPerInch, PID.getI()/ticksPerInch, PID.getD()/ticksPerInch, PID.getF());
-    	this.config_IntegralZone(0,  (int)(iZone.getValue() * ticksPerInch), 0);
-		this.configClosedloopRamp(rampRate.getValue(), 0);
-    }
-	
 	@Override
 	public void set(ControlMode mode, double value){
 		if(mode == ControlMode.Position){
-			updatePID();
 			value *= ticksPerInch;
 		}
 		super.set(mode, value);
 	}
 	
-	public PIDController getPIDController(){
-		return PID;
+	public void setWithPID(double value, PIDSetting setting){
+		setPIDSetting(setting);
+		set(ControlMode.Position, value);
 	}
 	
 	public PIDSetting getPIDSetting(){
-		return pSet;
+		return setting;
 	}
 
 	public void printToDashboard(){

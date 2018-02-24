@@ -85,24 +85,27 @@ public class Elevator extends Subsystem {
 		elevatorRight.set(ControlMode.PercentOutput, speed);
 	}
 
-	public void setElevatorLeftPosition(double position, PIDSetting setting) {
-		elevatorLeft.setPIDFR(setting);
+	public void setElevatorLeftPosition(double position) {;
 		elevatorLeft.set(ControlMode.Position, position);
 	}
 
-	public void setElevatorRightPosition(double position, PIDSetting setting) {
-		elevatorLeft.setPIDFR(setting);
+	public void setElevatorRightPosition(double position) {
 		elevatorRight.set(ControlMode.Position, position);
+	}
+	
+	public void setElevatorPIDSetting(PIDSetting setting){
+		elevatorLeft.setPIDSetting(setting);
+		elevatorRight.setPIDSetting(setting);
 	}
 
 	public void setElevatorPosition(double position) {
-		setElevatorLeftPosition(position, elevatorLeft.getPIDSetting());
-		setElevatorRightPosition(position, elevatorRight.getPIDSetting());
+		setElevatorLeftPosition(position);
+		setElevatorRightPosition(position);
 	}
 
 	public void setElevatorPosition(double position, PIDSetting setting) {
-		setElevatorLeftPosition(position, setting);
-		setElevatorRightPosition(position, setting);
+		setElevatorPosition(position);
+		setElevatorPIDSetting(setting);
 	}
 	// public void moveElevatorInches(double inches){
 	// double ticksToMove = (inches*Constants.Elevator.ticksPerInch);

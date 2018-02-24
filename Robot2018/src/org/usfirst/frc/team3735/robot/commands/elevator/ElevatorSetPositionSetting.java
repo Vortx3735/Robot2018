@@ -12,6 +12,12 @@ import edu.wpi.first.wpilibj.command.Command;
 public class ElevatorSetPositionSetting extends Command {
 	Func inches;
 	PIDSetting setting;
+	
+	static PIDSetting defaultPIDSetting = new PIDSetting(0,0,0,0,0,0, "Default PID", false);
+	
+	public  ElevatorSetPositionSetting(double inches){
+		this(inches, defaultPIDSetting);
+	}
     public ElevatorSetPositionSetting(double inches, PIDSetting setting) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
@@ -31,11 +37,12 @@ public class ElevatorSetPositionSetting extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	Robot.elevator.setElevatorPIDSetting(setting);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.elevator.setElevatorPosition(inches.getValue(), setting);
+    	Robot.elevator.setElevatorPosition(inches.getValue());
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -45,10 +52,12 @@ public class ElevatorSetPositionSetting extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+    	Robot.elevator.setElevatorMotorsCurrent(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    	end();
     }
 }
