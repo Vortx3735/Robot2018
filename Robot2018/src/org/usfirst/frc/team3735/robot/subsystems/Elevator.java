@@ -61,20 +61,37 @@ public class Elevator extends Subsystem {
 	}
 
 	public void setElevatorMotorsCurrent(double speed) {
-		if (speed != 0) {
-			double difference = (elevatorLeft.getSelectedSensorPosition(0)
-					- elevatorRight.getSelectedSensorPosition(0));
-			if (difference >= 20) {
-				setElevatorLeftCurrent(speed - .02);
-				setElevatorRightCurrent(speed);
-			} else if (difference <= -20) {
-				setElevatorLeftCurrent(speed);
-				setElevatorRightCurrent(speed - .02);
-			} else {
-				setElevatorLeftCurrent(speed);
-				setElevatorRightCurrent(speed);
-			}
-		}
+//		if (speed != 0) {
+//			double difference = (elevatorLeft.getSelectedSensorPosition(0)
+//					- elevatorRight.getSelectedSensorPosition(0));
+//			if (speed > 0) {
+//				if (difference >= 50) {
+//					setElevatorLeftCurrent(speed - .02);
+//					setElevatorRightCurrent(speed);
+//				} else if (difference <= -50) {
+//					setElevatorLeftCurrent(speed);
+//					setElevatorRightCurrent(speed - .02);
+//				} else {
+//					setElevatorLeftCurrent(speed);
+//					setElevatorRightCurrent(speed);
+//				}
+//			}else if (speed < 0){
+//				if (difference >= 50) {
+//					setElevatorLeftCurrent(speed - .02);
+//					setElevatorRightCurrent(speed);
+//				} else if (difference <= -50) {
+//					setElevatorLeftCurrent(speed);
+//					setElevatorRightCurrent(speed - .02);
+//				} else {
+//					setElevatorLeftCurrent(speed);
+//					setElevatorRightCurrent(speed);
+//				}
+//				
+//			}
+//		}
+		
+		setElevatorLeftCurrent(speed);
+		setElevatorRightCurrent(speed);
 	}
 
 	public void setElevatorLeftCurrent(double speed) {
@@ -85,15 +102,16 @@ public class Elevator extends Subsystem {
 		elevatorRight.set(ControlMode.PercentOutput, speed);
 	}
 
-	public void setElevatorLeftPosition(double position) {;
+	public void setElevatorLeftPosition(double position) {
+		;
 		elevatorLeft.set(ControlMode.Position, position);
 	}
 
 	public void setElevatorRightPosition(double position) {
 		elevatorRight.set(ControlMode.Position, position);
 	}
-	
-	public void setElevatorPIDSetting(PIDSetting setting){
+
+	public void setElevatorPIDSetting(PIDSetting setting) {
 		elevatorLeft.setPIDSetting(setting);
 		elevatorRight.setPIDSetting(setting);
 	}

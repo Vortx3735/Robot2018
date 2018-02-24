@@ -15,9 +15,10 @@ public class ElevatorSetPositionSetting extends Command {
 	
 	static PIDSetting defaultPIDSetting = new PIDSetting(0,0,0,0,0,0, "Default PID", false);
 	
-	public  ElevatorSetPositionSetting(double inches){
+	public ElevatorSetPositionSetting(double inches){
 		this(inches, defaultPIDSetting);
 	}
+
     public ElevatorSetPositionSetting(double inches, PIDSetting setting) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
@@ -29,11 +30,28 @@ public class ElevatorSetPositionSetting extends Command {
     	}, setting); 	
     }
     
+    public ElevatorSetPositionSetting(double inches, int level){
+		this(inches, levelToPIDSetting(level));
+	}
+	
+	public ElevatorSetPositionSetting(Func f, int level){
+		this(f, levelToPIDSetting(level));
+	}
+	
     public ElevatorSetPositionSetting(Func f, PIDSetting setting) {
     	requires(Robot.elevator);
     	this.inches = f;
     	this.setting = setting;
     }
+	
+	public static PIDSetting levelToPIDSetting(int level){
+		if(level == 1){
+			//return PIDSetting1;
+		}else if(level == 2){
+			//return PIDSetting2;
+		}
+		return defaultPIDSetting;
+	}
 
     // Called just before this Command runs the first time
     protected void initialize() {
