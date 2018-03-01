@@ -103,7 +103,6 @@ public class Elevator extends Subsystem {
 	}
 
 	public void setElevatorLeftPosition(double position) {
-		;
 		elevatorLeft.set(ControlMode.Position, position);
 	}
 

@@ -89,6 +89,7 @@ public class VortxTalon extends WPI_TalonSRX{
 	}
 
 	public void printToDashboard(){
+		SmartDashboard.putNumber(name + "P Output", this.getMotorOutputPercent());
 		SmartDashboard.putNumber((name + " Pos") , this.getSelectedSensorPosition(0));
 		SmartDashboard.putNumber((name + " Inches"),this.getSelectedSensorPosition(0)/ticksPerInch);
 	}
