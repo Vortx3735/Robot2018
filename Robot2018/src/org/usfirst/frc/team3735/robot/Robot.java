@@ -8,6 +8,8 @@ import org.usfirst.frc.team3735.robot.commands.drive.positions.SetToLastPosition
 import org.usfirst.frc.team3735.robot.commands.drive.positions.ZeroYaw;
 import org.usfirst.frc.team3735.robot.commands.drive.recorder.RecordProfile;
 import org.usfirst.frc.team3735.robot.commands.drive.recorder.SendProfile;
+import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorResetPosition;
+import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorSetPosition;
 import org.usfirst.frc.team3735.robot.ois.GTAOI;
 import org.usfirst.frc.team3735.robot.subsystems.Carriage;
 import org.usfirst.frc.team3735.robot.subsystems.Climber;
@@ -101,12 +103,17 @@ public class Robot extends VortxIterative {
 		SmartDashboard.putData("Load File", new InstantCommand() {
 			@Override
 			protected void initialize() {
-				s.loadFile("defaultfile");
+				s.loadFile("rightScaleRight");
 			}
 			
 		});
+		SmartDashboard.putData(s);
 		SmartDashboard.putData(new RecordProfile());
 		SmartDashboard.putData(new SetToLastPosition());
+		
+		Setting position = new Setting("Jamal Elevator Position", 0);
+		SmartDashboard.putData(new ElevatorSetPosition(position));
+		SmartDashboard.putData("Reset Encoders", new ElevatorResetPosition());
 
 		
 	}
@@ -116,6 +123,7 @@ public class Robot extends VortxIterative {
 		BooleanSetting.fetchAround();
 		
         vision.debugLog();
+//        navigation.integrate();
         navigation.displayPosition();
         drive.debugLog();
         

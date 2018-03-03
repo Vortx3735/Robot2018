@@ -33,7 +33,7 @@ public class PIDSetting extends PIDController{
 		if(onDash){
 			this.iZone = new Setting(name + "iZone", iZone);
 			this.rampRate = new Setting(name + "Ramp", rampRate);
-			SmartDashboard.putData(this);
+			SmartDashboard.putData(name, this);
 		}else{
 			this.iZone = new Setting(name + "iZone", iZone, false);
 			this.rampRate = new Setting(name + "Ramp", rampRate, false);

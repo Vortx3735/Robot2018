@@ -12,7 +12,7 @@ public class CarriageRaise extends Command {
     public CarriageRaise() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.carriage);
+//    	requires(Robot.carriage);
     }
 
     // Called just before this Command runs the first time

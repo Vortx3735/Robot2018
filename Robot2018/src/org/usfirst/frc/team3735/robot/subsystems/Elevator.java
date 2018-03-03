@@ -11,6 +11,7 @@ import org.usfirst.frc.team3735.robot.util.settings.Setting;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -22,8 +23,8 @@ public class Elevator extends Subsystem {
 
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
-	VortxTalon elevatorLeft;
-	VortxTalon elevatorRight;
+	TalonSRX elevatorLeft;
+	TalonSRX elevatorRight;
 
 	// private Setting carriageSpeed;
 
@@ -31,8 +32,8 @@ public class Elevator extends Subsystem {
 	private Setting correctionMultiplier;
 
 	public Elevator() {
-		elevatorLeft = new VortxTalon(RobotMap.Elevator.elevatorLeft, "Elevator Left", true);
-		elevatorRight = new VortxTalon(RobotMap.Elevator.elevatorRight, "Elevator Right", true);
+		elevatorLeft = new WPI_TalonSRX(RobotMap.Elevator.elevatorLeft);// "Elevator Left", true);
+		elevatorRight = new WPI_TalonSRX(RobotMap.Elevator.elevatorRight);//, "Elevator Right", true);
 
 		elevatorMultiplier = new Setting("Elevator Move Multiplier", Constants.Elevator.elevatorMultiplier);
 		correctionMultiplier = new Setting("Elevator Trim Multiplier", Constants.Elevator.correctionMultiplier);
@@ -40,15 +41,21 @@ public class Elevator extends Subsystem {
 		elevatorLeft.setNeutralMode(NeutralMode.Brake);
 		elevatorRight.setNeutralMode(NeutralMode.Brake);
 
-		elevatorRight.setInverted(true);
+		//elevatorRight.setInverted(true);
+		
+		elevatorLeft.configPeakOutputForward(1, 0);
+		elevatorLeft.configPeakOutputReverse(-1, 0);
+		
+		elevatorRight.configPeakOutputForward(1, 0);
+		elevatorRight.configPeakOutputReverse(-1, 0);
 
 		setUpSensors();
 		resetEncoderPositions();
 	}
 
 	public void setUpSensors() {
-		elevatorLeft.initSensor(FeedbackDevice.QuadEncoder);
-		elevatorRight.initSensor(FeedbackDevice.QuadEncoder);
+//		elevatorLeft.initSensor(FeedbackDevice.QuadEncoder);
+//		elevatorRight.initSensor(FeedbackDevice.QuadEncoder);
 	}
 
 	public void setupForPositionControl() {
@@ -56,8 +63,16 @@ public class Elevator extends Subsystem {
 	}
 
 	public void resetEncoderPositions() {
-		elevatorLeft.resetPosition();
-		elevatorRight.resetPosition();
+//		elevatorLeft.resetPosition();
+//		elevatorRight.resetPosition();
+		
+		elevatorLeft.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
+		elevatorLeft.setSelectedSensorPosition(0, 0, 0);
+		elevatorLeft.setSensorPhase(true);
+		
+		elevatorRight.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
+		elevatorRight.setSelectedSensorPosition(0, 0, 0);
+		elevatorRight.setSensorPhase(true);
 	}
 
 	public void setElevatorMotorsCurrent(double speed) {
@@ -96,12 +111,24 @@ public class Elevator extends Subsystem {
 
 	public void setElevatorLeftCurrent(double speed) {
 		elevatorLeft.set(ControlMode.PercentOutput, speed);
+		System.out.println("Left Percent" + speed);
 	}
 
 	public void setElevatorRightCurrent(double speed) {
-		elevatorRight.set(ControlMode.PercentOutput, speed);
+//		elevatorRight.set(ControlMode.PercentOutput, -speed);
+		if(speed < 0) {
+			elevatorRight.setInverted(false);
+
+		}else {
+			elevatorRight.setInverted(true);
+
+		}
+		elevatorRight.set(ControlMode.PercentOutput, Math.abs(speed));
+
+		System.out.println("Right Percent" + speed);
 	}
 
+	
 	public void setElevatorLeftPosition(double position) {
 		elevatorLeft.set(ControlMode.Position, position);
 	}
@@ -111,8 +138,8 @@ public class Elevator extends Subsystem {
 	}
 
 	public void setElevatorPIDSetting(PIDSetting setting) {
-		elevatorLeft.setPIDSetting(setting);
-		elevatorRight.setPIDSetting(setting);
+//		elevatorLeft.setPIDSetting(setting);
+//		elevatorRight.setPIDSetting(setting);
 	}
 
 	public void setElevatorPosition(double position) {
@@ -146,7 +173,7 @@ public class Elevator extends Subsystem {
 	}
 
 	public void log() {
-		elevatorLeft.printToDashboard();
-		elevatorRight.printToDashboard();
+//		elevatorLeft.printToDashboard();
+//		elevatorRight.printToDashboard();
 	}
 }

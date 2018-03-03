@@ -212,10 +212,10 @@ public class Drive extends Subsystem {
 
 	public void resetEncodersPositions(){
 		int absolutePosition = l1.getSelectedSensorPosition(0) & 0xFFF;
-		l1.setSelectedSensorPosition(absolutePosition, 0, 0);
+		l1.setSelectedSensorPosition(0, 0, 0);
 		
 		absolutePosition = r1.getSelectedSensorPosition(0) & 0xFFF;
-		r1.setSelectedSensorPosition(absolutePosition, 0, 0);
+		r1.setSelectedSensorPosition(0, 0, 0);
 
 	}
 	

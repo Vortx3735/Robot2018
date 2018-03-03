@@ -211,6 +211,7 @@ public class Navigation extends Subsystem implements PIDSource, PIDOutput {
 
 	public void resetPosition() {
 		ahrs.setYaw(0);
+		Robot.drive.resetEncodersPositions();
 		setPosition(getStartingPosition());
 		System.out.println("Reseting Position...");
 	}

@@ -13,7 +13,7 @@ public class RightScaleRight extends CommandGroup {
 
     public RightScaleRight() {
     	addSequential(new SendProfile(Waypoints.Auto.rightScaleRight));
-    	addSequential(new Wait(1));
+    	addSequential(new Wait(.2));
     	addSequential(new SendProfile(Waypoints.Auto.rightScaleRight2));
     }
 }

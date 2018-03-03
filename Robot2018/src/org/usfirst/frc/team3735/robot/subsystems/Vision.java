@@ -26,14 +26,14 @@ public class Vision extends Subsystem {
 		
 	}
 	public Vision(){
-		camera1 = CameraServer.getInstance().startAutomaticCapture(0);
-		camera2 = CameraServer.getInstance().startAutomaticCapture(1);
-		
-		camera1.setFPS(16);
-		//camera2.setFPS(16);
-		
-	    camera1.setResolution(IMG_WIDTH, IMG_HEIGHT);
-	    camera2.setResolution(IMG_WIDTH, IMG_HEIGHT);
+//		camera1 = CameraServer.getInstance().startAutomaticCapture(0);
+//		camera2 = CameraServer.getInstance().startAutomaticCapture(1);
+//		
+//		camera1.setFPS(16);
+//		//camera2.setFPS(16);
+//		
+//	    camera1.setResolution(IMG_WIDTH, IMG_HEIGHT);
+//	    camera2.setResolution(IMG_WIDTH, IMG_HEIGHT);
 	    
 
 	    

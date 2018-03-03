@@ -106,6 +106,8 @@ public class SendProfile extends Command {
     				sc = new Scanner(new File(filePath));
     			}catch(Exception e){
     				e.printStackTrace();
+    				System.out.println("Could not find file: " + filePath);
+    				return;
     			}
     	    	while(sc.hasNextLine()) {
     	    		array.add(DriveState.fromString(sc.nextLine()));
