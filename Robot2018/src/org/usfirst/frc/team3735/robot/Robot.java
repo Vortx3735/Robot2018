@@ -11,6 +11,7 @@ import org.usfirst.frc.team3735.robot.commands.drive.recorder.SendProfile;
 import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorResetPosition;
 import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorSetPosition;
 import org.usfirst.frc.team3735.robot.ois.GTAOI;
+import org.usfirst.frc.team3735.robot.settings.Dms;
 import org.usfirst.frc.team3735.robot.subsystems.Carriage;
 import org.usfirst.frc.team3735.robot.subsystems.Climber;
 import org.usfirst.frc.team3735.robot.subsystems.CubeIntake;
@@ -19,9 +20,11 @@ import org.usfirst.frc.team3735.robot.subsystems.Elevator;
 import org.usfirst.frc.team3735.robot.subsystems.Navigation;
 import org.usfirst.frc.team3735.robot.subsystems.Vision;
 import org.usfirst.frc.team3735.robot.util.AutoChooser;
+import org.usfirst.frc.team3735.robot.util.PositionChooser;
 import org.usfirst.frc.team3735.robot.util.SideChooser;
 import org.usfirst.frc.team3735.robot.util.bases.VortxIterative;
 import org.usfirst.frc.team3735.robot.util.oi.DriveOI;
+import org.usfirst.frc.team3735.robot.util.profiling.Position;
 import org.usfirst.frc.team3735.robot.util.settings.BooleanSetting;
 import org.usfirst.frc.team3735.robot.util.settings.Setting;
 
@@ -52,6 +55,7 @@ public class Robot extends VortxIterative {
 	
 	public static SideChooser sideChooser;
 	public static AutoChooser autoChooser;
+	private PositionChooser posChooser;
 
 	
 	
@@ -90,9 +94,15 @@ public class Robot extends VortxIterative {
 			
 			
 		sideChooser = new SideChooser();
+		posChooser = new PositionChooser();
+			posChooser.addDefault("Left", new Position(-Dms.Field.HALFWALLWIDTH + Dms.Bot.HALFWIDTH, Dms.Bot.HALFLENGTH, 0));
+			posChooser.addDefault("Middle", new Position(0, Dms.Bot.HALFLENGTH, 0));
+			posChooser.addDefault("Right", new Position(Dms.Field.HALFWALLWIDTH - Dms.Bot.HALFWIDTH, Dms.Bot.HALFLENGTH, 0));
 
 		SmartDashboard.putData("Autonomous", autoChooser);
 		SmartDashboard.putData("Side", sideChooser);	
+		SmartDashboard.putData("Position", sideChooser);	
+
 		
 		
 		SmartDashboard.putData("Reset Position", new ResetPosition());

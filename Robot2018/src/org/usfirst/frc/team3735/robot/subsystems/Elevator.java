@@ -23,8 +23,8 @@ public class Elevator extends Subsystem {
 
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
-	TalonSRX elevatorLeft;
-	TalonSRX elevatorRight;
+	VortxTalon elevatorLeft;
+	VortxTalon elevatorRight;
 
 	// private Setting carriageSpeed;
 
@@ -32,8 +32,8 @@ public class Elevator extends Subsystem {
 	private Setting correctionMultiplier;
 
 	public Elevator() {
-		elevatorLeft = new WPI_TalonSRX(RobotMap.Elevator.elevatorLeft);// "Elevator Left", true);
-		elevatorRight = new WPI_TalonSRX(RobotMap.Elevator.elevatorRight);//, "Elevator Right", true);
+		elevatorLeft = new VortxTalon(RobotMap.Elevator.elevatorLeft);// "Elevator Left", true);
+		elevatorRight = new VortxTalon(RobotMap.Elevator.elevatorRight);//, "Elevator Right", true);
 
 		elevatorMultiplier = new Setting("Elevator Move Multiplier", Constants.Elevator.elevatorMultiplier);
 		correctionMultiplier = new Setting("Elevator Trim Multiplier", Constants.Elevator.correctionMultiplier);
@@ -41,21 +41,19 @@ public class Elevator extends Subsystem {
 		elevatorLeft.setNeutralMode(NeutralMode.Brake);
 		elevatorRight.setNeutralMode(NeutralMode.Brake);
 
-		//elevatorRight.setInverted(true);
-		
-		elevatorLeft.configPeakOutputForward(1, 0);
-		elevatorLeft.configPeakOutputReverse(-1, 0);
-		
-		elevatorRight.configPeakOutputForward(1, 0);
-		elevatorRight.configPeakOutputReverse(-1, 0);
+		elevatorLeft.setTicksPerInch(Constants.Elevator.ticksPerInch);
+		elevatorRight.setTicksPerInch(Constants.Elevator.ticksPerInch);
+
+		elevatorRight.setInverted(true);
+
 
 		setUpSensors();
 		resetEncoderPositions();
 	}
 
 	public void setUpSensors() {
-//		elevatorLeft.initSensor(FeedbackDevice.QuadEncoder);
-//		elevatorRight.initSensor(FeedbackDevice.QuadEncoder);
+		elevatorLeft.initSensor(FeedbackDevice.QuadEncoder);
+		elevatorRight.initSensor(FeedbackDevice.QuadEncoder);
 	}
 
 	public void setupForPositionControl() {
@@ -63,16 +61,16 @@ public class Elevator extends Subsystem {
 	}
 
 	public void resetEncoderPositions() {
-//		elevatorLeft.resetPosition();
-//		elevatorRight.resetPosition();
+		elevatorLeft.resetPosition();
+		elevatorRight.resetPosition();
 		
-		elevatorLeft.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
-		elevatorLeft.setSelectedSensorPosition(0, 0, 0);
-		elevatorLeft.setSensorPhase(true);
-		
-		elevatorRight.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
-		elevatorRight.setSelectedSensorPosition(0, 0, 0);
-		elevatorRight.setSensorPhase(true);
+//		elevatorLeft.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
+//		elevatorLeft.setSelectedSensorPosition(0, 0, 0);
+//		elevatorLeft.setSensorPhase(true);
+//		
+//		elevatorRight.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
+//		elevatorRight.setSelectedSensorPosition(0, 0, 0);
+//		elevatorRight.setSensorPhase(true);
 	}
 
 	public void setElevatorMotorsCurrent(double speed) {
@@ -116,14 +114,14 @@ public class Elevator extends Subsystem {
 
 	public void setElevatorRightCurrent(double speed) {
 //		elevatorRight.set(ControlMode.PercentOutput, -speed);
-		if(speed < 0) {
-			elevatorRight.setInverted(false);
-
-		}else {
-			elevatorRight.setInverted(true);
-
-		}
-		elevatorRight.set(ControlMode.PercentOutput, Math.abs(speed));
+//		if(speed < 0) {
+//			elevatorRight.setInverted(false);
+//
+//		}else {
+//			elevatorRight.setInverted(true);
+//
+//		}
+		elevatorRight.set(ControlMode.PercentOutput, speed);
 
 		//System.out.println("Right Percent" + speed);
 	}
@@ -173,7 +171,7 @@ public class Elevator extends Subsystem {
 	}
 
 	public void log() {
-//		elevatorLeft.printToDashboard();
-//		elevatorRight.printToDashboard();
+		elevatorLeft.printToDashboard();
+		elevatorRight.printToDashboard();
 	}
 }

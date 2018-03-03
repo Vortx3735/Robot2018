@@ -48,36 +48,36 @@ public class RobotMap {
 
 	public static class Drive{
 		
-		public static int[] leftTrain = {2,3};
-		public static int[] rightTrain = {10,6};//11,10
+		public static int[] leftTrain = 		{2,3};
+		public static int[] rightTrain = 		{10,11};//11,10
 
 		
 	}
 	
 	public static class CubeIntake{
-		public static int leftMotor = 1;
-		public static int rightMotor = 12;
+		public static int leftMotor = 			1;
+		public static int rightMotor = 			12;
 		
-		public static int solenoid = 2;
+		public static int solenoid = 		2;
 		
 	}
 	
 	public static class Elevator{
-		public static int elevatorLeft = 8;
-		public static int elevatorRight = 9;
+		public static int elevatorLeft = 		8;
+		public static int elevatorRight = 		6;
 		
 	}
 	
 	public static class Carriage{
-		public static int carriageLeft = 4;
-		public static int carraigeRight = 5;
+		public static int carriageLeft = 		4;
+		public static int carraigeRight =		5;
 		
-		public static int solenoid = 3;
+		public static int solenoid = 		3;
 	}
 	
 	public static class Climber{
-		public static int motor = 7;
+		public static int motor = 				7;
 		
-		public static int solenoid = 1;
+		public static int solenoid = 		1;
 	}
 }
