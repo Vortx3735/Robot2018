@@ -13,7 +13,7 @@ public class ElevatorSetPositionSetting extends Command {
 	Func inches;
 	PIDSetting setting;
 	
-	static PIDSetting defaultPIDSetting = new PIDSetting(0,0,0,0,0,0, "Default PID", false);
+	static PIDSetting defaultPIDSetting = new PIDSetting(0,0,0,0,0,0);
 	
 	public ElevatorSetPositionSetting(double inches){
 		this(inches, defaultPIDSetting);

@@ -31,8 +31,12 @@ public class Elevator extends Subsystem {
 	private Setting correctionMultiplier;
 
 	public Elevator() {
-		elevatorLeft = new VortxTalon(RobotMap.Elevator.elevatorLeft, "Elevator Left", true);
-		elevatorRight = new VortxTalon(RobotMap.Elevator.elevatorRight, "Elevator Right", true);
+		elevatorLeft = new VortxTalon(RobotMap.Elevator.elevatorLeft, "Elevator Left");
+		
+		elevatorRight = new VortxTalon(RobotMap.Elevator.elevatorRight, "Elevator Right");
+		
+		elevatorLeft.putOnDash();
+		elevatorRight.putOnDash();
 
 		elevatorMultiplier = new Setting("Elevator Move Multiplier", Constants.Elevator.elevatorMultiplier);
 		correctionMultiplier = new Setting("Elevator Trim Multiplier", Constants.Elevator.correctionMultiplier);
@@ -46,6 +50,7 @@ public class Elevator extends Subsystem {
 		resetEncoderPositions();
 	}
 
+	
 	public void setUpSensors() {
 		elevatorLeft.initSensor(FeedbackDevice.QuadEncoder);
 		elevatorRight.initSensor(FeedbackDevice.QuadEncoder);

@@ -18,17 +18,16 @@ public class VortxTalon extends WPI_TalonSRX{
 	double ticksPerInch = 1;
 	
 	public VortxTalon(int id){
-		this(id, new PIDSetting(0,0,0,0,0,0, "", false));
+		this(id, "Talon " + id);
 	}
 	
-	public VortxTalon(int id, String name, boolean onDash){
-		this(id, new PIDSetting(0,0,0,0,0,0, name, onDash));
-	}
-	
-	public VortxTalon(int id, PIDSetting setting){
+	public VortxTalon(int id, String name){
 		super(id);
-		this.name = setting.getName();
-		this.setting = setting;
+		this.name = name;
+	}
+	
+	public void putOnDash(){
+		SmartDashboard.putData(name, this);
 	}
 
 	public void setPID(double kp, double ki, double kd){
