@@ -22,22 +22,22 @@ public class PIDSetting extends PIDController{
 		this(P, I, D, F, rampRate, 0);
 	}
 	
+
+	
 	public PIDSetting(double P, double I, double D, double F, double rampRate, double iZone){
-		this(P, I, D, F, rampRate, iZone, "No Name", false);
+		super(P, I, D, F, new BlankPID(), new BlankPID());
+		
+		this.iZone = new Setting("", iZone, false);
+		this.rampRate = new Setting("", rampRate, false);
+		
 	}
 	
-	public PIDSetting(double P, double I, double D, double F, double rampRate, double iZone, String name, boolean onDash){
-		super(P, I, D, F, new BlankPID(), new BlankPID());
-		this.name = name;
+	public void sendToDash(String name){
+		SmartDashboard.putData(name, this);
 		
-		if(onDash){
-			this.iZone = new Setting(name + "iZone", iZone);
-			this.rampRate = new Setting(name + "Ramp", rampRate);
-			SmartDashboard.putData(name, this);
-		}else{
-			this.iZone = new Setting(name + "iZone", iZone, false);
-			this.rampRate = new Setting(name + "Ramp", rampRate, false);
-		}
+		this.iZone = new Setting(name + "iZone", iZone.getValue());
+		this.rampRate = new Setting(name + "Ramp", rampRate.getValue());
+
 	}
 
 	public void setiZone(double iZone){

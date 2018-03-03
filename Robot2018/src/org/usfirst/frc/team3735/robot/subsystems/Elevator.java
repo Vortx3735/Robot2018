@@ -125,7 +125,7 @@ public class Elevator extends Subsystem {
 		}
 		elevatorRight.set(ControlMode.PercentOutput, Math.abs(speed));
 
-		System.out.println("Right Percent" + speed);
+		//System.out.println("Right Percent" + speed);
 	}
 
 	
