@@ -11,7 +11,7 @@ import org.usfirst.frc.team3735.robot.commands.drive.ExpDrive;
 import org.usfirst.frc.team3735.robot.settings.Constants;
 import org.usfirst.frc.team3735.robot.settings.Dms;
 import org.usfirst.frc.team3735.robot.settings.RobotMap;
-import org.usfirst.frc.team3735.robot.util.VortxTalon;
+import org.usfirst.frc.team3735.robot.util.hardware.VortxTalon;
 import org.usfirst.frc.team3735.robot.util.settings.BooleanSetting;
 import org.usfirst.frc.team3735.robot.util.settings.Setting;
 

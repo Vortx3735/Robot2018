@@ -19,15 +19,17 @@ import org.usfirst.frc.team3735.robot.subsystems.Drive;
 import org.usfirst.frc.team3735.robot.subsystems.Elevator;
 import org.usfirst.frc.team3735.robot.subsystems.Navigation;
 import org.usfirst.frc.team3735.robot.subsystems.Vision;
-import org.usfirst.frc.team3735.robot.util.AutoChooser;
-import org.usfirst.frc.team3735.robot.util.PositionChooser;
-import org.usfirst.frc.team3735.robot.util.SideChooser;
 import org.usfirst.frc.team3735.robot.util.bases.VortxIterative;
+import org.usfirst.frc.team3735.robot.util.choosers.AutoChooser;
+import org.usfirst.frc.team3735.robot.util.choosers.DoNothing;
+import org.usfirst.frc.team3735.robot.util.choosers.SideChooser;
 import org.usfirst.frc.team3735.robot.util.oi.DriveOI;
 import org.usfirst.frc.team3735.robot.util.profiling.Position;
 import org.usfirst.frc.team3735.robot.util.settings.BooleanSetting;
 import org.usfirst.frc.team3735.robot.util.settings.Setting;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -50,12 +52,16 @@ public class Robot extends VortxIterative {
 	public static Climber climber;
 	public static Carriage carriage;
 	
+	public static Autonomous autoLogic;
+	
 	public static DriveOI oi;
 	
 	
 	public static SideChooser sideChooser;
 	public static AutoChooser autoChooser;
-	private PositionChooser posChooser;
+	
+	
+
 
 	
 	
@@ -71,15 +77,16 @@ public class Robot extends VortxIterative {
 		
 		oi = new GTAOI(); //MUST be instantiated after the subsystems
 			
-		
+		autoLogic = new Autonomous();
 		/*
 		 * Selections:
 		 * Side: Red, Blue
-		 * Pos: Left, Mid, Right
-		 * Priority: Scale, Switch
-		 * Complexity: Simple, Complex
+		 * Starting Position: Left, Mid, Right
+		 * Priority: Scale, Switch, Line
+		 * Complexity: Strict, Curved
 		 * 
 		 */
+		 
 		autoChooser = new AutoChooser();
 			autoChooser.addObject("Left Scale Left", new LeftScaleLeft());
 			autoChooser.addObject("Left Scale Right", new LeftScaleRight());
@@ -94,12 +101,11 @@ public class Robot extends VortxIterative {
 			
 			
 		sideChooser = new SideChooser();
-		posChooser = new PositionChooser();
-			posChooser.addDefault("Left", new Position(-Dms.Field.HALFWALLWIDTH + Dms.Bot.HALFWIDTH, Dms.Bot.HALFLENGTH, 0));
-			posChooser.addDefault("Middle", new Position(0, Dms.Bot.HALFLENGTH, 0));
-			posChooser.addDefault("Right", new Position(Dms.Field.HALFWALLWIDTH - Dms.Bot.HALFWIDTH, Dms.Bot.HALFLENGTH, 0));
+//			posChooser.addDefault("Left", new Position(-Dms.Field.HALFWALLWIDTH + Dms.Bot.HALFWIDTH, Dms.Bot.HALFLENGTH, 0));
+//			posChooser.addDefault("Middle", new Position(0, Dms.Bot.HALFLENGTH, 0));
+//			posChooser.addDefault("Right", new Position(Dms.Field.HALFWALLWIDTH - Dms.Bot.HALFWIDTH, Dms.Bot.HALFLENGTH, 0));
 
-		SmartDashboard.putData("Autonomous", autoChooser);
+		SmartDashboard.putData("Autonomous Testing", autoChooser);
 		SmartDashboard.putData("Side", sideChooser);	
 		SmartDashboard.putData("Position", sideChooser);	
 
@@ -148,8 +154,14 @@ public class Robot extends VortxIterative {
 
 	@Override
 	public void autonomousInit() {
+		
+		
+		
 		navigation.resetPosition();
-        autoChooser.startSelected();
+        
+//		autoLogic.startCommand();
+		autoChooser.startSelected();
+		
 	}
 	@Override
 	public void autonomousPeriodic() {
@@ -165,6 +177,7 @@ public class Robot extends VortxIterative {
 	@Override
     public void teleopInit() {
         autoChooser.cancel();
+        autoLogic.cancel();
     }
 	@Override
 	public void teleopPeriodic() {

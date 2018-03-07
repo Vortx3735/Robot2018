@@ -4,7 +4,7 @@ import org.usfirst.frc.team3735.robot.commands.elevator.BlankPID;
 import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorMove;
 import org.usfirst.frc.team3735.robot.settings.Constants;
 import org.usfirst.frc.team3735.robot.settings.RobotMap;
-import org.usfirst.frc.team3735.robot.util.VortxTalon;
+import org.usfirst.frc.team3735.robot.util.hardware.VortxTalon;
 import org.usfirst.frc.team3735.robot.util.settings.PIDSetting;
 import org.usfirst.frc.team3735.robot.util.settings.Setting;
 

@@ -37,5 +37,7 @@ public class Waypoints {
 		public static final Position left = new Position(-Dms.Field.HALFWALLWIDTH, Dms.Bot.HALFLENGTH, 0);
 		public static final Position mid = new Position(0, Dms.Bot.HALFLENGTH, 0);
 		public static final Position right = new Position(Dms.Field.HALFWALLWIDTH, Dms.Bot.HALFLENGTH, 0);
+		public static final Position unknown = mid;
 	}
+
 }
