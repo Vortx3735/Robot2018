@@ -18,38 +18,46 @@ public class VortxTalon extends WPI_TalonSRX{
 	double ticksPerInch = 1;
 	
 	public VortxTalon(int id){
-		this(id, "Talon " + id);
+		this(id, "Talon " + (int)Math.abs(id));
 	}
 	
 	public VortxTalon(int id, String name){
-		super(id);
+		super((int)Math.abs(id));
 		this.name = name;
+		
+		if(id < 0) {
+			this.setInverted(true);
+		}else {
+			this.setInverted(false);
+		}
 	}
 	
 	public void putOnDash(){
-		SmartDashboard.putData(name, this);
+//		SmartDashboard.putData(name, this);
+		setting.sendToDash(name + " PID");
 	}
 
 	public void setPID(double kp, double ki, double kd){
-		this.config_kP(0, kp, 0);
-		this.config_kI(0, ki, 0);
-		this.config_kD(0, kd, 0);
+		this.config_kP(0, kp / ticksPerInch , 0);
+		this.config_kI(0, ki / ticksPerInch, 0);
+		this.config_kD(0, kd / ticksPerInch, 0);
 		
 		setting.setPID(kp, ki, kd);
 	}
 	
 	public void setPIDF(double kp, double ki, double kd, double kf) {
 		this.setPID(kp,ki,kd);
-		this.config_kF(0, kf, 0);
+		this.config_kF(0, kf / ticksPerInch, 0);
 
 		setting.setPID(kp, ki, kd, kf);
 	}
 	
 	public void setPIDSetting(PIDSetting setting){
+		this.setting = setting;
+
 		this.setPIDF(setting.getP(), setting.getI(), setting.getD(), setting.getF());
 		this.config_IntegralZone(0, (int)(setting.getiZone()*ticksPerInch), 0);
 		this.configClosedloopRamp(setting.getRampRate(), 0);
-		this.setting = setting;
 	}
 	
 	public void setTicksPerInch(double ticks){
@@ -88,8 +96,8 @@ public class VortxTalon extends WPI_TalonSRX{
 	}
 
 	public void printToDashboard(){
-		SmartDashboard.putNumber(name + "P Output", this.getMotorOutputPercent());
-		SmartDashboard.putNumber((name + " Pos") , this.getSelectedSensorPosition(0));
+//		SmartDashboard.putNumber(name + " P Output", this.getMotorOutputPercent());
+//		SmartDashboard.putNumber((name + " Pos") , this.getSelectedSensorPosition(0));
 		SmartDashboard.putNumber((name + " Inches"),this.getSelectedSensorPosition(0)/ticksPerInch);
 	}
 	

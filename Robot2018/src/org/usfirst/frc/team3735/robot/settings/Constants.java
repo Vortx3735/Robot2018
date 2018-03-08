@@ -35,7 +35,7 @@ public class Constants {
 		public static final double elevatorSpeed = 0.5;
 		
 		public static final double elevatorMultiplier = 0.2;//.5
-		public static final double correctionMultiplier = 0.1;//.12
+		public static final double correctionMultiplier = 0.3;//.12
 		
 		public static final double ticksPerInch =835.22; 
 		

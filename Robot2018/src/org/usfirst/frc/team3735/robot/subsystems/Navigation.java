@@ -32,7 +32,7 @@ public class Navigation extends Subsystem implements PIDSource, PIDOutput {
 	
 	private PIDCtrl controller;
 	//PID Controller stuff
-	private static Setting outputExponent = new Setting("Nav Output Exponent", 1);
+	private static Setting outputExponent = new Setting("Nav Output Exponent", 1, false);
     public static Setting iZone = 			new Setting("Turning IZone", 10) {
     	@Override
     	public void valueChanged(double c) {
@@ -41,9 +41,9 @@ public class Navigation extends Subsystem implements PIDSource, PIDOutput {
     		}
     	}
     };
-    public static Setting actingI = 		new Setting("Acting I Value", 0.004);
+    public static Setting actingI = 		new Setting("Nav Acting I Value", 0.004);
     
-    public static Setting hInitialOffset =	new Setting("Horizontal Offset", 0);
+//    public static Setting hInitialOffset =	new Setting("Horizontal Offset", 0);
     
 	public static Setting navCo = 			new Setting("Navx Assist Coeffecient", 5);
 	public static Setting navVisCo = 		new Setting("Navx Vision Assist Coeffecient", 5);
@@ -64,7 +64,7 @@ public class Navigation extends Subsystem implements PIDSource, PIDOutput {
 		
 		ahrs = new VortxAhrs(SPI.Port.kMXP);
 		controller = new PIDCtrl(.016,0.0,0.061,this,this);
-    	controller.setOutputRange(-.5, .5);
+    	controller.setOutputRange(-.7, .7);
     	controller.setInputRange(-180, 180);
     	controller.setContinuous();
     	controller.setIsUsingIZone(true);
@@ -187,7 +187,7 @@ public class Navigation extends Subsystem implements PIDSource, PIDOutput {
 
 	@Override
 	public void pidWrite(double output) {
-		output = VortxMath.curve(output, outputExponent.getValue());
+//		output = VortxMath.curve(output, outputExponent.getValue());
 		Robot.drive.setLeftRight(output, -output);
 	}
 
@@ -201,7 +201,7 @@ public class Navigation extends Subsystem implements PIDSource, PIDOutput {
 	}
 	
 	public Position getStartingPosition() {
-			return new Position(hInitialOffset.getValue(), Dms.Bot.HALFLENGTH, 0);
+			return new Position(0, Dms.Bot.HALFLENGTH, 0);
 	}
 
 	public void debugLog() {

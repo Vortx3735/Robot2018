@@ -32,19 +32,26 @@ public class Elevator extends Subsystem {
 	private Setting correctionMultiplier;
 
 	public Elevator() {
-		elevatorLeft = new VortxTalon(RobotMap.Elevator.elevatorLeft);// "Elevator Left", true);
-		elevatorRight = new VortxTalon(RobotMap.Elevator.elevatorRight);//, "Elevator Right", true);
+		elevatorLeft = new VortxTalon(RobotMap.Elevator.elevatorLeft, "Elevator Left");
+		elevatorRight = new VortxTalon(RobotMap.Elevator.elevatorRight, "Elevator Right");
+		
+		elevatorLeft.setTicksPerInch(Constants.Elevator.ticksPerInch);
+		elevatorRight.setTicksPerInch(Constants.Elevator.ticksPerInch);
 
+		elevatorLeft.setPIDSetting(new PIDSetting(80, .15, 60));
+		elevatorRight.setPIDSetting(new PIDSetting(80, .15, 60));
+
+		elevatorLeft.putOnDash();
+		elevatorRight.putOnDash();
+		
 		elevatorMultiplier = new Setting("Elevator Move Multiplier", Constants.Elevator.elevatorMultiplier);
 		correctionMultiplier = new Setting("Elevator Trim Multiplier", Constants.Elevator.correctionMultiplier);
 
 		elevatorLeft.setNeutralMode(NeutralMode.Brake);
 		elevatorRight.setNeutralMode(NeutralMode.Brake);
 
-		elevatorLeft.setTicksPerInch(Constants.Elevator.ticksPerInch);
-		elevatorRight.setTicksPerInch(Constants.Elevator.ticksPerInch);
 
-		elevatorRight.setInverted(true);
+
 
 
 		setUpSensors();

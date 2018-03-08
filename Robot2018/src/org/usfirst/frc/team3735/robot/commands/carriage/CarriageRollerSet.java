@@ -1,6 +1,7 @@
 package org.usfirst.frc.team3735.robot.commands.carriage;
 
 import org.usfirst.frc.team3735.robot.Robot;
+import org.usfirst.frc.team3735.robot.util.cmds.VortxCommand;
 import org.usfirst.frc.team3735.robot.util.settings.Func;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -8,7 +9,7 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class CarriageRollerSet extends Command {
+public class CarriageRollerSet extends VortxCommand {
 
 	Func speed;
     public CarriageRollerSet(Func speed) {
@@ -34,7 +35,7 @@ public class CarriageRollerSet extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return super.isFinished();
     }
 
     // Called once after isFinished returns true

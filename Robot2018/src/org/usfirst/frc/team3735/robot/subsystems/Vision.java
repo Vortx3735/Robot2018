@@ -16,7 +16,7 @@ public class Vision extends Subsystem {
 	private static final int IMG_WIDTH = 320;
 	private static final int IMG_HEIGHT = 240;
 	
-	public static Setting dpp = new Setting("Vision Degrees per Pixel", 0.13125);
+	public static Setting dpp = new Setting("Vision Degrees per Pixel", 0.13125, false);
 	
 	
 	private UsbCamera camera1;
@@ -26,7 +26,7 @@ public class Vision extends Subsystem {
 		
 	}
 	public Vision(){
-//		camera1 = CameraServer.getInstance().startAutomaticCapture(0);
+		camera1 = CameraServer.getInstance().startAutomaticCapture(0);
 //		camera2 = CameraServer.getInstance().startAutomaticCapture(1);
 //		
 //		camera1.setFPS(16);

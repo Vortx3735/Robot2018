@@ -25,6 +25,12 @@ public class Autonomous {
 	
 	public Autonomous() {
 		posChooser = new SendableChooser<>();
+			posChooser.addDefault("Unknown", StartingState.UNKNOWN);
+			posChooser.addObject("Left", StartingState.LEFT);
+			posChooser.addObject("Middle", StartingState.MID);
+			posChooser.addObject("Right", StartingState.RIGHT);
+		SmartDashboard.putData("Starting Pos", posChooser);
+
 		
 		priority = new SendableChooser<>();
 			priority.addDefault("Cross Line", Priority.LINE);
