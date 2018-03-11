@@ -11,9 +11,17 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  */
 public class RightScaleRight extends CommandGroup {
 
-    public RightScaleRight() {
-    	addSequential(new SendProfile(Waypoints.Auto.rightScaleRight));
-    	addSequential(new Wait(.2));
-    	addSequential(new SendProfile(Waypoints.Auto.rightScaleRight2));
+	
+    public RightScaleRight(boolean complex) {
+    	if(complex) {
+    		addSequential(new SendProfile(Waypoints.Auto.rightScaleRight));	//initial cross to scale
+    		addSequential(new SendProfile(Waypoints.Auto.rightScaleRight2));	//backup and go to cube
+    		addSequential(new SendProfile(Waypoints.Auto.rightScaleRight3));	//backup from cube, go to scale
+    		addSequential(new SendProfile(Waypoints.Auto.rightScaleRight4));	//backup scale, go to other cube
+    		addSequential(new SendProfile(Waypoints.Auto.rightScaleRight5));	//backup from cube, go to scale
+    		
+    	}else {
+    		
+    	}
     }
 }

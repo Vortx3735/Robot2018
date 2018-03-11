@@ -44,8 +44,8 @@ public class Elevator extends Subsystem {
 		elevatorLeft.putOnDash();
 		elevatorRight.putOnDash();
 		
-		elevatorMultiplier = new Setting("Elevator Move Multiplier", Constants.Elevator.elevatorMultiplier);
-		correctionMultiplier = new Setting("Elevator Trim Multiplier", Constants.Elevator.correctionMultiplier);
+		elevatorMultiplier = new Setting("Elevator Move Multiplier", Constants.Elevator.elevatorMultiplier, false);
+		correctionMultiplier = new Setting("Elevator Trim Multiplier", Constants.Elevator.correctionMultiplier, false);
 
 		elevatorLeft.setNeutralMode(NeutralMode.Brake);
 		elevatorRight.setNeutralMode(NeutralMode.Brake);

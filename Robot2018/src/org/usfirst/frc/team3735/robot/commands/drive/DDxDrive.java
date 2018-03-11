@@ -27,7 +27,7 @@ public class DDxDrive extends Command {
 		}
 	};
 	
-	private Setting maxJ = new Setting("Max Jerk", 10){
+	private Setting maxJ = new Setting("Max Jerk", 100, false){
 		@Override
 		public double getValue(){
 			return super.getValue() / 50.0;
@@ -41,7 +41,7 @@ public class DDxDrive extends Command {
 		}
 	};
 	
-	private Setting maxJt = new Setting("Max Jerk Turn", 10){
+	private Setting maxJt = new Setting("Max Jerk Turn", 100, false){
 		@Override
 		public double getValue(){
 			return super.getValue() / 50.0;

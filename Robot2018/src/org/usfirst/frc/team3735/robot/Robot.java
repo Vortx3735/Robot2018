@@ -87,17 +87,16 @@ public class Robot extends VortxIterative {
 		 * 
 		 */
 		 
+		boolean complex = true;
 		autoChooser = new AutoChooser();
-			autoChooser.addObject("Left Scale Left", new LeftScaleLeft());
-			autoChooser.addObject("Left Scale Right", new LeftScaleRight());
-			autoChooser.addObject("Left Switch Left", new LeftSwitchLeft());
-			autoChooser.addObject("Mid Scale Left", new MidScaleLeft());
-			autoChooser.addObject("Mid Scale Right", new MidScaleRight());
-			autoChooser.addObject("Mid Switch Left", new MidSwitchLeft());
-			autoChooser.addObject("Mid Switch Right", new MidSwitchRight());
-			autoChooser.addObject("Right Scale Left", new RightScaleLeft());
-			autoChooser.addObject("Right Scale Right", new RightScaleRight());
-			autoChooser.addObject("Right Switch Right", new RightSwitchRight());
+			autoChooser.addObject("Left Scale Left", new LeftScaleLeft(complex));
+			autoChooser.addObject("Left Scale Right", new LeftScaleRight(complex));
+			autoChooser.addObject("Left Switch Left", new LeftSwitchLeft(complex));
+			autoChooser.addObject("Mid Switch Left", new MidSwitchLeft(complex));
+			autoChooser.addObject("Mid Switch Right", new MidSwitchRight(complex));
+			autoChooser.addObject("Right Scale Left", new RightScaleLeft(complex));
+			autoChooser.addObject("Right Scale Right", new RightScaleRight(complex));
+			autoChooser.addObject("Right Switch Right", new RightSwitchRight(complex));
 			
 			
 		sideChooser = new SideChooser();
@@ -220,9 +219,9 @@ public class Robot extends VortxIterative {
 	}
 	
 	public void debugLog(){
-		drive.debugLog();
-		navigation.debugLog();
-		vision.debugLog();
+//		drive.debugLog();
+//		navigation.debugLog();
+//		vision.debugLog();
 	}
 	
 

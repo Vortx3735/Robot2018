@@ -84,6 +84,9 @@ public class Carriage extends Subsystem {
 	}
 	
 	public void log(){
+	}
+	
+	public void debugLog(){
 		SmartDashboard.putNumber("Carriage Power", getPower());
 	}
 	

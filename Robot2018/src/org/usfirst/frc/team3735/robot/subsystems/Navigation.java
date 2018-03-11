@@ -139,7 +139,7 @@ public class Navigation extends Subsystem implements PIDSource, PIDOutput {
     	return ahrs;
     }
     public void log(){
-    	SmartDashboard.putNumber("Navigation Gyro Yaw", ahrs.getYaw());
+    	SmartDashboard.putNumber("Robot Yaw", getYaw());
     	SmartDashboard.putNumber("Loc X", pos.x);
     	SmartDashboard.putNumber("Loc Y", pos.y);
 
@@ -205,7 +205,6 @@ public class Navigation extends Subsystem implements PIDSource, PIDOutput {
 	}
 
 	public void debugLog() {
-		// TODO Auto-generated method stub
 		
 	}
 

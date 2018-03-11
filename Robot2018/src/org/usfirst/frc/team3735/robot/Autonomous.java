@@ -1,14 +1,9 @@
 package org.usfirst.frc.team3735.robot;
 
-import org.usfirst.frc.team3735.robot.commands.auto.LeftScaleLeft;
-import org.usfirst.frc.team3735.robot.commands.auto.LeftScaleRight;
-import org.usfirst.frc.team3735.robot.commands.auto.LeftSwitchLeft;
-import org.usfirst.frc.team3735.robot.commands.auto.MidSwitchLeft;
-import org.usfirst.frc.team3735.robot.commands.auto.MidSwitchRight;
-import org.usfirst.frc.team3735.robot.commands.auto.RightScaleLeft;
-import org.usfirst.frc.team3735.robot.commands.auto.RightScaleRight;
-import org.usfirst.frc.team3735.robot.commands.auto.UnknownStraight;
+import org.usfirst.frc.team3735.robot.commands.auto.*;
+
 import org.usfirst.frc.team3735.robot.util.choosers.DoNothing;
+import org.usfirst.frc.team3735.robot.util.settings.BooleanSetting;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
@@ -19,6 +14,7 @@ public class Autonomous {
 	
 	private SendableChooser<StartingState> posChooser;
 	private SendableChooser<Priority> priority;
+	private BooleanSetting complexity;
 //	private SendableChooser
 	
 	private Command autoCommand = new DoNothing();
@@ -39,6 +35,8 @@ public class Autonomous {
 			priority.addObject("Scale if Easy", Priority.SCALEIFEASY);
 		SmartDashboard.putData("Priority", priority);
 		
+		complexity = new BooleanSetting("Complex Auto", true);
+		
 		
 	}
 	
@@ -53,54 +51,56 @@ public class Autonomous {
 			return;
 		}
 		
+		boolean complex = complexity.getValue();
 		switch(posChooser.getSelected()) {
 		
 		case LEFT:
 			switch(s) {
 			case "lr"://Switch
-				autoCommand = (priority.getSelected() == Priority.SCALE) ? new LeftScaleRight() : new LeftSwitchLeft(); //priority choose
+				autoCommand = (priority.getSelected() == Priority.SCALE) ? new LeftScaleRight(complex) : new LeftSwitchLeft(complex); //priority choose
 				break;
 			case "rl"://Scale
-				autoCommand = new LeftScaleLeft();
+				autoCommand = new LeftScaleLeft(complex);
 				break;
 			case "ll"://Scale and Switch
-				autoCommand = (priority.getSelected() == Priority.SCALE || priority.getSelected() == Priority.SCALEIFEASY) ? new LeftScaleLeft() : new LeftSwitchLeft(); //priority choose
+				autoCommand = (priority.getSelected() == Priority.SCALE || priority.getSelected() == Priority.SCALEIFEASY) ? 
+						new LeftScaleLeft(complex) : new LeftSwitchLeft(complex); //priority choose
 				break;
 			case "rr":
-				autoCommand = new LeftScaleRight();
+				autoCommand = new LeftScaleRight(complex);
 				break;
 			}
 			break;
 		case MID:
 			switch(s) {
 			case "lr":
-				autoCommand = new MidSwitchLeft();
+				autoCommand = new MidSwitchLeft(complex);
 				break;
 			case "rl":
-				autoCommand = new MidSwitchRight();
+				autoCommand = new MidSwitchRight(complex);
 				break;
 			case "ll":
-				autoCommand = new MidSwitchLeft();
+				autoCommand = new MidSwitchLeft(complex);
 				break;
 			case "rr":
-				autoCommand = new MidSwitchRight();
+				autoCommand = new MidSwitchRight(complex);
 				break;
 			}
 			break;
 		case RIGHT:
 			switch(s) {
 			case "lr"://Scale
-				autoCommand = new RightScaleRight();
+				autoCommand = new RightScaleRight(complex);
 				break;
 			case "rl"://Switch
-				autoCommand = new RightScaleLeft();//priority choose
-				break;
+				autoCommand = (priority.getSelected() == Priority.SCALE) ? 
+						new RightScaleLeft(complex) : new RightSwitchRight(complex); //priority choose				break;
 			case "ll":
-				autoCommand = new RightScaleLeft();
+				autoCommand = new RightScaleLeft(complex);
 				break;
 			case "rr"://Scale and Switch
-				autoCommand = new RightScaleRight();//priority choose
-				break;
+				autoCommand = (priority.getSelected() == Priority.SCALE || priority.getSelected() == Priority.SCALEIFEASY) ? 
+						new RightScaleRight(complex) : new RightSwitchRight(complex); //priority choose
 			}
 			break;
 		case UNKNOWN:

@@ -35,17 +35,29 @@ public class GTAOI implements DriveOI{
 		main = new XboxController(0);
 		co = new XboxController(1);
 		
-		main.a.whileHeld(new CubeGrab());
 
+		
 		main.pov90.whileHeld(new DriveAddSensitiveRight());
 		main.pov270.whileHeld(new DriveAddSensitiveLeft());
+		
+//		main.pov0
+//		main.pov180
 
+//		main.y
 		main.x.whileHeld(new CubeRollerSet(new Setting("Cube Intake Speed", -.7)));
 		main.x.whileHeld(new CarriageRollerSet(new Setting("Carriage Intake Speed", -.5)).addT(new CarriageOverload(new Setting("Intake MaxPower", 20))));
+		
 		main.b.whileHeld(new CubeRollerSet(new Setting("Cube Outtake Speed", .5)));
 		main.b.whileHeld(new CarriageRollerSet(new Setting("Carriage Outtake Speed", .5)));
-		
+		main.a.whileHeld(new CubeGrab());
+
 		main.pov0.whenPressed(new TurnTo(0));
+		
+//		main.lb.whenPressed(command);
+		main.rb.whenPressed(new CubeRollerSet(new Setting("Cube Spin Speed", .4)));
+		
+//		main.start
+//		main.back
 		
 		co.start.whenPressed(new ClimberExtend());
 		co.back.whenPressed(new ClimberRetract());
