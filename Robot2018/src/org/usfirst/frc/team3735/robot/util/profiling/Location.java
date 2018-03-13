@@ -35,7 +35,8 @@ public class Location{
 		return Math.toDegrees(Math.atan2(other.x - x, other.y - y));
 	}
 
-	
+
+
 	public String toString() {
 		return Filer.make("Xloc", x, 2) + Filer.make("Yloc", y, 2);
 	}

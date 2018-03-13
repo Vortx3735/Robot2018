@@ -1,5 +1,7 @@
 package org.usfirst.frc.team3735.robot.subsystems;
 
+import java.nio.charset.Charset;
+
 import org.usfirst.frc.team3735.robot.commands.elevator.BlankPID;
 import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorMove;
 import org.usfirst.frc.team3735.robot.settings.Constants;
@@ -25,11 +27,15 @@ public class Elevator extends Subsystem {
 	// here. Call these from Commands.
 	VortxTalon elevatorLeft;
 	VortxTalon elevatorRight;
+	
+	public static double bottom = 0;
+	public static double switchHeight = 10;
+	public static double top = 40;
 
 	// private Setting carriageSpeed;
 
-	private Setting elevatorMultiplier;
-	private Setting correctionMultiplier;
+	public Setting consPower = new Setting("Elevator ConsPower", 0);
+
 
 	public Elevator() {
 		elevatorLeft = new VortxTalon(RobotMap.Elevator.elevatorLeft, "Elevator Left");
@@ -44,24 +50,15 @@ public class Elevator extends Subsystem {
 		elevatorLeft.putOnDash();
 		elevatorRight.putOnDash();
 		
-		elevatorMultiplier = new Setting("Elevator Move Multiplier", Constants.Elevator.elevatorMultiplier, false);
-		correctionMultiplier = new Setting("Elevator Trim Multiplier", Constants.Elevator.correctionMultiplier, false);
-
 		elevatorLeft.setNeutralMode(NeutralMode.Brake);
 		elevatorRight.setNeutralMode(NeutralMode.Brake);
 
-
-
-
-
-		setUpSensors();
+		elevatorLeft.initSensor(FeedbackDevice.QuadEncoder);
+		elevatorRight.initSensor(FeedbackDevice.QuadEncoder);
+		
 		resetEncoderPositions();
 	}
 
-	public void setUpSensors() {
-		elevatorLeft.initSensor(FeedbackDevice.QuadEncoder);
-		elevatorRight.initSensor(FeedbackDevice.QuadEncoder);
-	}
 
 	public void setupForPositionControl() {
 
@@ -70,56 +67,19 @@ public class Elevator extends Subsystem {
 	public void resetEncoderPositions() {
 		elevatorLeft.resetPosition();
 		elevatorRight.resetPosition();
-		
-//		elevatorLeft.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
-//		elevatorLeft.setSelectedSensorPosition(0, 0, 0);
-//		elevatorLeft.setSensorPhase(true);
-//		
-//		elevatorRight.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
-//		elevatorRight.setSelectedSensorPosition(0, 0, 0);
-//		elevatorRight.setSensorPhase(true);
 	}
 
-	public void setElevatorMotorsCurrent(double speed) {
-//		if (speed != 0) {
-//			double difference = (elevatorLeft.getSelectedSensorPosition(0)
-//					- elevatorRight.getSelectedSensorPosition(0));
-//			if (speed > 0) {
-//				if (difference >= 50) {
-//					setElevatorLeftCurrent(speed - .02);
-//					setElevatorRightCurrent(speed);
-//				} else if (difference <= -50) {
-//					setElevatorLeftCurrent(speed);
-//					setElevatorRightCurrent(speed - .02);
-//				} else {
-//					setElevatorLeftCurrent(speed);
-//					setElevatorRightCurrent(speed);
-//				}
-//			}else if (speed < 0){
-//				if (difference >= 50) {
-//					setElevatorLeftCurrent(speed - .02);
-//					setElevatorRightCurrent(speed);
-//				} else if (difference <= -50) {
-//					setElevatorLeftCurrent(speed);
-//					setElevatorRightCurrent(speed - .02);
-//				} else {
-//					setElevatorLeftCurrent(speed);
-//					setElevatorRightCurrent(speed);
-//				}
-//				
-//			}
-//		}
-		
-		setElevatorLeftCurrent(speed);
-		setElevatorRightCurrent(speed);
+	public void setPOutput(double speed) {
+		setLeftPOutput(speed);
+		setRightPOutput(speed);
 	}
 
-	public void setElevatorLeftCurrent(double speed) {
-		elevatorLeft.set(ControlMode.PercentOutput, speed);
-		System.out.println("Left Percent" + speed);
+	public void setLeftPOutput(double speed) {
+		elevatorLeft.set(ControlMode.PercentOutput, speed + consPower.getValue());
+//		System.out.println("Left Percent" + speed);
 	}
 
-	public void setElevatorRightCurrent(double speed) {
+	public void setRightPOutput(double speed) {
 //		elevatorRight.set(ControlMode.PercentOutput, -speed);
 //		if(speed < 0) {
 //			elevatorRight.setInverted(false);
@@ -128,7 +88,7 @@ public class Elevator extends Subsystem {
 //			elevatorRight.setInverted(true);
 //
 //		}
-		elevatorRight.set(ControlMode.PercentOutput, speed);
+		elevatorRight.set(ControlMode.PercentOutput, speed + consPower.getValue());
 
 		//System.out.println("Right Percent" + speed);
 	}
@@ -141,10 +101,11 @@ public class Elevator extends Subsystem {
 	public void setElevatorRightPosition(double position) {
 		elevatorRight.set(ControlMode.Position, position);
 	}
+	
 
 	public void setElevatorPIDSetting(PIDSetting setting) {
-//		elevatorLeft.setPIDSetting(setting);
-//		elevatorRight.setPIDSetting(setting);
+		elevatorLeft.setPIDSetting(setting);
+		elevatorRight.setPIDSetting(setting);
 	}
 
 	public void setElevatorPosition(double position) {
@@ -153,32 +114,28 @@ public class Elevator extends Subsystem {
 	}
 
 	public void setElevatorPosition(double position, PIDSetting setting) {
-		setElevatorPosition(position);
 		setElevatorPIDSetting(setting);
-	}
-	// public void moveElevatorInches(double inches){
-	// double ticksToMove = (inches*Constants.Elevator.ticksPerInch);
-	// elevatorLeft.set(ControlMode.Position, ticksToMove);
-	// elevatorRight.set(ControlMode.Position, ticksToMove);
-	// }
-
-	public double getMultiplierSmartDashboard() {
-		return elevatorMultiplier.getValue();
+		setElevatorPosition(position);
 	}
 
-	public double getCorrectionMultiplierSmartDashboard() {
-		return correctionMultiplier.getValue();
+
+	
+	public double getPosition() {
+		return .5 * (elevatorLeft.getPosition() + elevatorRight.getPosition());
 	}
-	/*
-	 * 2 =
-	 */
+
 
 	public void initDefaultCommand() {
 		setDefaultCommand(new ElevatorMove());
 	}
 
 	public void log() {
-		elevatorLeft.printToDashboard();
-		elevatorRight.printToDashboard();
+		elevatorLeft.log();
+		elevatorRight.log();
+	}
+	
+	public void debugLog() {
+		elevatorLeft.debugLog();
+		elevatorRight.debugLog();
 	}
 }

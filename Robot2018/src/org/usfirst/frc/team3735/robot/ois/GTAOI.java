@@ -11,11 +11,8 @@ import org.usfirst.frc.team3735.robot.commands.cubeintake.CubeRollerSet;
 import org.usfirst.frc.team3735.robot.commands.drive.TurnTo;
 import org.usfirst.frc.team3735.robot.commands.drive.simple.DriveAddSensitiveLeft;
 import org.usfirst.frc.team3735.robot.commands.drive.simple.DriveAddSensitiveRight;
-import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorCorrectLeft;
-import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorCorrectRight;
-import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorDown;
+import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorCorrect;
 import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorSetPositionSetting;
-import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorUp;
 import org.usfirst.frc.team3735.robot.settings.Constants;
 import org.usfirst.frc.team3735.robot.triggers.CarriageOverload;
 import org.usfirst.frc.team3735.robot.util.oi.DriveOI;
@@ -54,7 +51,7 @@ public class GTAOI implements DriveOI{
 		main.pov0.whenPressed(new TurnTo(0));
 		
 //		main.lb.whenPressed(command);
-		main.rb.whenPressed(new CubeRollerSet(new Setting("Cube Spin Speed", .4)));
+		main.rb.whenPressed(new CubeRollerSet(new Setting("Cube Spin Speed", .4), true));
 		
 //		main.start
 //		main.back
@@ -74,10 +71,11 @@ public class GTAOI implements DriveOI{
 		co.rt.whileHeld(new CarriageRollerSet(carriageShoot));
 		co.rb.toggleWhenPressed(new CarriageRaise());
 		
-		co.pov90.whileHeld(new ElevatorCorrectRight());
-		co.pov270.whileHeld(new ElevatorCorrectLeft());
-		co.pov0.whileHeld(new ElevatorUp());
-		co.pov180.whileHeld(new ElevatorDown());
+		
+		Setting elevatorTrim = new Setting("Elevator Trim", .3);
+		co.pov90.whileHeld(new ElevatorCorrect(elevatorTrim));
+		co.pov270.whileHeld(new ElevatorCorrect(elevatorTrim.reverse()));
+
 		
 
 //		Setting position = new Setting("Position", 0);

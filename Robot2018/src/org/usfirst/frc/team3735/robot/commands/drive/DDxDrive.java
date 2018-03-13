@@ -4,6 +4,7 @@ import org.usfirst.frc.team3735.robot.Robot;
 import org.usfirst.frc.team3735.robot.subsystems.Drive;
 import org.usfirst.frc.team3735.robot.util.calc.JerkLimiter;
 import org.usfirst.frc.team3735.robot.util.calc.Range;
+import org.usfirst.frc.team3735.robot.util.settings.Func;
 import org.usfirst.frc.team3735.robot.util.settings.Setting;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -24,6 +25,15 @@ public class DDxDrive extends Command {
 		@Override
 		public double getValue(){
 			return super.getValue() / 50.0;
+		}
+	};
+	
+	//create this function and replace maxA with it for limited driving
+	private Func maxAEle = new Func() {
+		@Override
+		public double getValue() {
+			double h = Robot.elevator.getPosition();
+			return .2;
 		}
 	};
 	
@@ -57,6 +67,14 @@ public class DDxDrive extends Command {
     	move = new JerkLimiter(0, new Range(maxA), new Range(maxJ));
     	turn = new JerkLimiter(0, new Range(maxAt), new Range(maxJt));
 
+    }
+    
+    public void setIsLimiting(boolean b) {
+    	if(b) {
+        	move = new JerkLimiter(0, new Range(maxAEle), new Range(maxJ));
+    	}else {
+        	move = new JerkLimiter(0, new Range(maxA), new Range(maxJ));
+    	}
     }
 
     // Called just before this Command runs the first time

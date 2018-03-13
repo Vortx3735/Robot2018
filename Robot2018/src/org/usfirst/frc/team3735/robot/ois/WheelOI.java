@@ -8,8 +8,7 @@ import org.usfirst.frc.team3735.robot.commands.cubeintake.CubeGrab;
 import org.usfirst.frc.team3735.robot.commands.cubeintake.CubeRollerSet;
 import org.usfirst.frc.team3735.robot.commands.drive.simple.DriveAddSensitiveLeft;
 import org.usfirst.frc.team3735.robot.commands.drive.simple.DriveAddSensitiveRight;
-import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorCorrectLeft;
-import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorCorrectRight;
+
 import org.usfirst.frc.team3735.robot.util.oi.DriveOI;
 import org.usfirst.frc.team3735.robot.util.oi.GraphiteJoystick;
 import org.usfirst.frc.team3735.robot.util.oi.GraysWheel;
@@ -56,8 +55,8 @@ public class WheelOI implements DriveOI{
 		box.lt.whileHeld(new CarriageRollerSet(carriageShoot.reverse()));
 		box.rt.whileHeld(new CarriageRollerSet(carriageShoot));
 		
-		box.pov90.whileHeld(new ElevatorCorrectRight());
-		box.pov270.whileHeld(new ElevatorCorrectLeft());
+//		box.pov90.whileHeld(new ElevatorCorrectRight());
+//		box.pov270.whileHeld(new ElevatorCorrectLeft());
 	}
 	
 	public double getDriveMove() {

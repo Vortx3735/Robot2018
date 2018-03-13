@@ -57,19 +57,29 @@ public class Drive extends Subsystem {
 	public static Setting scaledMaxMove = new Setting("Scaled Max Move", Constants.Drive.scaledMaxMove);
 	public static Setting scaledMaxTurn = new Setting("Scaled Max Turn", Constants.Drive.scaledMaxTurn);
 	
+	private DDxDrive defCommand;
 	public static BooleanSetting brakeEnabled = new BooleanSetting("Brake Mode On", false){
-
 		@Override
 		public void valueChanged(boolean val) {
 			if(Robot.drive != null) {
 				Robot.drive.setEnableBrake(val);
-				System.out.println("Brake mode " + val);
+				System.out.println("Brake mode = " + val);
 
 			}
 		}
-		
 	};
 	
+	public static BooleanSetting isLimiting = new BooleanSetting("Elevator Drive Limiting", false){
+		@Override
+		public void valueChanged(boolean val) {
+			if(Robot.drive != null) {
+				Robot.drive.defCommand.setIsLimiting(val);
+				System.out.println("Elevator Drive Limiting = " + val);
+
+			}
+		}
+	};
+
 
 	public Drive() {
 //		l1 = new WPI_TalonSRX(RobotMap.Drive.leftMotor1);
@@ -83,7 +93,7 @@ public class Drive extends Subsystem {
 		right = new VortxTalon[RobotMap.Drive.rightTrain.length];
 
 		for(int i = 0; i < RobotMap.Drive.leftTrain.length; i++) {
-			System.out.println(RobotMap.Drive.leftTrain[i]);
+//			System.out.println(RobotMap.Drive.leftTrain[i]);
 			left[i] = new VortxTalon(RobotMap.Drive.leftTrain[i]);
 			
 		}
@@ -93,9 +103,10 @@ public class Drive extends Subsystem {
 		l1 = left[0];
 		r1 = right[0];
 		brakeEnabled.setIsListening(true);
+		isLimiting.setIsListening(true);
 		initSensors();
 		setupSlaves();
-		setEnableBrake(true);
+		setEnableBrake(false);
 	}
 
 	/*******************************
