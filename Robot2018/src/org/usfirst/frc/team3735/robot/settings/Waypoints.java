@@ -12,6 +12,13 @@ public class Waypoints {
 		public static final Location bottomRight = new Location(Dms.Field.LENGTH, -Dms.Field.HALFWIDTH);
 		public static final Location bottomLeft = new Location(0, -Dms.Field.HALFWIDTH);
 	}
+	
+	public static class Pieces{
+		public static final Location scaleLeft = new Location(-72, Dms.Field.HALFLENGTH);
+		public static final Location scaleRight = new Location(72, Dms.Field.HALFLENGTH);
+		
+		
+	}
 
 	public static class Auto{
 		public static String leftScaleLeft = "leftScaleLeft";
@@ -35,17 +42,17 @@ public class Waypoints {
 
 
 		
-		public static String middleSwitchRight = "middleSwitchRight";
-		public static String middleSwitchRight2 = "middleSwitchRight2";
-		public static String middleSwitchRight3 = "middleSwitchRight3";
-		public static String middleSwitchRight4 = "middleSwitchRight4";
-		public static String middleSwitchRight5 = "middleSwitchRight5";
+		public static String midSwitchRight = "midSwitchRight";
+		public static String midSwitchRight2 = "midSwitchRight2";
+		public static String midSwitchRight3 = "midSwitchRight3";
+		public static String midSwitchRight4 = "midSwitchRight4";
+		public static String midSwitchRight5 = "midSwitchRight5";
 
-		public static String middleSwitchLeft = "middleSwitchLeft";
-		public static String middleSwitchLeft2 = "middleSwitchLeft2";
-		public static String middleSwitchLeft3 = "middleSwitchLeft3";
-		public static String middleSwitchLeft4 = "middleSwitchLeft4";
-		public static String middleSwitchLeft5 = "middleSwitchLeft5";
+		public static String midSwitchLeft = "midSwitchLeft";
+		public static String midSwitchLeft2 = "midSwitchLeft2";
+		public static String midSwitchLeft3 = "midSwitchLeft3";
+		public static String midSwitchLeft4 = "midSwitchLeft4";
+		public static String midSwitchLeft5 = "midSwitchLeft5";
 
 
 

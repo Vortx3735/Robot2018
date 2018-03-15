@@ -1,19 +1,20 @@
 package org.usfirst.frc.team3735.robot.ois;
 
 import org.usfirst.frc.team3735.robot.commands.carriage.CarriageRaise;
-import org.usfirst.frc.team3735.robot.commands.carriage.CarriageRollerSet;
+import org.usfirst.frc.team3735.robot.commands.carriage.CarriageSetRoller;
 import org.usfirst.frc.team3735.robot.commands.climber.ClimberExtend;
 import org.usfirst.frc.team3735.robot.commands.climber.ClimberRetract;
 import org.usfirst.frc.team3735.robot.commands.climber.ClimberSetSpeed;
 import org.usfirst.frc.team3735.robot.commands.cubeintake.CubeGrab;
-import org.usfirst.frc.team3735.robot.commands.cubeintake.CubeIntakeSwitchSolenoid;
-import org.usfirst.frc.team3735.robot.commands.cubeintake.CubeRollerSet;
+import org.usfirst.frc.team3735.robot.commands.cubeintake.CubeSetRoller;
 import org.usfirst.frc.team3735.robot.commands.drive.TurnTo;
 import org.usfirst.frc.team3735.robot.commands.drive.simple.DriveAddSensitiveLeft;
 import org.usfirst.frc.team3735.robot.commands.drive.simple.DriveAddSensitiveRight;
 import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorCorrect;
-import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorSetPositionSetting;
+import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorSetPosLgs;
+import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorSetPosSetting;
 import org.usfirst.frc.team3735.robot.settings.Constants;
+import org.usfirst.frc.team3735.robot.subsystems.Elevator;
 import org.usfirst.frc.team3735.robot.triggers.CarriageOverload;
 import org.usfirst.frc.team3735.robot.util.oi.DriveOI;
 import org.usfirst.frc.team3735.robot.util.oi.XboxController;
@@ -41,17 +42,25 @@ public class GTAOI implements DriveOI{
 //		main.pov180
 
 //		main.y
-		main.x.whileHeld(new CubeRollerSet(new Setting("Cube Intake Speed", -.7)));
-		main.x.whileHeld(new CarriageRollerSet(new Setting("Carriage Intake Speed", -.5)).addT(new CarriageOverload(new Setting("Intake MaxPower", 20))));
+		main.x.whileHeld(new CubeSetRoller(new Setting("Cube Intake Speed", -.7)));
+		main.x.whileHeld(new CarriageSetRoller(new Setting("Carriage Intake Speed", -.5)).addT(new CarriageOverload(new Setting("Intake MaxPower", 20))));
 		
-		main.b.whileHeld(new CubeRollerSet(new Setting("Cube Outtake Speed", .5)));
-		main.b.whileHeld(new CarriageRollerSet(new Setting("Carriage Outtake Speed", .5)));
+		main.b.whileHeld(new CubeSetRoller(new Setting("Cube Outtake Speed", .5)));
+		main.b.whileHeld(new CarriageSetRoller(new Setting("Carriage Outtake Speed", .5)));
 		main.a.whileHeld(new CubeGrab());
 
-		main.pov0.whenPressed(new TurnTo(0));
+//		main.pov0.whenPressed(new TurnTo(0));
+		Setting maxp = new Setting("Logis Max P", 1);
+		main.pov0.whenPressed(new ElevatorSetPosLgs(38,maxp));
+		main.pov270.whenPressed(new ElevatorSetPosLgs(13,maxp));
+		main.pov180.whenPressed(new ElevatorSetPosLgs(0,maxp));
+
 		
 //		main.lb.whenPressed(command);
-		main.rb.whenPressed(new CubeRollerSet(new Setting("Cube Spin Speed", .4), true));
+		Setting spin = new Setting("Cube Spin Speed", .5);
+		main.rb.whileHeld(new CubeSetRoller(spin, true));
+		main.lb.whileHeld(new CubeSetRoller(spin.reverse(), true));
+
 		
 //		main.start
 //		main.back
@@ -63,12 +72,12 @@ public class GTAOI implements DriveOI{
 		co.x.whenPressed(new ClimberSetSpeed(0));
 
 		Setting carriageFine = new Setting("Carriage Fine Speed", .2);
-		co.a.whileHeld(new CarriageRollerSet(carriageFine.reverse()));
-		co.b.whileHeld(new CarriageRollerSet(carriageFine));
+		co.a.whileHeld(new CarriageSetRoller(carriageFine.reverse()));
+		co.b.whileHeld(new CarriageSetRoller(carriageFine));
 		
 		Setting carriageShoot = new Setting("Carriage Shoot Speed", 1);
-		co.lt.whileHeld(new CarriageRollerSet(carriageShoot.reverse()));
-		co.rt.whileHeld(new CarriageRollerSet(carriageShoot));
+		co.lt.whileHeld(new CarriageSetRoller(carriageShoot.reverse()));
+		co.rt.whileHeld(new CarriageSetRoller(carriageShoot));
 		co.rb.toggleWhenPressed(new CarriageRaise());
 		
 		
@@ -76,6 +85,7 @@ public class GTAOI implements DriveOI{
 		co.pov90.whileHeld(new ElevatorCorrect(elevatorTrim));
 		co.pov270.whileHeld(new ElevatorCorrect(elevatorTrim.reverse()));
 
+		
 		
 
 //		Setting position = new Setting("Position", 0);

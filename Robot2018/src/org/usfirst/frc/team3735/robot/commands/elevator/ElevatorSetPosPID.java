@@ -8,9 +8,9 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class ElevatorSetPositionPID extends Command {
+public class ElevatorSetPosPID extends Command {
 	Func inches;
-    public ElevatorSetPositionPID(double inches) {
+    public ElevatorSetPosPID(double inches) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	this(new Func() {
@@ -23,7 +23,7 @@ public class ElevatorSetPositionPID extends Command {
     	
     }
     
-    public ElevatorSetPositionPID(Func f) {
+    public ElevatorSetPosPID(Func f) {
     	this.inches = f;
     }
 

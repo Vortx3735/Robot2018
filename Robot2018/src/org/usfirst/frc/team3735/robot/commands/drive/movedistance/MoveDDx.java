@@ -1,10 +1,11 @@
-package org.usfirst.frc.team3735.robot.commands.drive;
+package org.usfirst.frc.team3735.robot.commands.drive.movedistance;
 
 import org.usfirst.frc.team3735.robot.Robot;
 import org.usfirst.frc.team3735.robot.triggers.HasMoved;
 import org.usfirst.frc.team3735.robot.util.calc.DDxLimiter;
 import org.usfirst.frc.team3735.robot.util.calc.Range;
 import org.usfirst.frc.team3735.robot.util.cmds.VortxCommand;
+import org.usfirst.frc.team3735.robot.util.settings.Func;
 
 
 /**
@@ -23,13 +24,17 @@ public class MoveDDx extends VortxCommand {
 	private boolean isAcc;
 	private double targetSpeed;
 	
-    public MoveDDx(double dist, double maxSpeed, double acc) {
+    public MoveDDx(Func dist, double maxSpeed, double acc) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	limiter = new DDxLimiter(0, new Range(acc));
     	distHandler = new HasMoved(dist);
     	this.maxSpeed = maxSpeed;
     	requires(Robot.drive);
+    }
+    
+    public MoveDDx(double dist, double maxSpeed, double acc) {
+        this(Func.getFunc(dist), maxSpeed, acc);
     }
 
     // Called just before this Command runs the first time

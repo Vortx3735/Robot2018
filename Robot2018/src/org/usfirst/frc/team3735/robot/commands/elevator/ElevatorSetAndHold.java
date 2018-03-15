@@ -12,8 +12,8 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class ElevatorSetAndHold extends CommandGroup {
 	
 	public ElevatorSetAndHold(Func inches, Func power) {
-		addSequential(new ElevatorSetPositionLgs(inches, power));
-		addSequential(new ElevatorSetPositionPID(inches));
+		addSequential(new ElevatorSetPosLgs(inches, power));
+		addSequential(new ElevatorSetPosPID(inches));
 	}
 	
 }

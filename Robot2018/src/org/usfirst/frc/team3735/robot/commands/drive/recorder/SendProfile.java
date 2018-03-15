@@ -42,11 +42,11 @@ public class SendProfile extends Command {
     Ray toFollow;
 	
 	private static int lookAmount = 25; //.5 seconds
-	private static Setting forwardLookCo = new Setting("Forward Look Co", .8);
+	private static Setting forwardLookCo = new Setting("Forward Look Co", .9);
 //	private static Setting angleLookCo = new Setting("Angle Look Co", 0);
-	private static Setting angleErrorCo = new Setting("Angle Error Co", 3);
+	private static Setting angleErrorCo = new Setting("Angle Error Co", 3.7);
 //	private static Setting distErrorCo = new Setting("Dist Error Co", 0);
-	private static Setting halfWay = new Setting("Half Way Co", 20);
+	private static Setting halfWay = new Setting("Half Way Co", 25);
 
 	Average roll;
 	
@@ -81,6 +81,7 @@ public class SendProfile extends Command {
     	
     	roll = new Average();
     	
+    	if(file!=null)System.out.println("Starting profile " + file);
     	//bring to closest point
 //		while(Robot.navigation.getPosition().distanceFrom(arr.get(index).pos) > 
 //			Robot.navigation.getPosition().distanceFrom(arr.get(limitIndex(index+1)).pos)){
@@ -150,7 +151,7 @@ public class SendProfile extends Command {
 			forwardLook = 0;
 			angleLook = 0;
 		}
-		System.out.println("Forward Look: " + forwardLook);
+//		System.out.println("Forward Look: " + forwardLook);
 
 		//computer angle error
 		angleError = VortxMath.navLimit(Robot.navigation.getController().getError()) / 180.0;

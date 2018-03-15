@@ -8,28 +8,28 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class CubeRollerSet extends Command {
+public class CubeSetRoller extends Command {
 
     private Func speed;
     
     private boolean flipped = false;
 
-	public CubeRollerSet(Func spd) {
+	public CubeSetRoller(Func spd) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	this(spd, false);
     }
 	
-	public CubeRollerSet(double spd) {
+	public CubeSetRoller(double spd) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	this(Func.getFunc(spd));
     }
 	
-	public CubeRollerSet(double spd, boolean flipped) {
+	public CubeSetRoller(double spd, boolean flipped) {
 		this(Func.getFunc(spd), flipped);
 	}
-	public CubeRollerSet(Func spd, boolean flipped) {
+	public CubeSetRoller(Func spd, boolean flipped) {
 		requires(Robot.cubeIntake);
 		this.flipped = flipped;
     	this.speed = spd;

@@ -9,17 +9,17 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class ElevatorSetPositionSetting extends Command {
+public class ElevatorSetPosSetting extends Command {
 	Func inches;
 	PIDSetting setting;
 	
 	static PIDSetting defaultPIDSetting = new PIDSetting(0,0,0,0,0,0);
 	
-	public ElevatorSetPositionSetting(double inches){
+	public ElevatorSetPosSetting(double inches){
 		this(inches, defaultPIDSetting);
 	}
 
-    public ElevatorSetPositionSetting(double inches, PIDSetting setting) {
+    public ElevatorSetPosSetting(double inches, PIDSetting setting) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	this(new Func() {
@@ -30,15 +30,15 @@ public class ElevatorSetPositionSetting extends Command {
     	}, setting); 	
     }
     
-    public ElevatorSetPositionSetting(double inches, int level){
+    public ElevatorSetPosSetting(double inches, int level){
 		this(inches, levelToPIDSetting(level));
 	}
 	
-	public ElevatorSetPositionSetting(Func f, int level){
+	public ElevatorSetPosSetting(Func f, int level){
 		this(f, levelToPIDSetting(level));
 	}
 	
-    public ElevatorSetPositionSetting(Func f, PIDSetting setting) {
+    public ElevatorSetPosSetting(Func f, PIDSetting setting) {
     	requires(Robot.elevator);
     	this.inches = f;
     	this.setting = setting;

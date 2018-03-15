@@ -16,6 +16,7 @@ public class ResetPosition extends InstantCommand {
     // Called once when the command executes
     protected void initialize() {
     	Robot.navigation.resetPosition();
+
     }
 
 }

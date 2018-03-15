@@ -1,6 +1,7 @@
 package org.usfirst.frc.team3735.robot.subsystems;
 
-import org.usfirst.frc.team3735.robot.commands.cubeintake.CubeRollerSet;
+import org.usfirst.frc.team3735.robot.Robot;
+import org.usfirst.frc.team3735.robot.commands.cubeintake.CubeSetRoller;
 import org.usfirst.frc.team3735.robot.settings.Constants;
 import org.usfirst.frc.team3735.robot.settings.RobotMap;
 import org.usfirst.frc.team3735.robot.util.hardware.VortxTalon;
@@ -49,8 +50,8 @@ public class CubeIntake extends Subsystem {
 	}
 	
 	public void setMotorsCurrent(double speed){
-		setLeftMotorCurrent(speed);
-		setRightMotorCurrent(speed);
+		setLeftMotorCurrent(speed + Robot.oi.co.getRightY() + Robot.oi.co.getRightX());
+		setRightMotorCurrent(speed + Robot.oi.co.getRightY() - Robot.oi.co.getRightX());
 	}
 //	
 //	public double getDashboardSpeed(){
@@ -79,7 +80,7 @@ public class CubeIntake extends Subsystem {
 	
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-        setDefaultCommand(new CubeRollerSet(0));
+        setDefaultCommand(new CubeSetRoller(0));
     }
 }
 

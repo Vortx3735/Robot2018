@@ -45,7 +45,7 @@ public class Navigation extends Subsystem implements PIDSource, PIDOutput {
     
 //    public static Setting hInitialOffset =	new Setting("Horizontal Offset", 0);
     
-	public static Setting navCo = 			new Setting("Navx Assist Coeffecient", 5);
+	public static Setting navCo = 			new Setting("Navx Assist Coeffecient", 6);
 	public static Setting navVisCo = 		new Setting("Navx Vision Assist Coeffecient", 5);
 
 	
@@ -70,7 +70,7 @@ public class Navigation extends Subsystem implements PIDSource, PIDOutput {
     	controller.setIsUsingIZone(true);
     	controller.setIZone(10);
     	controller.setAbsoluteTolerance(1);
-    	
+    	iZone.setIsListening(true);
     	SmartDashboard.putData("Turning Controller", controller);
     	
 		curLeft = Robot.drive.getLeftPosition();
@@ -200,18 +200,23 @@ public class Navigation extends Subsystem implements PIDSource, PIDOutput {
 		return Math.hypot(ahrs.getWorldLinearAccelY(), ahrs.getWorldLinearAccelX());
 	}
 	
-	public Position getStartingPosition() {
-			return new Position(0, Dms.Bot.HALFLENGTH, 0);
-	}
+
 
 	public void debugLog() {
 		
 	}
-
+	
 	public void resetPosition() {
-		ahrs.setYaw(0);
+		resetPosition(Robot.autoLogic.getStartingPosition());
+		resetPosition(Robot.autoLogic.getStartingPosition());
+		resetPosition(Robot.autoLogic.getStartingPosition());
+
+	}
+
+	public void resetPosition(Position p) {
 		Robot.drive.resetEncodersPositions();
-		setPosition(getStartingPosition());
+		setPosition(p);
+		
 		System.out.println("Reseting Position...");
 	}
 	

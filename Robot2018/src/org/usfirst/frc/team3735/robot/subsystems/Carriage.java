@@ -1,6 +1,7 @@
 package org.usfirst.frc.team3735.robot.subsystems;
 
-import org.usfirst.frc.team3735.robot.commands.carriage.CarriageRollerSet;
+import org.usfirst.frc.team3735.robot.Robot;
+import org.usfirst.frc.team3735.robot.commands.carriage.CarriageSetRoller;
 import org.usfirst.frc.team3735.robot.settings.Constants;
 import org.usfirst.frc.team3735.robot.settings.RobotMap;
 import org.usfirst.frc.team3735.robot.util.hardware.VortxTalon;
@@ -43,20 +44,18 @@ public class Carriage extends Subsystem {
 	}
 	
 	public void setCarriageCurrent(double speed){
-		setCarriageLeftCurrent(speed);
-		setCarriageRightCurrent(speed);
+		setCarriageLeftCurrent(speed + Robot.oi.co.getRightY());
+		setCarriageRightCurrent(speed + Robot.oi.co.getRightY());
 	}
 	
 	public void setCarriageCurrentCheck(double speed){
 		if(getPower() > 20){
 			gripping = true; 
 			speed = 0;
-			setCarriageLeftCurrent(speed);
-			setCarriageRightCurrent(speed);
+			setCarriageCurrent(speed);
 		}else{
 			gripping = false;
-			setCarriageLeftCurrent(speed);
-			setCarriageRightCurrent(speed);
+			setCarriageCurrent(speed);
 		}
 		
 	}
@@ -92,7 +91,7 @@ public class Carriage extends Subsystem {
 	
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-        setDefaultCommand(new CarriageRollerSet(0));
+        setDefaultCommand(new CarriageSetRoller(0));
     }
 }
 

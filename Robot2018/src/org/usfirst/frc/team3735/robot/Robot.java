@@ -2,14 +2,16 @@ package org.usfirst.frc.team3735.robot;
 
 import org.usfirst.frc.team3735.robot.assists.NavxAssist;
 import org.usfirst.frc.team3735.robot.commands.auto.*;
-import org.usfirst.frc.team3735.robot.commands.drive.MoveDDx;
+import org.usfirst.frc.team3735.robot.commands.drive.movedistance.MoveDDx;
 import org.usfirst.frc.team3735.robot.commands.drive.positions.ResetPosition;
 import org.usfirst.frc.team3735.robot.commands.drive.positions.SetToLastPosition;
 import org.usfirst.frc.team3735.robot.commands.drive.positions.ZeroYaw;
 import org.usfirst.frc.team3735.robot.commands.drive.recorder.RecordProfile;
 import org.usfirst.frc.team3735.robot.commands.drive.recorder.SendProfile;
-import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorResetPosition;
-import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorSetPositionPID;
+import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorResetPos;
+import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorSetPosDDx;
+import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorSetPosPID;
+import org.usfirst.frc.team3735.robot.commands.sequences.AutoScaleLineup;
 import org.usfirst.frc.team3735.robot.ois.GTAOI;
 import org.usfirst.frc.team3735.robot.settings.Dms;
 import org.usfirst.frc.team3735.robot.subsystems.Carriage;
@@ -27,6 +29,7 @@ import org.usfirst.frc.team3735.robot.util.oi.DriveOI;
 import org.usfirst.frc.team3735.robot.util.profiling.Position;
 import org.usfirst.frc.team3735.robot.util.settings.BooleanSetting;
 import org.usfirst.frc.team3735.robot.util.settings.Setting;
+import org.usfirst.frc.team3735.robot.util.settings.StringSetting;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
@@ -54,7 +57,7 @@ public class Robot extends VortxIterative {
 	
 	public static Autonomous autoLogic;
 	
-	public static DriveOI oi;
+	public static GTAOI oi;
 	
 	
 	public static SideChooser sideChooser;
@@ -106,19 +109,19 @@ public class Robot extends VortxIterative {
 
 		SmartDashboard.putData("Autonomous Testing", autoChooser);
 		SmartDashboard.putData("Side", sideChooser);	
-		SmartDashboard.putData("Position", sideChooser);	
 
 		
 		
 		SmartDashboard.putData("Reset Position", new ResetPosition());
-		SmartDashboard.putData("Reset Yaw", new ZeroYaw());
+//		SmartDashboard.putData("Reset Yaw", new ZeroYaw());
 		SmartDashboard.putData(new MoveDDx(100, .6, .03).addA(new NavxAssist()));
 		
 		SendProfile s = new SendProfile();
+		StringSetting loadFile= new StringSetting("Loading File", "defaultfile");
 		SmartDashboard.putData("Load File", new InstantCommand() {
 			@Override
 			protected void initialize() {
-				s.loadFile("rightScaleRight");
+				SendProfile.loadCommand(loadFile.getValue());
 			}
 			
 		});
@@ -126,10 +129,11 @@ public class Robot extends VortxIterative {
 		SmartDashboard.putData(new RecordProfile());
 		SmartDashboard.putData(new SetToLastPosition());
 		
-		Setting position = new Setting("Jamal Elevator Position", 0);
-		SmartDashboard.putData(new ElevatorSetPositionPID(position));
-		SmartDashboard.putData("Reset Encoders", new ElevatorResetPosition());
-		
+		Setting position = new Setting("Elevator Jamal Position", 0);
+		SmartDashboard.putData(new ElevatorSetPosPID(position));
+		SmartDashboard.putData(new ElevatorSetPosDDx(position, new Setting("Elevator DDx maxp", .7), new Setting("Elevator DDx acc", .03)));
+		SmartDashboard.putData("Elevator Reset", new ElevatorResetPos());
+		SmartDashboard.putData(new AutoScaleLineup(true));
 //		SmartDashboard.putData(new TurnTo(new Setting("Turning Setpoint")));
 
 		
@@ -158,8 +162,8 @@ public class Robot extends VortxIterative {
 		
 		
 		
-		navigation.resetPosition();
-        
+		navigation.resetPosition(autoLogic.getStartingPosition());
+		
 //		autoLogic.startCommand();
 		autoChooser.startSelected();
 		
@@ -216,12 +220,14 @@ public class Robot extends VortxIterative {
 		vision.log();
 		elevator.log();
 		carriage.log();
+		elevator.debugLog();
 	}
 	
 	public void debugLog(){
 //		drive.debugLog();
 //		navigation.debugLog();
 //		vision.debugLog();
+		
 	}
 	
 

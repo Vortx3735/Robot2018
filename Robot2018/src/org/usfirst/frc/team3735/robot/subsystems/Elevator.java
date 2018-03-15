@@ -3,7 +3,7 @@ package org.usfirst.frc.team3735.robot.subsystems;
 import java.nio.charset.Charset;
 
 import org.usfirst.frc.team3735.robot.commands.elevator.BlankPID;
-import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorMove;
+import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorMoveJoystick;
 import org.usfirst.frc.team3735.robot.settings.Constants;
 import org.usfirst.frc.team3735.robot.settings.RobotMap;
 import org.usfirst.frc.team3735.robot.util.hardware.VortxTalon;
@@ -17,6 +17,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -27,6 +28,9 @@ public class Elevator extends Subsystem {
 	// here. Call these from Commands.
 	VortxTalon elevatorLeft;
 	VortxTalon elevatorRight;
+	
+	public static double minDown = -.07;
+	public static double minUp = .33;
 	
 	public static double bottom = 0;
 	public static double switchHeight = 10;
@@ -73,9 +77,13 @@ public class Elevator extends Subsystem {
 		setLeftPOutput(speed);
 		setRightPOutput(speed);
 	}
+	
+	public void setPOutputAdjusted(double speed) {
+		setPOutput(speed + consPower.getValue());
+	}
 
 	public void setLeftPOutput(double speed) {
-		elevatorLeft.set(ControlMode.PercentOutput, speed + consPower.getValue());
+		elevatorLeft.set(ControlMode.PercentOutput, speed);
 //		System.out.println("Left Percent" + speed);
 	}
 
@@ -88,7 +96,7 @@ public class Elevator extends Subsystem {
 //			elevatorRight.setInverted(true);
 //
 //		}
-		elevatorRight.set(ControlMode.PercentOutput, speed + consPower.getValue());
+		elevatorRight.set(ControlMode.PercentOutput, speed);
 
 		//System.out.println("Right Percent" + speed);
 	}
@@ -126,12 +134,14 @@ public class Elevator extends Subsystem {
 
 
 	public void initDefaultCommand() {
-		setDefaultCommand(new ElevatorMove());
+		setDefaultCommand(new ElevatorMoveJoystick());
 	}
 
 	public void log() {
 		elevatorLeft.log();
 		elevatorRight.log();
+		
+		SmartDashboard.putNumber("Elevator Position", getPosition());
 	}
 	
 	public void debugLog() {

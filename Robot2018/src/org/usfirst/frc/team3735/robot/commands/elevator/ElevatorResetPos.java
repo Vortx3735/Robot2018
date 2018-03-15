@@ -8,9 +8,9 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
 /**
  *
  */
-public class ElevatorResetPosition extends InstantCommand {
+public class ElevatorResetPos extends InstantCommand {
 
-	public ElevatorResetPosition() {
+	public ElevatorResetPos() {
 		
 	}
 	

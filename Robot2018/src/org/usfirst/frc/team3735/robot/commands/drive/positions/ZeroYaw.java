@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
 public class ZeroYaw extends InstantCommand {
 
     public ZeroYaw() {
-
+    	this.setRunWhenDisabled(true);
     }
 
     // Called once when the command executes

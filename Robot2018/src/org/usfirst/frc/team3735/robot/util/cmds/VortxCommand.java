@@ -3,6 +3,7 @@ package org.usfirst.frc.team3735.robot.util.cmds;
 import java.util.ArrayList;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 //import edu.wpi.first.wpilibj.command.Command;
@@ -80,6 +81,15 @@ public class VortxCommand extends Command{
 			requires(s);
 		}
 		return this;
+	}
+	
+	public static CommandGroup asSequence(Command...commands ) {
+		CommandGroup group = new CommandGroup();
+		for(Command c : commands) {
+			group.addSequential(c);
+
+		}
+		return group;
 	}
 	
 }

@@ -1,13 +1,14 @@
 package org.usfirst.frc.team3735.robot.commands.drive.movedistance;
 
 import org.usfirst.frc.team3735.robot.Robot;
+import org.usfirst.frc.team3735.robot.util.cmds.VortxCommand;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class DriveRaw extends Command {
+public class DriveRaw extends VortxCommand {
 
 	private double move;
     private double turn;
@@ -24,20 +25,23 @@ public class DriveRaw extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	Robot.drive.setupDriveForSpeedControl();
+    	super.initialize();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	super.execute();
     	Robot.drive.normalDrive(move, turn);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return super.isFinished();
     }
 
     // Called once after isFinished returns true
     protected void end() {
+    	super.end();
     	Robot.drive.normalDrive(0, 0);
     }
 

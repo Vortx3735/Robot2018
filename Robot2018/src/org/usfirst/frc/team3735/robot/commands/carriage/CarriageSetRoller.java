@@ -9,17 +9,17 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class CarriageRollerSet extends VortxCommand {
+public class CarriageSetRoller extends VortxCommand {
 
 	Func speed;
-    public CarriageRollerSet(Func speed) {
+    public CarriageSetRoller(Func speed) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.carriage);
     	this.speed = speed;
     }
     
-    public CarriageRollerSet(double spd) {
+    public CarriageSetRoller(double spd) {
     	this(Func.getFunc(spd));
     }
 

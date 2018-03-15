@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class ElevatorSetPositionLgs extends Command {
+public class ElevatorSetPosLgs extends Command {
 	Func inches;
 	double initialPosition;
 	double finalPosition;
@@ -16,25 +16,29 @@ public class ElevatorSetPositionLgs extends Command {
 	double dy;
 	double k;
 
-	final double startingPower = .1;
+	final double startingPower = .4;
 	Func maxPower;		
 	//If we are going down, we can go 1.1 at max, because we are adding
 	//say .1 to the value in Elevator.java, so we can go "1.1" down, but not only .9 up
-	final double finishRadius = 1;
+	final double finishRadius = 3;
 	
-    public ElevatorSetPositionLgs(double inches) {
+    public ElevatorSetPosLgs(double inches) {
     	this(Func.getFunc(inches));
+    	
     	
     }
     
-    public ElevatorSetPositionLgs(Func f) {
+    public ElevatorSetPosLgs(Func f) {
     	this(f, Func.getFunc(.7));
     }
     
-    public ElevatorSetPositionLgs(Func f, Func maxPower) {
+    public ElevatorSetPosLgs(Func f, Func maxPower) {
     	this.inches = f;
     	this.maxPower = maxPower;
     	requires(Robot.elevator);
+    }
+    public ElevatorSetPosLgs(double f, Func maxPower) {
+    	this(Func.getFunc(f), maxPower);
     }
     
     
@@ -48,16 +52,17 @@ public class ElevatorSetPositionLgs extends Command {
     }
     
     private double getPower() {
-    	double calc = k * (Robot.elevator.getPosition() - initialPosition) * (1- (Robot.elevator.getPosition() / (dy)));
-    	if(Math.abs(calc) < startingPower) {
-    		calc = Math.copySign(startingPower, dy);
-    	}
-    	return calc;
+    	double calc = k * (Robot.elevator.getPosition() - initialPosition) * (1- ((Robot.elevator.getPosition() - initialPosition) / (dy)));
+//    	if(Math.abs(calc) < startingPower) {
+//    		calc = startingPower;
+//    	}
+    	return Math.signum(finalPosition - Robot.elevator.getPosition()) * Math.abs(calc);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.elevator.setPOutput(getPower());
+    	System.out.println(getPower());
+    	Robot.elevator.setPOutputAdjusted(getPower());
     }
 
     // Make this return true when this Command no longer needs to run execute()

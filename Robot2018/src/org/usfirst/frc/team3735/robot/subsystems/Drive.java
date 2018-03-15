@@ -106,7 +106,7 @@ public class Drive extends Subsystem {
 		isLimiting.setIsListening(true);
 		initSensors();
 		setupSlaves();
-		setEnableBrake(false);
+		setEnableBrake(true);
 	}
 
 	/*******************************

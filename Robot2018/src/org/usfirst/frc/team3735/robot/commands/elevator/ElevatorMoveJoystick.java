@@ -7,9 +7,9 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class ElevatorMove extends Command {
+public class ElevatorMoveJoystick extends Command {
 
-	public ElevatorMove() {
+	public ElevatorMoveJoystick() {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
 		requires(Robot.elevator);
@@ -28,7 +28,7 @@ public class ElevatorMove extends Command {
 //			Robot.elevator.setElevatorMotorsCurrent(Robot.oi.getElevatorMove()*Robot.elevator.getMultiplierSmartDashboard());
 //		}
 			
-		Robot.elevator.setPOutput(Robot.oi.getElevatorMove());
+		Robot.elevator.setPOutputAdjusted(Robot.oi.getElevatorMove());
 
 
 	}

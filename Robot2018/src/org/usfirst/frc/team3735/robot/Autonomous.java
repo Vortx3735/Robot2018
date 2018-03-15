@@ -1,8 +1,10 @@
 package org.usfirst.frc.team3735.robot;
 
 import org.usfirst.frc.team3735.robot.commands.auto.*;
-
+import org.usfirst.frc.team3735.robot.settings.Dms;
+import org.usfirst.frc.team3735.robot.settings.Waypoints;
 import org.usfirst.frc.team3735.robot.util.choosers.DoNothing;
+import org.usfirst.frc.team3735.robot.util.profiling.Position;
 import org.usfirst.frc.team3735.robot.util.settings.BooleanSetting;
 
 import edu.wpi.first.wpilibj.DriverStation;
@@ -37,6 +39,10 @@ public class Autonomous {
 		
 		complexity = new BooleanSetting("Complex Auto", true);
 		
+		
+	}
+	
+	public void startCommand() {
 		
 	}
 	
@@ -138,6 +144,20 @@ public class Autonomous {
 		MID,
 		RIGHT,
 		UNKNOWN
+	}
+	
+	public Position getStartingPosition() {
+		switch(posChooser.getSelected()) {
+		case LEFT:
+			return new Position(-Dms.Field.HALFWALLWIDTH + Dms.Bot.HALFWIDTH, Dms.Bot.HALFLENGTH, 180);
+		case MID:
+		case UNKNOWN:
+			return new Position(0, Dms.Bot.HALFLENGTH, 180);
+		case RIGHT:
+			return new Position(Dms.Field.HALFWALLWIDTH - Dms.Bot.HALFWIDTH, Dms.Bot.HALFLENGTH, 180);
+		default:
+			return new Position(0, Dms.Bot.HALFLENGTH, 180);
+		}
 	}
 	
 }
