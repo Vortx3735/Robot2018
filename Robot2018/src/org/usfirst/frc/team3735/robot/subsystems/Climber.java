@@ -21,14 +21,12 @@ public class Climber extends Subsystem {
     // here. Call these from Commands.
 	
 	private VortxTalon motor1;
-	private DoubleSolenoid solenoid;
 	
 	Setting initialSpeed;
 	Setting tensionSpeed;
 	
 	public Climber(){
 		motor1 = new VortxTalon(RobotMap.Climber.motor);
-		solenoid = new DoubleSolenoid(0, 1);
 				
 	}
 	
@@ -36,13 +34,7 @@ public class Climber extends Subsystem {
 		motor1.set(speed);
 	}
 	
-	public void retract(){
-		solenoid.set(Value.kForward);
-	}
-	
-	public void extend(){
-		solenoid.set(Value.kReverse);
-	}
+
 	
 
 

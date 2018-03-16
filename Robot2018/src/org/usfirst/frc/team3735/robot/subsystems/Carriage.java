@@ -44,21 +44,21 @@ public class Carriage extends Subsystem {
 	}
 	
 	public void setCarriageCurrent(double speed){
-		setCarriageLeftCurrent(speed + Robot.oi.co.getRightY());
-		setCarriageRightCurrent(speed + Robot.oi.co.getRightY());
+		setCarriageLeftCurrent(speed + Robot.oi.getCarriageIntakeMove());
+		setCarriageRightCurrent(speed + Robot.oi.getCarriageIntakeMove());
 	}
-	
-	public void setCarriageCurrentCheck(double speed){
-		if(getPower() > 20){
-			gripping = true; 
-			speed = 0;
-			setCarriageCurrent(speed);
-		}else{
-			gripping = false;
-			setCarriageCurrent(speed);
-		}
-		
-	}
+//	
+//	public void setCarriageCurrentCheck(double speed){
+//		if(getPower() > 20){
+//			gripping = true; 
+//			speed = 0;
+//			setCarriageCurrent(speed);
+//		}else{
+//			gripping = false;
+//			setCarriageCurrent(speed);
+//		}
+//		
+//	}
 	
 	public double getPower(){
 		return Math.abs(carriageLeft.getOutputCurrent() * carriageLeft.getMotorOutputVoltage());

@@ -16,7 +16,8 @@ public class Waypoints {
 	public static class Pieces{
 		public static final Location scaleLeft = new Location(-72, Dms.Field.HALFLENGTH);
 		public static final Location scaleRight = new Location(72, Dms.Field.HALFLENGTH);
-		
+		public static final Location switchLeft = new Location(-54, 168);
+		public static final Location switchRight = new Location(54, 168);
 		
 	}
 
@@ -53,6 +54,10 @@ public class Waypoints {
 		public static String midSwitchLeft3 = "midSwitchLeft3";
 		public static String midSwitchLeft4 = "midSwitchLeft4";
 		public static String midSwitchLeft5 = "midSwitchLeft5";
+		
+		
+		public static String midScaleLeft = "midScaleLeft";
+		public static String midScaleRight = "midScaleRight";
 
 
 

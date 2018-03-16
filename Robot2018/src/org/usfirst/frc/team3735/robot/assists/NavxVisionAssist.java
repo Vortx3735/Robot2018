@@ -3,17 +3,14 @@ package org.usfirst.frc.team3735.robot.assists;
 import org.usfirst.frc.team3735.robot.Robot;
 import org.usfirst.frc.team3735.robot.subsystems.Navigation;
 import org.usfirst.frc.team3735.robot.subsystems.Vision;
-import org.usfirst.frc.team3735.robot.subsystems.Vision.Targets;
 import org.usfirst.frc.team3735.robot.util.calc.VortxMath;
 import org.usfirst.frc.team3735.robot.util.cmds.ComAssist;
 
 public class NavxVisionAssist extends ComAssist{
 
-    private Targets pipe;
 	private double prevWorking = 0;
 
-	public NavxVisionAssist(Targets p){
-		this.pipe = p;
+	public NavxVisionAssist(){
     	prevWorking = 0;
     	requires(Robot.vision);
     	requires(Robot.navigation);
@@ -26,7 +23,7 @@ public class NavxVisionAssist extends ComAssist{
 
 	@Override
 	public void execute() {
-		Double input = Robot.vision.getRelativeCX(pipe);
+		Double input = Robot.vision.getRelativeCX();
     	if(input != null){
     		if(input != prevWorking){
 		    	Robot.navigation.getController().setSetpoint(

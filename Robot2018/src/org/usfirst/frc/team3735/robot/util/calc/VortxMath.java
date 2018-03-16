@@ -88,4 +88,13 @@ public class VortxMath {
 	public static double swapYawAngle(double angle) {
 		return 90.0 - angle;
 	}
+	
+	
+	public static double handleDeadband(double val, double deadband) {
+		if(Math.abs(val) < deadband) {
+			return 0;
+		}else {
+			return val;
+		}
+	}
 }
