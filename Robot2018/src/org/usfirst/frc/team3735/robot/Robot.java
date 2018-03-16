@@ -164,7 +164,8 @@ public class Robot extends VortxIterative {
 		
 		
 		navigation.resetPosition(autoLogic.getStartingPosition());
-		
+		autoLogic.chooseAutonomous();
+		autoLogic.printAuto();
 //		autoLogic.startCommand();
 		autoChooser.startSelected();
 		

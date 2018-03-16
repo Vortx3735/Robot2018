@@ -6,6 +6,7 @@ import org.usfirst.frc.team3735.robot.commands.auto.sec.*;
 import org.usfirst.frc.team3735.robot.settings.Dms;
 import org.usfirst.frc.team3735.robot.settings.Waypoints;
 import org.usfirst.frc.team3735.robot.util.choosers.DoNothing;
+import org.usfirst.frc.team3735.robot.util.cmds.VortxCommand;
 import org.usfirst.frc.team3735.robot.util.profiling.Position;
 import org.usfirst.frc.team3735.robot.util.settings.BooleanSetting;
 
@@ -175,15 +176,20 @@ public class Autonomous {
 		}
 	}
 	
+	public void printAuto() {
+		System.out.println("Auto Logic Selected: " + firstCommand.getName());
+	}
+	
 	public void start() {
-		if(firstCommand != null) {
-			firstCommand.start();
+		if(firstCommand != null && secondCommand != null) {
+			VortxCommand.asSequence(firstCommand, secondCommand).start();
 		}
 	}
 	
 	public void cancel() {
-		if(firstCommand != null) {
-			firstCommand.start();
+		if(firstCommand != null && secondCommand != null) {
+			firstCommand.cancel();
+			secondCommand.cancel();
 		}
 	}
 	
