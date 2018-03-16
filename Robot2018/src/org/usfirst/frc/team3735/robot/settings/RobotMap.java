@@ -64,7 +64,7 @@ public class RobotMap {
 	
 	public static class Elevator{
 		public static int elevatorLeft = 		 8;
-		public static int elevatorRight = 		-6;
+		public static int elevatorRight = 		-9;	//-6 for practice
 		
 	}
 	
