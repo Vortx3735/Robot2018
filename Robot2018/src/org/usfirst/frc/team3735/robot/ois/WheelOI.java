@@ -1,8 +1,7 @@
 package org.usfirst.frc.team3735.robot.ois;
 
 import org.usfirst.frc.team3735.robot.commands.carriage.CarriageSetRoller;
-import org.usfirst.frc.team3735.robot.commands.climber.ClimberExtend;
-import org.usfirst.frc.team3735.robot.commands.climber.ClimberRetract;
+
 import org.usfirst.frc.team3735.robot.commands.climber.ClimberSetSpeed;
 import org.usfirst.frc.team3735.robot.commands.cubeintake.CubeGrab;
 import org.usfirst.frc.team3735.robot.commands.cubeintake.CubeSetRoller;
@@ -37,9 +36,7 @@ public class WheelOI implements DriveOI{
 		stick.right.whileHeld(new CubeSetRoller(new Setting("Cube Outtake Speed", .5)));
 		
 		
-		
-		box.start.whenPressed(new ClimberExtend());
-		box.back.whenPressed(new ClimberRetract());
+
 		
 		box.y.whileHeld(new ClimberSetSpeed(new Setting("Climb Speed", 1)));
 		box.x.whenPressed(new ClimberSetSpeed(0));

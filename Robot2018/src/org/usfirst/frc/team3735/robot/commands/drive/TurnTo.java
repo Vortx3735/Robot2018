@@ -3,7 +3,6 @@ package org.usfirst.frc.team3735.robot.commands.drive;
 import org.usfirst.frc.team3735.robot.Robot;
 
 import org.usfirst.frc.team3735.robot.subsystems.Navigation;
-import org.usfirst.frc.team3735.robot.subsystems.Vision.Targets;
 import org.usfirst.frc.team3735.robot.util.calc.VortxMath;
 import org.usfirst.frc.team3735.robot.util.profiling.Location;
 import org.usfirst.frc.team3735.robot.util.settings.Func;
@@ -29,11 +28,11 @@ public class TurnTo extends Command{
     }
 	
 	
-	public TurnTo(Targets p) {
+	public TurnTo() {
     	this(new Func(){
 			@Override
 			public double getValue() {
-				return VortxMath.navLimit(Robot.navigation.getYaw() + (Robot.vision.getRelativeCX(p) * Robot.vision.dpp.getValue()) );
+				return VortxMath.navLimit(Robot.navigation.getYaw() + (Robot.vision.getRelativeCX() * Robot.vision.dpp.getValue()) );
 			}
     	});
     	requires(Robot.vision);

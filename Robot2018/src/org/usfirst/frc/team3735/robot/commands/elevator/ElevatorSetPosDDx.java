@@ -42,6 +42,10 @@ public class ElevatorSetPosDDx extends Command {
     	limiter = new DDxLimiter(0, new Range(acc));
     	requires(Robot.elevator);
     }
+    
+    public ElevatorSetPosDDx(double pos) {
+    	this(Func.getFunc(pos), Func.getFunc(.8), Func.getFunc(.03));
+    }
 
     
     

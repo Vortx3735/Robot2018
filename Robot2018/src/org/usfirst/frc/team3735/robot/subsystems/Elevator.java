@@ -79,7 +79,11 @@ public class Elevator extends Subsystem {
 	}
 	
 	public void setPOutputAdjusted(double speed) {
-		setPOutput(speed + consPower.getValue());
+//		if(speed == 0) {
+//			setPOutput(0);
+//		}else {
+			setPOutput(speed + consPower.getValue());
+//		}
 	}
 
 	public void setLeftPOutput(double speed) {

@@ -25,7 +25,7 @@ public class CubeIntake extends Subsystem {
 	private WPI_VictorSPX rightMotor;
 	
 	private Solenoid solenoid;
-	
+	private Solenoid sol2;
 	
 	private boolean isGripping;
 	
@@ -33,8 +33,9 @@ public class CubeIntake extends Subsystem {
 		leftMotor = new WPI_VictorSPX(RobotMap.CubeIntake.leftMotor);
 		rightMotor = new WPI_VictorSPX(RobotMap.CubeIntake.rightMotor);
 		
+		rightMotor.setInverted(true);
 		solenoid = new Solenoid(RobotMap.CubeIntake.solenoid);
-		
+		sol2 = new Solenoid(RobotMap.CubeIntake.solenoid2);
 //		cubeIntakeSpeed = new Setting("Cube Intake Speed", Constants.CubeIntake.cubeIntakeSpeed);
 		
 		isGripping = false;
@@ -50,8 +51,8 @@ public class CubeIntake extends Subsystem {
 	}
 	
 	public void setMotorsCurrent(double speed){
-		setLeftMotorCurrent(speed + Robot.oi.co.getRightY() + Robot.oi.co.getRightX());
-		setRightMotorCurrent(speed + Robot.oi.co.getRightY() - Robot.oi.co.getRightX());
+		setLeftMotorCurrent(speed + Robot.oi.getCarriageIntakeMove() + Robot.oi.getIntakeTwist());
+		setRightMotorCurrent(speed + Robot.oi.getCarriageIntakeMove() - Robot.oi.getIntakeTwist());
 	}
 //	
 //	public double getDashboardSpeed(){
@@ -62,11 +63,14 @@ public class CubeIntake extends Subsystem {
 	
 	public void grab(){
 		solenoid.set(true);
+		sol2.set(true);
 		isGripping = true;
 	}
 	
 	public void release(){
 		solenoid.set(false);
+		sol2.set(false);
+
 		isGripping = false;
 	}
 	

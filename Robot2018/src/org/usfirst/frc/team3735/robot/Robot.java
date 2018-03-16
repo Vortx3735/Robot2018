@@ -143,10 +143,11 @@ public class Robot extends VortxIterative {
 		Setting.fetchAround();
 		BooleanSetting.fetchAround();
 		
-        vision.debugLog();
+//        vision.debugLog();
 //        navigation.integrate();
         navigation.displayPosition();
         drive.debugLog();
+        
         
         log();       
 	}
@@ -171,6 +172,7 @@ public class Robot extends VortxIterative {
 	@Override
 	public void autonomousPeriodic() {
 		 Scheduler.getInstance().run();
+		 vision.refresh();
 	}
 	@Override
 	public void autonomousContinuous() {
@@ -221,11 +223,12 @@ public class Robot extends VortxIterative {
 		elevator.log();
 		carriage.log();
 		elevator.debugLog();
+		
 	}
 	
 	public void debugLog(){
-//		drive.debugLog();
-//		navigation.debugLog();
+		drive.debugLog();
+		navigation.debugLog();
 //		vision.debugLog();
 		
 	}

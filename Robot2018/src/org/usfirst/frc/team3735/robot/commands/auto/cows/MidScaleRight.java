@@ -13,10 +13,10 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  *
  */
-public class MidScaleLeft extends CommandGroup {
+public class MidScaleRight extends CommandGroup {
 
-    public MidScaleLeft(boolean complex) {
-    	addSequential(new SendProfile(Waypoints.Auto.midScaleLeft));	//drive up to scale, FAST
+    public MidScaleRight(boolean complex) {
+    	addSequential(new SendProfile(Waypoints.Auto.midScaleRight));	//drive up to scale, FAST
     	addSequential(new AutoScaleLineup(false));
     	
 //    	addSequential(new AutoScaleLineup());

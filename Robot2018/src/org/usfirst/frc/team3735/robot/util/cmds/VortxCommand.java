@@ -92,4 +92,14 @@ public class VortxCommand extends Command{
 		return group;
 	}
 	
+	public static CommandGroup asParallel(Command...commands ) {
+		CommandGroup group = new CommandGroup();
+		for(Command c : commands) {
+			group.addParallel(c);
+
+		}
+		return group;
+	}
+	
+	
 }

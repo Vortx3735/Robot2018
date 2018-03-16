@@ -6,10 +6,12 @@ import org.usfirst.frc.team3735.robot.commands.drive.TurnTo;
 import org.usfirst.frc.team3735.robot.commands.drive.movedistance.Move;
 import org.usfirst.frc.team3735.robot.commands.drive.recorder.SendProfile;
 import org.usfirst.frc.team3735.robot.commands.drive.simple.DriveBrakeUntilStopped;
+import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorSetPosDDx;
 import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorSetPosPID;
 import org.usfirst.frc.team3735.robot.commands.sequences.AutoScaleLineup;
 import org.usfirst.frc.team3735.robot.settings.Dms;
 import org.usfirst.frc.team3735.robot.settings.Waypoints;
+import org.usfirst.frc.team3735.robot.util.settings.Func;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -32,8 +34,8 @@ public class RightScaleRight extends CommandGroup {
     		addSequential(new Move(Dms.Field.HALFLENGTH));
     		addSequential(new DriveBrakeUntilStopped());
     		addSequential(new TurnTo(-90));
-    		addParallel(new ElevatorSetPosPID(38));
-    		addSequential(new Wait(.5));
+    		addParallel(new ElevatorSetPosDDx(38));
+    		addSequential(new Wait(.7));
     		addSequential(new Move(10));
     		addSequential(new CarriageSetRoller(.7), .3);
     		addSequential(new Move(-10));
