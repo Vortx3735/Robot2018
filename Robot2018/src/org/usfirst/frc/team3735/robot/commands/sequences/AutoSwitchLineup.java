@@ -39,13 +39,10 @@ public class AutoSwitchLineup extends CommandGroup {
 		));
     	addSequential(new CarriageLower());
 
-    	addSequential(new DriveRaw(.4, 0).addT(new Bumped(.7)).addA(new NavxAssist(target, false)));
+    	addSequential(new DriveRaw(.4, 0).addT(new Bumped(.7)).addA(new NavxAssist(target, false)), 2);
     	
-    	addSequential(VortxCommand.asParallel(
-    			new CubeSetRoller(-.9),
-    			new CarriageSetRoller(-.4).addT(new CarriageOverload(20))
-    			));
-    	addParallel(new CarriageSetRoller(-.8), .4);
+		addSequential(new CarriageSetRoller(-.7));
+	
     	addSequential(new DriveRaw(-.4, 0), .4);
     	
     }

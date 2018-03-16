@@ -24,13 +24,14 @@ public static int tick = 0;
 	static final int BAUD_RATE = 115200;
 	
 	public Vision(){
-		try {
-			jevoisPort = new SerialPort(BAUD_RATE, SerialPort.Port.kUSB1);
-			System.out.println("Jevois coms created successfully");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		camera1 = CameraServer.getInstance().startAutomaticCapture(1); //trying to start it on second usb port
+		camera1 = CameraServer.getInstance().startAutomaticCapture(0); //trying to start it on second usb port
+//		try {
+//			jevoisPort = new SerialPort(BAUD_RATE, SerialPort.Port.kUSB1);
+//			System.out.println("Jevois coms created successfully");
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		camera1 = CameraServer.getInstance().startAutomaticCapture(1); //trying to start it on second usb port
 	}
 	
 	public String readString() {
