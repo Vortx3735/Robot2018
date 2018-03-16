@@ -1,6 +1,6 @@
 package org.usfirst.frc.team3735.robot.ois;
 
-import org.usfirst.frc.team3735.robot.commands.carriage.CarriageRaise;
+import org.usfirst.frc.team3735.robot.commands.carriage.CarriageRaiseTele;
 import org.usfirst.frc.team3735.robot.commands.carriage.CarriageSetRoller;
 
 import org.usfirst.frc.team3735.robot.commands.climber.ClimberSetSpeed;
@@ -76,7 +76,7 @@ public class GTAOI implements DriveOI{
 		Setting carriageShoot = new Setting("Carriage Shoot Speed", 1);
 		co.lt.whileHeld(new CarriageSetRoller(carriageShoot.reverse()));
 		co.rt.whileHeld(new CarriageSetRoller(carriageShoot));
-		co.rb.toggleWhenPressed(new CarriageRaise());
+		co.rb.toggleWhenPressed(new CarriageRaiseTele());
 		
 		
 		Setting elevatorTrim = new Setting("Elevator Trim", .3);

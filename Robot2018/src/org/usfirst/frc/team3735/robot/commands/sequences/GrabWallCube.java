@@ -3,7 +3,7 @@ package org.usfirst.frc.team3735.robot.commands.sequences;
 import org.usfirst.frc.team3735.robot.Robot;
 import org.usfirst.frc.team3735.robot.assists.NavxAssist;
 import org.usfirst.frc.team3735.robot.commands.carriage.CarriageLower;
-import org.usfirst.frc.team3735.robot.commands.carriage.CarriageRaise;
+import org.usfirst.frc.team3735.robot.commands.carriage.CarriageRaiseTele;
 import org.usfirst.frc.team3735.robot.commands.carriage.CarriageSetRoller;
 import org.usfirst.frc.team3735.robot.commands.cubeintake.CubeSetRoller;
 import org.usfirst.frc.team3735.robot.commands.drive.TurnTo;
