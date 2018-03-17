@@ -514,8 +514,8 @@ public class Drive extends Subsystem {
 		SmartDashboard.putNumber("Drive Left Speed", getLeftSpeed());
 		SmartDashboard.putNumber("Drive Right Speed", getRightSpeed());
 
-		SmartDashboard.putNumber("Drive Left Get", l1.get());
-		SmartDashboard.putNumber("Drive Right Get", r1.get());
+		SmartDashboard.putNumber("Drive Left Get", l1.getMotorOutputPercent());
+		SmartDashboard.putNumber("Drive Right Get", r1.getMotorOutputPercent());
 		
 		SmartDashboard.putNumber("Drive avg speed inches", getAverageSpeed());
 	}

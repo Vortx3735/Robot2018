@@ -17,7 +17,7 @@ public class MidScaleRight extends CommandGroup {
 
     public MidScaleRight(boolean complex) {
     	addSequential(new SendProfile(Waypoints.Auto.midScaleRight));	//drive up to scale, FAST
-    	addSequential(new AutoScaleLineup(false));
+    	addSequential(new AutoScaleLineup(true));
     	
 //    	addSequential(new AutoScaleLineup());
     }

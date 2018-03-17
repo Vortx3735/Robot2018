@@ -39,11 +39,12 @@ public class AutoSwitchLineup extends CommandGroup {
 		));
     	addSequential(new CarriageLower());
 
-    	addSequential(new DriveRaw(.4, 0).addT(new Bumped(.7)).addA(new NavxAssist(target, false)), 2);
+    	addSequential(new DriveRaw(-.4, 0).addT(new Bumped(.7)).addA(new NavxAssist(target, true)), 2);
     	
-		addSequential(new CarriageSetRoller(-.7));
-	
-    	addSequential(new DriveRaw(-.4, 0), .4);
+    	double hugtime = 1;
+    	addParallel(new DriveRaw(-.2,0),hugtime);
+		addSequential(new CarriageSetRoller(-.7), hugtime);
+    	addSequential(new DriveRaw(.4, 0), .4);
     	
     }
     

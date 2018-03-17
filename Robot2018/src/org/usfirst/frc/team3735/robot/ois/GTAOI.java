@@ -6,6 +6,7 @@ import org.usfirst.frc.team3735.robot.commands.carriage.CarriageSetRoller;
 import org.usfirst.frc.team3735.robot.commands.climber.ClimberSetSpeed;
 import org.usfirst.frc.team3735.robot.commands.cubeintake.CubeGrab;
 import org.usfirst.frc.team3735.robot.commands.cubeintake.CubeSetRoller;
+import org.usfirst.frc.team3735.robot.commands.cubeintake.CubeSetSols;
 import org.usfirst.frc.team3735.robot.commands.drive.TurnTo;
 import org.usfirst.frc.team3735.robot.commands.drive.simple.DriveAddSensitiveLeft;
 import org.usfirst.frc.team3735.robot.commands.drive.simple.DriveAddSensitiveRight;
@@ -43,7 +44,7 @@ public class GTAOI implements DriveOI{
 
 //		main.y
 		main.x.whileHeld(new CubeSetRoller(new Setting("Cube Intake Speed", -.7)));
-		main.x.whileHeld(new CarriageSetRoller(new Setting("Carriage Intake Speed", -.5)).addT(new CarriageOverload(new Setting("Intake MaxPower", 20))));
+		main.x.whileHeld(new CarriageSetRoller(new Setting("Carriage Intake Speed", -.5)).addT(new CarriageOverload(new Setting("Intake MaxPower", 30))));
 		
 		main.b.whileHeld(new CubeSetRoller(new Setting("Cube Outtake Speed", .5)));
 		main.b.whileHeld(new CarriageSetRoller(new Setting("Carriage Outtake Speed", .5)));
@@ -57,8 +58,10 @@ public class GTAOI implements DriveOI{
 
 		
 //		main.lb.whenPressed(command);
-		Setting spin = new Setting("Cube Spin Speed", .5);
+		Setting spin = new Setting("Cube Spin Speed", .7);
 		main.rb.whileHeld(new CubeSetRoller(spin, true));
+		main.rb.whileHeld(new CubeSetSols(false, true));
+		main.lb.whileHeld(new CubeSetSols(true, false));
 		main.lb.whileHeld(new CubeSetRoller(spin.reverse(), true));
 
 		

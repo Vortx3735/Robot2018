@@ -217,6 +217,7 @@ public class Autonomous {
 			return new Position(12.5, Dms.Bot.HALFLENGTH, 180);
 		case RIGHT:
 			return new Position(Dms.Field.HALFWALLWIDTH - Dms.Bot.HALFWIDTH, Dms.Bot.HALFLENGTH, 180);
+		
 		default:
 			return new Position(0, Dms.Bot.HALFLENGTH, 180);
 		}

@@ -86,5 +86,14 @@ public class CubeIntake extends Subsystem {
         // Set the default command for a subsystem here.
         setDefaultCommand(new CubeSetRoller(0));
     }
+
+	public void setLeftSol(boolean left) {
+		solenoid.set(left);
+		
+	}	
+	public void setRightSol(boolean left) {
+		sol2.set(left);
+		
+	}
 }
 

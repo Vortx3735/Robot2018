@@ -49,7 +49,7 @@ public class RobotMap {
 	public static class Drive{
 		
 		public static int[] leftTrain = 		{2,3};
-		public static int[] rightTrain = 		{10,11};//11,10
+		public static int[] rightTrain = 		{11,10};//11,10
 
 		
 	}

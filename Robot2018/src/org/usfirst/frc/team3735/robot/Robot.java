@@ -12,6 +12,7 @@ import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorResetPos;
 import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorSetPosDDx;
 import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorSetPosPID;
 import org.usfirst.frc.team3735.robot.commands.sequences.AutoScaleLineup;
+import org.usfirst.frc.team3735.robot.commands.sequences.AutoSwitchLineup;
 import org.usfirst.frc.team3735.robot.ois.GTAOI;
 import org.usfirst.frc.team3735.robot.settings.Dms;
 import org.usfirst.frc.team3735.robot.subsystems.Carriage;
@@ -100,6 +101,7 @@ public class Robot extends VortxIterative {
 			autoChooser.addObject("Right Scale Left", new RightScaleLeft(complex));
 			autoChooser.addObject("Right Scale Right", new RightScaleRight(complex));
 			autoChooser.addObject("Right Switch Right", new RightSwitchRight(complex));
+			autoChooser.addObject("Drive Forward", new UnknownStraight());
 			
 			
 		sideChooser = new SideChooser();
@@ -133,7 +135,10 @@ public class Robot extends VortxIterative {
 		SmartDashboard.putData(new ElevatorSetPosPID(position));
 		SmartDashboard.putData(new ElevatorSetPosDDx(position, new Setting("Elevator DDx maxp", .7), new Setting("Elevator DDx acc", .03)));
 		SmartDashboard.putData("Elevator Reset", new ElevatorResetPos());
-		SmartDashboard.putData(new AutoScaleLineup(true));
+		SmartDashboard.putData("Auto Right Scale Lineup", new AutoScaleLineup(true));
+		SmartDashboard.putData("Auto Left Scale Lineup", new AutoScaleLineup(false));
+		SmartDashboard.putData("Auto Right Scale Lineup", new AutoSwitchLineup(true));
+		SmartDashboard.putData("Auto Left Scale Lineup", new AutoSwitchLineup(false));
 //		SmartDashboard.putData(new TurnTo(new Setting("Turning Setpoint")));
 
 		
@@ -223,13 +228,13 @@ public class Robot extends VortxIterative {
 		vision.log();
 		elevator.log();
 		carriage.log();
-		elevator.debugLog();
 		
 	}
 	
 	public void debugLog(){
-		drive.debugLog();
-		navigation.debugLog();
+//		drive.debugLog();
+//		navigation.debugLog();
+		elevator.debugLog();
 //		vision.debugLog();
 		
 	}

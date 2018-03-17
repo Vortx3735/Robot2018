@@ -34,11 +34,11 @@ public class Elevator extends Subsystem {
 	
 	public static double bottom = 0;
 	public static double switchHeight = 10;
-	public static double top = 40;
+	public static double top = 36;
 
 	// private Setting carriageSpeed;
 
-	public Setting consPower = new Setting("Elevator ConsPower", 0);
+	public Setting consPower = new Setting("Elevator ConsPower", .183);
 
 
 	public Elevator() {
@@ -79,11 +79,18 @@ public class Elevator extends Subsystem {
 	}
 	
 	public void setPOutputAdjusted(double speed) {
-		if(getPosition() < 5) {
+//		System.out.print("Trying: " + speed + "\t");
+//		double actual = speed;
+		if((getPosition() < 5 ) && (speed == 0)) {
+//			actual = 0;
 			setPOutput(0);
 		}else {
 			setPOutput(speed + consPower.getValue());
+//			actual = speed + consPower.getValue();
 		}
+//		System.out.println("Sending: " + actual );
+
+		
 	}
 
 	public void setLeftPOutput(double speed) {
@@ -133,7 +140,7 @@ public class Elevator extends Subsystem {
 
 	
 	public double getPosition() {
-		return .5 * (elevatorLeft.getPosition() + elevatorRight.getPosition());
+		return (.5 * (elevatorLeft.getPosition() + elevatorRight.getPosition()));
 	}
 
 

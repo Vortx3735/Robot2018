@@ -61,7 +61,9 @@ public class HasMoved extends ComTrigger{
 	}
 
 
-	
+	/*
+	 * the distance travelled, which is signed to indicated direction
+	 */
 	public double distanceTraveled(){
 		if((rsd != null) && (lsd != null)) {
 			return .5 * ((Robot.drive.getLeftPosition() - lsd) + (Robot.drive.getRightPosition() - rsd));

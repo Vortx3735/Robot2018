@@ -25,7 +25,6 @@ public class ElevatorSetPosLgs extends Command {
     public ElevatorSetPosLgs(double inches) {
     	this(Func.getFunc(inches));
     	
-    	
     }
     
     public ElevatorSetPosLgs(Func f) {
