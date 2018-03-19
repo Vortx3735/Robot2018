@@ -137,8 +137,8 @@ public class Robot extends VortxIterative {
 		SmartDashboard.putData("Elevator Reset", new ElevatorResetPos());
 		SmartDashboard.putData("Auto Right Scale Lineup", new AutoScaleLineup(true));
 		SmartDashboard.putData("Auto Left Scale Lineup", new AutoScaleLineup(false));
-		SmartDashboard.putData("Auto Right Scale Lineup", new AutoSwitchLineup(true));
-		SmartDashboard.putData("Auto Left Scale Lineup", new AutoSwitchLineup(false));
+		SmartDashboard.putData("Auto Right Switch Lineup", new AutoSwitchLineup(true));
+		SmartDashboard.putData("Auto Left Switch Lineup", new AutoSwitchLineup(false));
 //		SmartDashboard.putData(new TurnTo(new Setting("Turning Setpoint")));
 
 		

@@ -2,25 +2,27 @@ package org.usfirst.frc.team3735.robot.triggers;
 
 import org.usfirst.frc.team3735.robot.Robot;
 import org.usfirst.frc.team3735.robot.util.cmds.ComTrigger;
+import org.usfirst.frc.team3735.robot.util.settings.Func;
 
 public class Bumped extends ComTrigger{
 	
-	private Double acc = new Double(1);
+	private Func acc;
 
-	public Bumped(Double acc){
+	public Bumped(Func acc){
 		this.acc = acc;
 	}
 	
 	public Bumped(double acc){
-		this(new Double(acc));
+		this(Func.getFunc(acc));
 	}
 	
 	public Bumped(){
+		this(1);
 	}
 
 	@Override
 	public boolean get() {
-		return Math.abs(Robot.navigation.getXYAcceleration()) > acc;
+		return Math.abs(Robot.navigation.getXYAcceleration()) > acc.getValue();
 	}
 
 	@Override

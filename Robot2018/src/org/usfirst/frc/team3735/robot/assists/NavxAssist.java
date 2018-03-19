@@ -1,6 +1,7 @@
 package org.usfirst.frc.team3735.robot.assists;
 
 import org.usfirst.frc.team3735.robot.Robot;
+import org.usfirst.frc.team3735.robot.util.calc.VortxMath;
 import org.usfirst.frc.team3735.robot.util.cmds.ComAssist;
 import org.usfirst.frc.team3735.robot.util.profiling.Location;
 import org.usfirst.frc.team3735.robot.util.settings.Func;
@@ -42,7 +43,7 @@ public class NavxAssist extends ComAssist{
 	public void execute() {
 		if(target != null) {
 			if(reversed) {
-				Robot.navigation.getController().setSetpoint(Robot.navigation.getYawToLocation(target) + 180);
+				Robot.navigation.getController().setSetpoint(VortxMath.navLimit(Robot.navigation.getYawToLocation(target) + 180));
 
 			}else {
 				Robot.navigation.getController().setSetpoint(Robot.navigation.getYawToLocation(target));

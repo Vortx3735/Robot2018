@@ -33,7 +33,7 @@ public class Navigation extends Subsystem implements PIDSource, PIDOutput {
 	private PIDCtrl controller;
 	//PID Controller stuff
 	private static Setting outputExponent = new Setting("Nav Output Exponent", 1, false);
-    public static Setting iZone = 			new Setting("Turning IZone", 10) {
+    public static Setting iZone = 			new Setting("Nav Turning IZone", 10) {
     	@Override
     	public void valueChanged(double c) {
     		if(Robot.navigation.controller != null) {
@@ -45,8 +45,8 @@ public class Navigation extends Subsystem implements PIDSource, PIDOutput {
     
 //    public static Setting hInitialOffset =	new Setting("Horizontal Offset", 0);
     
-	public static Setting navCo = 			new Setting("Navx Assist Coeffecient", 6);
-	public static Setting navVisCo = 		new Setting("Navx Vision Assist Coeffecient", 5);
+	public static Setting navCo = 			new Setting("Nav Assist Coeffecient", 6);
+	public static Setting navVisCo = 		new Setting("Nav Vision Assist Coeffecient", 5);
 
 	
 	Position pos = new Position(0,0,0);
@@ -71,7 +71,7 @@ public class Navigation extends Subsystem implements PIDSource, PIDOutput {
     	controller.setIZone(10);
     	controller.setAbsoluteTolerance(1);
     	iZone.setIsListening(true);
-    	SmartDashboard.putData("Turning Controller", controller);
+    	SmartDashboard.putData("Nav Turning Controller", controller);
     	
 		curLeft = Robot.drive.getLeftPosition();
     	curRight = Robot.drive.getRightPosition();
@@ -140,9 +140,9 @@ public class Navigation extends Subsystem implements PIDSource, PIDOutput {
     }
     public void log(){
     	SmartDashboard.putNumber("Robot Yaw", getYaw());
-    	SmartDashboard.putNumber("Loc X", pos.x);
-    	SmartDashboard.putNumber("Loc Y", pos.y);
-
+    	SmartDashboard.putNumber("Nav Loc X", pos.x);
+    	SmartDashboard.putNumber("Nav Loc Y", pos.y);
+    	SmartDashboard.putNumber("Nav Acc", this.getXYAcceleration());
 //    	SmartDashboard.putNumber("Gyro Acceleration X", ahrs.getWorldLinearAccelX());
 //    	SmartDashboard.putNumber("Gyro Acceleration Y", ahrs.getWorldLinearAccelY());
 //    	SmartDashboard.putNumber("Gyro Accel XY Vector", getXYAcceleration());
@@ -207,15 +207,17 @@ public class Navigation extends Subsystem implements PIDSource, PIDOutput {
 	}
 	
 	public void resetPosition() {
-		resetPosition(Robot.autoLogic.getStartingPosition());
-		resetPosition(Robot.autoLogic.getStartingPosition());
+
 		resetPosition(Robot.autoLogic.getStartingPosition());
 
 	}
 
-	public void resetPosition(Position p) {
+	public synchronized void resetPosition(Position p) {
 		Robot.drive.resetEncodersPositions();
 		setPosition(p);
+		
+		prevLeft = 0;
+		prevRight = 0;
 		
 		System.out.println("Reseting Position...");
 	}
@@ -267,11 +269,11 @@ public class Navigation extends Subsystem implements PIDSource, PIDOutput {
 	}
 	
 	public double getAngleToLocation(Location loc) {
-		return Math.toDegrees(Math.atan2(loc.y - pos.y, loc.x - pos.x));
+		return VortxMath.swapYawAngle(getYawToLocation(loc));
 	}
 	
 	public double getYawToLocation(Location loc) {
-		return VortxMath.swapYawAngle(getAngleToLocation(loc));
+		return pos.yawTo(loc);
 	}
 	
     

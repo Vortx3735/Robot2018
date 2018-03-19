@@ -81,7 +81,7 @@ public class Elevator extends Subsystem {
 	public void setPOutputAdjusted(double speed) {
 //		System.out.print("Trying: " + speed + "\t");
 //		double actual = speed;
-		if((getPosition() < 5 ) && (speed == 0)) {
+		if((getPosition() < 4 ) && (speed == 0)) {
 //			actual = 0;
 			setPOutput(0);
 		}else {

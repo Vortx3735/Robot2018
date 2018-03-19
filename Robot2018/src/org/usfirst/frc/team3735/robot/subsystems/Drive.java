@@ -450,6 +450,14 @@ public class Drive extends Subsystem {
 		return r1.getMotorOutputPercent();
 	}
 	
+	public double getTurn() {
+		return .5 * (getLeftPercent() - getRightPercent());
+	}
+	
+	public double getMove() {
+		return .5 * (getLeftPercent() + getRightPercent());
+	}
+	
 
 	/**
      * 

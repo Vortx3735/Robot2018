@@ -13,6 +13,8 @@ import org.usfirst.frc.team3735.robot.commands.drive.simple.DriveAddSensitiveRig
 import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorCorrect;
 import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorSetPosLgs;
 import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorSetPosSetting;
+import org.usfirst.frc.team3735.robot.commands.sequences.AutoScaleLineup;
+import org.usfirst.frc.team3735.robot.commands.sequences.AutoSwitchLineup;
 import org.usfirst.frc.team3735.robot.settings.Constants;
 import org.usfirst.frc.team3735.robot.subsystems.Elevator;
 import org.usfirst.frc.team3735.robot.triggers.CarriageOverload;
@@ -52,21 +54,28 @@ public class GTAOI implements DriveOI{
 
 //		main.pov0.whenPressed(new TurnTo(0));
 		Setting maxp = new Setting("Logis Max P", 1);
-		main.pov0.whenPressed(new ElevatorSetPosLgs(38,maxp));
-		main.pov270.whenPressed(new ElevatorSetPosLgs(13,maxp));
-		main.pov180.whenPressed(new ElevatorSetPosLgs(0,maxp));
+//		main.pov0.whenPressed(new ElevatorSetPosLgs(38,maxp));
+//		main.pov270.whenPressed(new ElevatorSetPosLgs(13,maxp));
+//		main.pov180.whenPressed(new ElevatorSetPosLgs(0,maxp));
+//		main.pov180.whenPressed(new AutoSwitchLineup(true));
+//		main.pov0.whenPressed(new AutoScaleLineup(true));
+		main.pov0.whenPressed(new TurnTo(0));
+		main.pov90.whenPressed(new TurnTo(90));
+		main.pov180.whenPressed(new TurnTo(180));
+		main.pov270.whenPressed(new TurnTo(270));
 
-		
+
 //		main.lb.whenPressed(command);
 		Setting spin = new Setting("Cube Spin Speed", .7);
 		main.rb.whileHeld(new CubeSetRoller(spin, true));
-		main.rb.whileHeld(new CubeSetSols(false, true));
-		main.lb.whileHeld(new CubeSetSols(true, false));
+//		main.rb.whileHeld(new CubeSetSols(false, true));
+//		main.lb.whileHeld(new CubeSetSols(true, false));
 		main.lb.whileHeld(new CubeSetRoller(spin.reverse(), true));
 
 		
 //		main.start
 //		main.back
+		
 
 		
 		co.y.whileHeld(new ClimberSetSpeed(new Setting("Climb Speed", 1)));

@@ -58,6 +58,7 @@ public class Autonomous {
 		cancel();
 		String s = DriverStation.getInstance().getGameSpecificMessage().toLowerCase().trim().substring(0,2);
 		
+		
 		System.out.println("Specific Message interpreted: " + s);
 		
 		if(priority.getSelected() == null || priority.getSelected() == Priority.LINE) {
@@ -72,17 +73,21 @@ public class Autonomous {
 		case LEFT:
 			switch(s) {
 			case "lr"://Switch
-				firstCommand = (priority.getSelected() == Priority.SCALE) ? new LeftScaleRight(complex) : new LeftSwitchLeft(complex); //priority choose
+//				firstCommand = (priority.getSelected() == Priority.SCALE) ? new LeftScaleRight(complex) : new LeftSwitchLeft(complex); //priority choose
+				firstCommand = new UnknownStraight();
 				break;
 			case "rl"://Scale
-				firstCommand = new LeftScaleLeft(complex);
+				firstCommand = new LeftScaleLeft(true);
 				break;
 			case "ll"://Scale and Switch
-				firstCommand = (priority.getSelected() == Priority.SCALE || priority.getSelected() == Priority.SCALEIFEASY) ? 
-						new LeftScaleLeft(complex) : new LeftSwitchLeft(complex); //priority choose
+//				firstCommand = (priority.getSelected() == Priority.SCALE || priority.getSelected() == Priority.SCALEIFEASY) ? 
+//						new LeftScaleLeft(complex) : new LeftSwitchLeft(complex); //priority choose
+				firstCommand = new LeftScaleLeft(true);
+
 				break;
 			case "rr":
-				firstCommand = new LeftScaleRight(complex);
+//				firstCommand = new LeftScaleRight(complex);
+				firstCommand = new UnknownStraight();
 				break;
 			}
 			
@@ -177,20 +182,24 @@ public class Autonomous {
 	}
 	
 	public void printAuto() {
-		System.out.println("Auto Logic Selected: " + firstCommand.getName());
+		System.out.println("Auto Logic Selected: " + firstCommand.getName() + " and " + secondCommand.getName());
 	}
 	
 	public void start() {
 		if(firstCommand != null && secondCommand != null) {
-			VortxCommand.asSequence(firstCommand, secondCommand).start();
+			//PUT SECOND COMMANAD HERE WHEN READY
+			VortxCommand.asSequence(firstCommand, new DoNothing()).start();
 		}
 	}
 	
 	public void cancel() {
-		if(firstCommand != null && secondCommand != null) {
+		if(firstCommand != null) {
 			firstCommand.cancel();
+		}
+		if(secondCommand != null) {
 			secondCommand.cancel();
 		}
+		
 	}
 	
 	public enum Priority{

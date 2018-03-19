@@ -77,7 +77,7 @@ public class RobotMap {
 	}
 	
 	public static class Climber{
-		public static int motor = 				-7;
+		public static int motor = 				7;
 		
 	}
 }

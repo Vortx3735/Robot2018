@@ -106,7 +106,7 @@ public class SendProfile extends Command {
     			try{
     				sc = new Scanner(new File(filePath));
     			}catch(Exception e){
-    				e.printStackTrace();
+//    				e.printStackTrace();
     				System.out.println("Could not find file: " + filePath);
     				return;
     			}

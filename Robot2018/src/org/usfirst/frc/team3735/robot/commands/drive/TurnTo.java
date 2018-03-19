@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class TurnTo extends Command{
 	
-	private double finishTime = .5;
+	private double finishTime = .3;
 	private double timeOnTarget = 0;
 
 	Func getAngle;
@@ -42,11 +42,23 @@ public class TurnTo extends Command{
 		this(new Func(){
 			@Override
 			public double getValue() {
-				return Robot.navigation.getAngleToLocation(loc);
+				return Robot.navigation.getYawToLocation(loc);
 			}
     	});
     	
     }
+	public TurnTo(Location loc, boolean rev) {
+		this(new Func(){
+			@Override
+			public double getValue() {
+				
+				return (rev) ? VortxMath.navLimit(180 + Robot.navigation.getYawToLocation(loc)) : Robot.navigation.getYawToLocation(loc);
+			}
+    	});
+    	
+    }
+	
+	
 	
 	public TurnTo(Func fun) {
     	requires(Robot.drive);

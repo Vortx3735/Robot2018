@@ -14,6 +14,8 @@ public class Vision extends Subsystem {
 	
 	SerialPort jevoisPort;
 	UsbCamera camera1;
+	UsbCamera camera2;
+
 public static int tick = 0;
 	public double x=0;
 	public double y=0;
@@ -25,7 +27,11 @@ public static int tick = 0;
 	
 	public Vision(){
 		camera1 = CameraServer.getInstance().startAutomaticCapture(0); //trying to start it on second usb port
-//		try {
+		camera1.setResolution(320, 240);
+//		camera2 = CameraServer.getInstance().startAutomaticCapture(1); //trying to start it on second usb port
+//		camera2.setResolution(320, 240);
+
+		//		try {
 //			jevoisPort = new SerialPort(BAUD_RATE, SerialPort.Port.kUSB1);
 //			System.out.println("Jevois coms created successfully");
 //		} catch (Exception e) {

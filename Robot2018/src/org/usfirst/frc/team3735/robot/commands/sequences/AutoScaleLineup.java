@@ -32,11 +32,11 @@ public class AutoScaleLineup extends CommandGroup {
     	
     	
     	//Turn to target, go, and elevator up
-    	addSequential(new TurnTo(target));
+    	addSequential(new TurnTo(target, true));
     	addParallel(VortxCommand.asSequence(
-			new ElevatorSetPosDDx(Func.getFunc(Elevator.top), Func.getFunc(1), Func.getFunc(.02)),
+			new ElevatorSetPosDDx(Func.getFunc(Elevator.top), Func.getFunc(.8), Func.getFunc(.02)),
 			new ElevatorSetPosPID(Elevator.top)
-		));
+		), 2.5);
     	addSequential(new DriveRaw(-.4, 0).addT(new HasMoved(new Func() {
     		@Override
     		public double getValue() {
