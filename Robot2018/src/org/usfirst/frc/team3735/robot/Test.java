@@ -24,9 +24,11 @@ public class Test {
 	}
 	
 	public static double get() {
-		Location loc = new Location(12,17);
-		Location pos = Waypoints.Pieces.switchRight;
-		return VortxMath.navLimit(loc.yawTo(pos) + 180);
+//		Location loc = new Location(12,17);
+//		Location pos = Waypoints.Pieces.switchRight;
+//		return VortxMath.navLimit(loc.yawTo(pos) + 180);
+//		DDxMove ddx = new DDxMove()
+		return 0;
 
 	}
 	
