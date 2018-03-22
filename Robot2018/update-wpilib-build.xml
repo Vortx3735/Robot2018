@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="Update Ant build to update the wpilib in the git repository" default="update-wpilib">
+
+
+	<target name="update-wpilib" description="Build this to update the wpilib from the locally installed version">
+		<copy todir="${basedir}/wpilib">
+			<fileset dir="${user.home}/wpilib">
+				<include name="common/**" />
+				<include name="java/**" />
+				<include name="user/java/**" />
+			</fileset>
+		</copy>
+	</target>
+
+</project>

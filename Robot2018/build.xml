@@ -2,7 +2,7 @@
 
 <project name="FRC Deployment" default="deploy">
 
-  <!--
+	<!--
   The following properties can be defined to override system level
   settings. These should not be touched unless you know what you're
   doing. The primary use is to override the wpilib version when
@@ -10,21 +10,41 @@
   libraries.
   -->
 
-  <!-- By default the system version of WPI is used -->
-  <!-- <property name="version" value=""/> -->
+	<!-- By default the system version of WPI is used -->
+	<property name="version" value="current" />
 
-  <!-- By default the system team number is used -->
-  <!-- <property name="team-number" value=""/> -->
+	<!-- By default the system team number is used -->
+	<property name="team-number" value="3735" />
 
-  <!-- By default the target is set to 10.TE.AM.2 -->
-  <!-- <property name="target" value=""/> -->
+	<!-- By default the target is set to 10.TE.AM.2 -->
+	<!-- <property name="target" value=""/> -->
 
-  <!-- Any other property in build.properties can also be overridden. -->
+	<!-- Any other property in build.properties can also be overridden. -->
 
-  <property file="${user.home}/wpilib/wpilib.properties"/>
-  <property file="build.properties"/>
-  <property file="${user.home}/wpilib/java/${version}/ant/build.properties"/>
+	<!-- Do not include the wpilib.properties since the version and team-number properties are set above -->
+	<!-- <property file="${user.home}/wpilib/wpilib.properties"/> -->
 
-  <import file="${wpilib.ant.dir}/build.xml"/>
+	<property file="build.properties" />
+
+	<!-- 
+	This is the wpilib default build properties, we will import it and then override some of the paths
+	to point to the project's path
+	-->
+	<property name="wpilib" value="${basedir}/wpilib/java/${version}" />
+	<property name="wpilib.common" value="${basedir}/wpilib/common/${version}" />
+	<property name="userLibs.dir" value="${basedir}/wpilib/user/java/lib" />
+	<property file="${basedir}/wpilib/java/${version}/ant/build.properties" />
+
+	<!-- The wpilib build.xml directly includes this file, we want it to come from the project copy -->
+	<property file="${basedir}/wpilib/java/${version}/ant/ni_image.properties" />
+	<import file="${wpilib.ant.dir}/build.xml" as="wpilib_build" />
+
+
+	<target name="deploy" description="The build target that is called before the wpilib deploy target.">
+
+		<!-- Execute the wpilib deployment tasks -->
+		<antcall target="wpilib_build.deploy" />
+	</target>
+
 
 </project>
