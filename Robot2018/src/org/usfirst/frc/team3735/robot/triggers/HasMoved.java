@@ -21,11 +21,7 @@ public class HasMoved extends ComTrigger{
 	}
 	
 	public HasMoved(double distance){
-		this(new Func() {
-			public double getValue() {
-				return distance;
-			}
-		});
+		this(Func.getFunc(distance));
 	}
 
 	@Override
