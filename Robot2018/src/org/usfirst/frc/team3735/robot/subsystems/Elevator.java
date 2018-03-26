@@ -38,7 +38,7 @@ public class Elevator extends Subsystem {
 
 	// private Setting carriageSpeed;
 
-	public Setting consPower = new Setting("Elevator ConsPower", .183);
+	public Setting consPower = new Setting("Elevator ConsPower", 0);	//.183 on the final
 
 
 	public Elevator() {

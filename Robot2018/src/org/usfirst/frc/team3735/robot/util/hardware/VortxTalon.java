@@ -67,7 +67,7 @@ public class VortxTalon extends WPI_TalonSRX{
 	public void initSensor(FeedbackDevice device){
 		this.configSelectedFeedbackSensor(device, 0, 0);
 		this.setSelectedSensorPosition(0, 0, 0);
-		this.setSensorPhase(false);
+		this.setSensorPhase(true);
 		this.configNominalOutputForward(0, 0);
 		this.configNominalOutputReverse(0, 0);
 		this.configPeakOutputForward(1, 0);

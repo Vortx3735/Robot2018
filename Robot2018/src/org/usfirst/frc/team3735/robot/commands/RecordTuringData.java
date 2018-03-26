@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class RecordTuringData extends Command {
 
-	public static String  fileName = "Turning Data";
+	public static String  fileName = "TurningData";
 	private static String filePath;
 	private static Formatter formatter;
 	private boolean error;
@@ -31,7 +31,8 @@ public class RecordTuringData extends Command {
 			formatter = new Formatter(filePath);
 			formatter.format("%s,%s,%s", "Turn Value", "Move Value", "Turn Rate");
 		}catch(Exception e){
-			e.printStackTrace();
+			System.out.println("Could not make file " + fileName);
+//			e.printStackTrace();
 			error = true;
 		}
 		
@@ -40,8 +41,8 @@ public class RecordTuringData extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	
-		formatter.format("%s,%s,%s", Robot.drive.getTurn(), Robot.drive.getMove(), Robot.navigation.getRate());
+    	//unity, unity, dps
+		formatter.format("%.4f,%.4f,%.4f", Robot.drive.getTurn(), Robot.drive.getMove(), Robot.navigation.getRate());
 		formatter.format("%s", System.getProperty("line.separator"));
 	
     }

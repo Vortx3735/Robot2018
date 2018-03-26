@@ -45,7 +45,7 @@ public class Navigation extends Subsystem implements PIDSource, PIDOutput {
     
 //    public static Setting hInitialOffset =	new Setting("Horizontal Offset", 0);
     
-	public static Setting navCo = 			new Setting("Nav Assist Coeffecient", 6);
+	public static Setting navCo = 			new Setting("Nav Assist Coeffecient", 7);
 	public static Setting navVisCo = 		new Setting("Nav Vision Assist Coeffecient", 5);
 
 	

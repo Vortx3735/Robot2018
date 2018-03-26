@@ -33,14 +33,14 @@ public class AutoSwitchLineup extends CommandGroup {
     public AutoSwitchLineup(boolean right) {
     	Location target = (right) ? Waypoints.Pieces.switchRight : Waypoints.Pieces.switchLeft;
     	
-    	addSequential(new TurnTo(target, true));
+    	addSequential(new TurnTo(target, true),2);
     	addParallel(VortxCommand.asSequence(
 			new ElevatorSetPosDDx(Func.getFunc(Elevator.switchHeight), Func.getFunc(.7), Func.getFunc(.03)),
 			new ElevatorSetPosPID(Elevator.switchHeight)
 		), 2);
     	addSequential(new CarriageLower());
 
-    	addSequential(new DriveExp(-.5, 0).addT(new Bumped(1)).addA(new NavxAssist(target, true)));
+    	addSequential(new DriveExp(-.8, 0).addT(new Bumped(.5)).addA(new NavxAssist(target, true)));
     	
     	double hugtime = 1;
     	addParallel(new DriveRaw(-.2,0),hugtime);

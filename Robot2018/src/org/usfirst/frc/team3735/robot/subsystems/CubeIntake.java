@@ -33,7 +33,8 @@ public class CubeIntake extends Subsystem {
 		leftMotor = new WPI_VictorSPX(RobotMap.CubeIntake.leftMotor);
 		rightMotor = new WPI_VictorSPX(RobotMap.CubeIntake.rightMotor);
 		
-		rightMotor.setInverted(true);
+		rightMotor.setInverted(false);
+		leftMotor.setInverted(true);
 		solenoid = new Solenoid(RobotMap.CubeIntake.solenoid);
 		sol2 = new Solenoid(RobotMap.CubeIntake.solenoid2);
 //		cubeIntakeSpeed = new Setting("Cube Intake Speed", Constants.CubeIntake.cubeIntakeSpeed);
@@ -51,8 +52,8 @@ public class CubeIntake extends Subsystem {
 	}
 	
 	public void setMotorsCurrent(double speed){
-		setLeftMotorCurrent(speed + Robot.oi.getCarriageIntakeMove() + Robot.oi.getIntakeTwist());
-		setRightMotorCurrent(speed + Robot.oi.getCarriageIntakeMove() - Robot.oi.getIntakeTwist());
+		setLeftMotorCurrent(speed + Robot.oi.getIntakeMove() + Robot.oi.getIntakeTwist());
+		setRightMotorCurrent(speed + Robot.oi.getIntakeMove() - Robot.oi.getIntakeTwist());
 	}
 //	
 //	public double getDashboardSpeed(){

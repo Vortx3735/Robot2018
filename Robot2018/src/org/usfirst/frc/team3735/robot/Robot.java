@@ -17,6 +17,7 @@ import org.usfirst.frc.team3735.robot.ois.GTAOI;
 import org.usfirst.frc.team3735.robot.settings.Dms;
 import org.usfirst.frc.team3735.robot.subsystems.Carriage;
 import org.usfirst.frc.team3735.robot.subsystems.Climber;
+import org.usfirst.frc.team3735.robot.subsystems.CubeAngler;
 import org.usfirst.frc.team3735.robot.subsystems.CubeIntake;
 import org.usfirst.frc.team3735.robot.subsystems.Drive;
 import org.usfirst.frc.team3735.robot.subsystems.Elevator;
@@ -55,6 +56,7 @@ public class Robot extends VortxIterative {
 	public static Elevator elevator;
 	public static Climber climber;
 	public static Carriage carriage;
+	public static CubeAngler angler;
 	
 	public static Autonomous autoLogic;
 	
@@ -78,6 +80,7 @@ public class Robot extends VortxIterative {
 		elevator = new Elevator();
 		climber = new Climber();
 		carriage = new Carriage();
+		angler = new CubeAngler();
 		
 		oi = new GTAOI(); //MUST be instantiated after the subsystems
 			
@@ -110,35 +113,11 @@ public class Robot extends VortxIterative {
 //			posChooser.addDefault("Right", new Position(Dms.Field.HALFWALLWIDTH - Dms.Bot.HALFWIDTH, Dms.Bot.HALFLENGTH, 0));
 
 		SmartDashboard.putData("Autonomous Testing", autoChooser);
-		SmartDashboard.putData("Side", sideChooser);	
+		SmartDashboard.putData("Side", sideChooser);
 
 		
 		
-		SmartDashboard.putData("Reset Position", new ResetPosition());
-//		SmartDashboard.putData("Reset Yaw", new ZeroYaw());
-		SmartDashboard.putData(new MoveDDx(100, .6, .03).addA(new NavxAssist()));
-		
-		SendProfile s = new SendProfile();
-		StringSetting loadFile= new StringSetting("Loading File", "defaultfile");
-		SmartDashboard.putData("Load File", new InstantCommand() {
-			@Override
-			protected void initialize() {
-				SendProfile.loadCommand(loadFile.getValue());
-			}
-			
-		});
-		SmartDashboard.putData(s);
-		SmartDashboard.putData(new RecordProfile());
-		SmartDashboard.putData(new SetToLastPosition());
-		
-		Setting position = new Setting("Elevator Jamal Position", 0);
-		SmartDashboard.putData(new ElevatorSetPosPID(position));
-		SmartDashboard.putData(new ElevatorSetPosDDx(position, new Setting("Elevator DDx maxp", .7), new Setting("Elevator DDx acc", .03)));
-		SmartDashboard.putData("Elevator Reset", new ElevatorResetPos());
-		SmartDashboard.putData("Auto Right Scale Lineup", new AutoScaleLineup(true));
-		SmartDashboard.putData("Auto Left Scale Lineup", new AutoScaleLineup(false));
-		SmartDashboard.putData("Auto Right Switch Lineup", new AutoSwitchLineup(true));
-		SmartDashboard.putData("Auto Left Switch Lineup", new AutoSwitchLineup(false));
+
 //		SmartDashboard.putData(new TurnTo(new Setting("Turning Setpoint")));
 
 		

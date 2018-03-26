@@ -44,8 +44,8 @@ public class Carriage extends Subsystem {
 	}
 	
 	public void setCarriageCurrent(double speed){
-		setCarriageLeftCurrent(speed + Robot.oi.getCarriageIntakeMove());
-		setCarriageRightCurrent(speed + Robot.oi.getCarriageIntakeMove());
+		setCarriageLeftCurrent(speed + Robot.oi.getCarriageMove());
+		setCarriageRightCurrent(speed + Robot.oi.getCarriageMove());
 	}
 //	
 //	public void setCarriageCurrentCheck(double speed){

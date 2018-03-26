@@ -1,5 +1,7 @@
 package org.usfirst.frc.team3735.robot.ois;
 
+import org.usfirst.frc.team3735.robot.assists.NavxAssist;
+import org.usfirst.frc.team3735.robot.commands.RecordTuringData;
 import org.usfirst.frc.team3735.robot.commands.carriage.CarriageRaiseTele;
 import org.usfirst.frc.team3735.robot.commands.carriage.CarriageSetRoller;
 
@@ -8,10 +10,18 @@ import org.usfirst.frc.team3735.robot.commands.cubeintake.CubeGrab;
 import org.usfirst.frc.team3735.robot.commands.cubeintake.CubeSetRoller;
 import org.usfirst.frc.team3735.robot.commands.cubeintake.CubeSetSols;
 import org.usfirst.frc.team3735.robot.commands.drive.TurnTo;
+import org.usfirst.frc.team3735.robot.commands.drive.movedistance.MoveDDx;
+import org.usfirst.frc.team3735.robot.commands.drive.positions.ResetPosition;
+import org.usfirst.frc.team3735.robot.commands.drive.positions.SetToLastPosition;
+import org.usfirst.frc.team3735.robot.commands.drive.recorder.RecordProfile;
+import org.usfirst.frc.team3735.robot.commands.drive.recorder.SendProfile;
 import org.usfirst.frc.team3735.robot.commands.drive.simple.DriveAddSensitiveLeft;
 import org.usfirst.frc.team3735.robot.commands.drive.simple.DriveAddSensitiveRight;
 import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorCorrect;
+import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorResetPos;
+import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorSetPosDDx;
 import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorSetPosLgs;
+import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorSetPosPID;
 import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorSetPosSetting;
 import org.usfirst.frc.team3735.robot.commands.sequences.AutoScaleLineup;
 import org.usfirst.frc.team3735.robot.commands.sequences.AutoSwitchLineup;
@@ -23,7 +33,9 @@ import org.usfirst.frc.team3735.robot.util.oi.DriveOI;
 import org.usfirst.frc.team3735.robot.util.oi.XboxController;
 import org.usfirst.frc.team3735.robot.util.settings.PIDSetting;
 import org.usfirst.frc.team3735.robot.util.settings.Setting;
+import org.usfirst.frc.team3735.robot.util.settings.StringSetting;
 
+import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class GTAOI implements DriveOI{
@@ -32,69 +44,93 @@ public class GTAOI implements DriveOI{
 	public XboxController co;
 
 	public GTAOI() {
-
 		main = new XboxController(0);
 		co = new XboxController(1);
 		
 
 		
-		main.pov90.whileHeld(new DriveAddSensitiveRight());
-		main.pov270.whileHeld(new DriveAddSensitiveLeft());
-		
-//		main.pov0
-//		main.pov180
-
-//		main.y
-		main.x.whileHeld(new CubeSetRoller(new Setting("Cube Intake Speed", -.7)));
-		main.x.whileHeld(new CarriageSetRoller(new Setting("Carriage Intake Speed", -.5)).addT(new CarriageOverload(new Setting("Intake MaxPower", 30))));
-		
+		/*************************************************
+		 * Main-Driver
+		 *************************************************/
+		main.a.whileHeld(new CubeGrab());
 		main.b.whileHeld(new CubeSetRoller(new Setting("Cube Outtake Speed", .5)));
 		main.b.whileHeld(new CarriageSetRoller(new Setting("Carriage Outtake Speed", .5)));
-		main.a.whileHeld(new CubeGrab());
-
-//		main.pov0.whenPressed(new TurnTo(0));
-		Setting maxp = new Setting("Logis Max P", 1);
-//		main.pov0.whenPressed(new ElevatorSetPosLgs(38,maxp));
-//		main.pov270.whenPressed(new ElevatorSetPosLgs(13,maxp));
-//		main.pov180.whenPressed(new ElevatorSetPosLgs(0,maxp));
-//		main.pov180.whenPressed(new AutoSwitchLineup(true));
-//		main.pov0.whenPressed(new AutoScaleLineup(true));
+		main.x.whileHeld(new CubeSetRoller(new Setting("Cube Intake Speed", -.7)));
+		main.x.whileHeld(new CarriageSetRoller(new Setting("Carriage Intake Speed", -.5)).addT(new CarriageOverload(new Setting("Intake MaxPower", 30))));
+//		main.y
+		
+//		Setting maxp = new Setting("Logis Max P", 1);
 		main.pov0.whenPressed(new TurnTo(0));
 		main.pov90.whenPressed(new TurnTo(90));
 		main.pov180.whenPressed(new TurnTo(180));
 		main.pov270.whenPressed(new TurnTo(270));
 
-
-//		main.lb.whenPressed(command);
 		Setting spin = new Setting("Cube Spin Speed", .7);
-		main.rb.whileHeld(new CubeSetRoller(spin, true));
-//		main.rb.whileHeld(new CubeSetSols(false, true));
 //		main.lb.whileHeld(new CubeSetSols(true, false));
 		main.lb.whileHeld(new CubeSetRoller(spin.reverse(), true));
+		main.rb.whileHeld(new CubeSetRoller(spin, true));
+//		main.rb.whileHeld(new CubeSetSols(false, true));
 
-		
 //		main.start
 //		main.back
 		
-
 		
-		co.y.whileHeld(new ClimberSetSpeed(new Setting("Climb Speed", 1)));
-		co.x.whenPressed(new ClimberSetSpeed(0));
-
+		/*************************************************
+		 * Co-Driver
+		 *************************************************/
 		Setting carriageFine = new Setting("Carriage Fine Speed", .2);
 		co.a.whileHeld(new CarriageSetRoller(carriageFine.reverse()));
 		co.b.whileHeld(new CarriageSetRoller(carriageFine));
+		co.x.whenPressed(new ClimberSetSpeed(0));
+		co.y.whileHeld(new ClimberSetSpeed(new Setting("Climb Speed", 1)));
+		
+		
+		Setting elevatorTrim = new Setting("Elevator Trim", .3);
+//		co.pov0
+		co.pov90.whileHeld(new ElevatorCorrect(elevatorTrim));
+//		co.pov180
+		co.pov270.whileHeld(new ElevatorCorrect(elevatorTrim.reverse()));
+		
 		
 		Setting carriageShoot = new Setting("Carriage Shoot Speed", 1);
 		co.lt.whileHeld(new CarriageSetRoller(carriageShoot.reverse()));
 		co.rt.whileHeld(new CarriageSetRoller(carriageShoot));
 		co.rb.toggleWhenPressed(new CarriageRaiseTele());
 		
+//		co.start
+//		co.back
 		
-		Setting elevatorTrim = new Setting("Elevator Trim", .3);
-		co.pov90.whileHeld(new ElevatorCorrect(elevatorTrim));
-		co.pov270.whileHeld(new ElevatorCorrect(elevatorTrim.reverse()));
-
+		
+		
+		/*************************************************
+		 * Dash-board
+		 *************************************************/
+		SmartDashboard.putData("Reset Position", new ResetPosition());
+//		SmartDashboard.putData("Reset Yaw", new ZeroYaw());
+		SmartDashboard.putData(new MoveDDx(100, .6, .03).addA(new NavxAssist()));
+		
+		SendProfile s = new SendProfile();
+		StringSetting loadFile= new StringSetting("Loading File", "defaultfile");
+		SmartDashboard.putData("Load File", new InstantCommand() {
+			@Override
+			protected void initialize() {
+				SendProfile.loadCommand(loadFile.getValue());
+			}
+			
+		});
+		SmartDashboard.putData(s);
+		SmartDashboard.putData(new RecordProfile());
+		SmartDashboard.putData(new SetToLastPosition());
+		
+		Setting position = new Setting("Elevator Jamal Position", 0);
+		SmartDashboard.putData(new ElevatorSetPosPID(position));
+		SmartDashboard.putData(new ElevatorSetPosDDx(position, new Setting("Elevator DDx maxp", .7), new Setting("Elevator DDx acc", .03)));
+		SmartDashboard.putData("Elevator Reset", new ElevatorResetPos());
+		SmartDashboard.putData("Auto Right Scale Lineup", new AutoScaleLineup(true));
+		SmartDashboard.putData("Auto Left Scale Lineup", new AutoScaleLineup(false));
+		SmartDashboard.putData("Auto Right Switch Lineup", new AutoSwitchLineup(true));
+		SmartDashboard.putData("Auto Left Switch Lineup", new AutoSwitchLineup(false));
+		SmartDashboard.putData(new RecordTuringData());
 		
 		
 
@@ -126,8 +162,7 @@ public class GTAOI implements DriveOI{
 	}
 
 	public double getElevatorMove() {
-		double d = VortxMath.handleDeadband(main.getRightY()+ co.getLeftY(), .05);
-		return (Math.abs(d) > .1) ? d : 0;
+		return VortxMath.handleDeadband(main.getRightY()+ co.getLeftY(), .05);
 	}
 	
 	
@@ -135,20 +170,30 @@ public class GTAOI implements DriveOI{
 		return Math.abs(getDriveMove()) > .4 || Math.abs(getDriveTurn()) > .4;
 	}
 	
-	public double getCarriageIntakeMove() {
-		return VortxMath.handleDeadband(co.getRightY(), .05);
+
+	
+	public double getIntakeMove() {
+		return 0;//VortxMath.handleDeadband(co.getRightY(), .08);
 	}
 	
 	public double getIntakeTwist() {
-		return VortxMath.handleDeadband(co.getRightX(), .05);
+		return 0;//VortxMath.handleDeadband(co.getRightX(), .08);
 	}
 
+	public double getCarriageMove() {
+		return VortxMath.handleDeadband(co.getRightTrigger() - co.getLeftTrigger(), .08);
+	}
 	
 	public void log() {
 //		SmartDashboard.putNumber("right joystick angle", getMainRightAngle());
 //		SmartDashboard.putNumber("right joystick magnitude",
 //				getMainRightMagnitude());
 
+	}
+
+
+	public double getAnglerMove() {
+		return VortxMath.handleDeadband(co.getRightY(), .08);
 	}
 
 
