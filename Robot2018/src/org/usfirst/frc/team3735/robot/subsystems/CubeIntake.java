@@ -5,6 +5,7 @@ import org.usfirst.frc.team3735.robot.commands.cubeintake.CubeSetRoller;
 import org.usfirst.frc.team3735.robot.settings.Constants;
 import org.usfirst.frc.team3735.robot.settings.RobotMap;
 import org.usfirst.frc.team3735.robot.util.hardware.VortxTalon;
+import org.usfirst.frc.team3735.robot.util.hardware.VortxVictor;
 import org.usfirst.frc.team3735.robot.util.settings.Setting;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -21,8 +22,8 @@ public class CubeIntake extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
-	private WPI_VictorSPX leftMotor;
-	private WPI_VictorSPX rightMotor;
+	private VortxVictor leftMotor;
+	private VortxVictor rightMotor;
 	
 	private Solenoid solenoid;
 	private Solenoid sol2;
@@ -30,11 +31,10 @@ public class CubeIntake extends Subsystem {
 	private boolean isGripping;
 	
 	public CubeIntake(){
-		leftMotor = new WPI_VictorSPX(RobotMap.CubeIntake.leftMotor);
-		rightMotor = new WPI_VictorSPX(RobotMap.CubeIntake.rightMotor);
+		leftMotor = new VortxVictor(RobotMap.CubeIntake.leftMotor);
+		rightMotor = new VortxVictor(RobotMap.CubeIntake.rightMotor);
 		
-		rightMotor.setInverted(false);
-		leftMotor.setInverted(true);
+
 		solenoid = new Solenoid(RobotMap.CubeIntake.solenoid);
 		sol2 = new Solenoid(RobotMap.CubeIntake.solenoid2);
 //		cubeIntakeSpeed = new Setting("Cube Intake Speed", Constants.CubeIntake.cubeIntakeSpeed);

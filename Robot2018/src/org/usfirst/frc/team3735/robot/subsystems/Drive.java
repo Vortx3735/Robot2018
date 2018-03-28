@@ -28,9 +28,6 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 public class Drive extends Subsystem {
 
 	
-	private VortxTalon[] left;
-	private VortxTalon[] right;
-
 	private VortxTalon l1;
 	private VortxTalon r1;
 
@@ -82,30 +79,12 @@ public class Drive extends Subsystem {
 
 
 	public Drive() {
-//		l1 = new WPI_TalonSRX(RobotMap.Drive.leftMotor1);
-//		l2 = new WPI_TalonSRX(RobotMap.Drive.leftMotor2);
-//		l3 = new WPI_TalonSRX(RobotMap.Drive.leftMotor3);
-//
-//		r1 = new WPI_TalonSRX(RobotMap.Drive.rightMotor1);
-//		r2 = new WPI_TalonSRX(RobotMap.Drive.rightMotor2);
-//		r3 = new WPI_TalonSRX(RobotMap.Drive.rightMotor3);
-		left = new VortxTalon[RobotMap.Drive.leftTrain.length];
-		right = new VortxTalon[RobotMap.Drive.rightTrain.length];
+		l1 = new VortxTalon(RobotMap.Drive.leftTrain, "Left Drive");
+		r1 = new VortxTalon(RobotMap.Drive.rightTrain, "Right Drive");
 
-		for(int i = 0; i < RobotMap.Drive.leftTrain.length; i++) {
-//			System.out.println(RobotMap.Drive.leftTrain[i]);
-			left[i] = new VortxTalon(RobotMap.Drive.leftTrain[i]);
-			
-		}
-		for(int i = 0; i < RobotMap.Drive.rightTrain.length; i++) {
-			right[i] = new VortxTalon(RobotMap.Drive.rightTrain[i]);
-		}
-		l1 = left[0];
-		r1 = right[0];
 		brakeEnabled.setIsListening(true);
 		isLimiting.setIsListening(true);
 		initSensors();
-		setupSlaves();
 		setEnableBrake(true);
 	}
 
@@ -126,7 +105,6 @@ public class Drive extends Subsystem {
 		//slot, value, timeout
 		l1.configAllowableClosedloopError(0, 0, 0);
 		l1.config_IntegralZone(0, iZone, 0);
-		this.setPIDFSettings(dP,dI,dD,dF);
 
 		setEnableBrake(true);		
 	}
@@ -141,68 +119,16 @@ public class Drive extends Subsystem {
 		this.setVisionAssist(0);
 	}
 
-	/*******************************
-	 * Slaves Setup
-	 *******************************/
-	public void setupSlaves() {
-		for(int i = 1; i < left.length; i++) {
-			left[i].follow(l1);
-		}
-		for(int i = 1; i < right.length; i++) {
-			right[i].follow(r1);
-		}
-		
-	}
+
 
 	public void initSensors() {
-		
-		int absolutePosition = l1.getSelectedSensorPosition(0) & 0xFFF;
-
-		
-		l1.setSelectedSensorPosition(absolutePosition, 0, 0);
-		l1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
-		l1.setSensorPhase(true);
-		
-		l1.configNominalOutputForward(0, 0);
-		l1.configNominalOutputReverse(0, 0);
-		l1.configPeakOutputForward(1, 0);
-		l1.configPeakOutputReverse(-1, 0);
-		
-		absolutePosition = r1.getSelectedSensorPosition(0) & 0xFFF;
-
-		
-		r1.setSelectedSensorPosition(absolutePosition, 0, 0);	
-		r1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);		
-		r1.setSensorPhase(true);
-
-		r1.configNominalOutputForward(0, 0);
-		r1.configNominalOutputReverse(0, 0);
-		r1.configPeakOutputForward(1, 0);
-		r1.configPeakOutputReverse(-1, 0);
-		
-		for(int i = 0; i < right.length; i++) {
-			right[i].setInverted(true);
-		}
-
-		
-		
-
+		l1.initSensor(FeedbackDevice.CTRE_MagEncoder_Relative, true);
+		r1.initSensor(FeedbackDevice.CTRE_MagEncoder_Relative, true);
 
 	}
 	
 
-	public void setPIDFSettings(double kp, double ki, double kd, double kf){
-		l1.config_kP(0, kp, 0);
-		l1.config_kI(0, ki, 0);
-		l1.config_kD(0, kd, 0);
-		l1.config_kF(0, kf, 0);
 
-		r1.config_kP(0, kp, 0);
-		r1.config_kI(0, ki, 0);
-		r1.config_kD(0, kd, 0);
-		r1.config_kF(0, kf, 0);
-
-	}
 
 
 	/*********************************
@@ -222,11 +148,8 @@ public class Drive extends Subsystem {
 	}
 
 	public void resetEncodersPositions(){
-		int absolutePosition = l1.getSelectedSensorPosition(0) & 0xFFF;
-		l1.setSelectedSensorPosition(0, 0, 0);
-		
-		absolutePosition = r1.getSelectedSensorPosition(0) & 0xFFF;
-		r1.setSelectedSensorPosition(0, 0, 0);
+		l1.resetPosition();
+		r1.resetPosition();
 
 	}
 	
@@ -372,23 +295,8 @@ public class Drive extends Subsystem {
 	 * Brake Mode
 	 *******************************/
 	public void setEnableBrake(boolean b) {
-		if(b) {
-			for(int i = 0; i < left.length; i++) {
-				left[i].setNeutralMode(NeutralMode.Brake);
-			}
-			for(int i = 0; i < right.length; i++) {
-				right[i].setNeutralMode(NeutralMode.Brake);
-			}
-
-		}else {
-			for(int i = 0; i < left.length; i++) {
-				left[i].setNeutralMode(NeutralMode.Coast);
-			}
-			for(int i = 0; i < right.length; i++) {
-				right[i].setNeutralMode(NeutralMode.Coast);
-			}
-		}
-
+		l1.setNeutralMode((b)? NeutralMode.Brake : NeutralMode.Coast);
+		r1.setNeutralMode((b)? NeutralMode.Brake : NeutralMode.Coast);
 	}
 	
 	public double getLeftError(){
@@ -419,11 +327,11 @@ public class Drive extends Subsystem {
 
 	
 	public double getLeftSpeed() {
-		return l1.getSelectedSensorVelocity(0) * Constants.Drive.InchesPerTick * 10.0;
+		return l1.getSpeed();
 	}
 	
 	public double getRightSpeed() {
-		return r1.getSelectedSensorVelocity(0) * Constants.Drive.InchesPerTick * 10.0;
+		return r1.getSpeed();
 	}
 	
 	public double getAverageSpeed() {
@@ -432,8 +340,8 @@ public class Drive extends Subsystem {
 
 	public void setLeftRight(double left, double right) {
 		l1.set(ControlMode.PercentOutput, left);
-		
 		r1.set(ControlMode.PercentOutput, right);
+		
 //		System.out.println("Left: " + left + "Right: " + right);
 		
 	}

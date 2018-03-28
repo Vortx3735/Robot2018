@@ -57,8 +57,8 @@ public class Elevator extends Subsystem {
 		elevatorLeft.setNeutralMode(NeutralMode.Brake);
 		elevatorRight.setNeutralMode(NeutralMode.Brake);
 
-		elevatorLeft.initSensor(FeedbackDevice.QuadEncoder);
-		elevatorRight.initSensor(FeedbackDevice.QuadEncoder);
+		elevatorLeft.initSensor(FeedbackDevice.QuadEncoder, true);
+		elevatorRight.initSensor(FeedbackDevice.QuadEncoder, true);
 		
 		resetEncoderPositions();
 	}

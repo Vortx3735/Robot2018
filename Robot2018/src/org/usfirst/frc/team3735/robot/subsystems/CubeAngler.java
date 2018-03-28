@@ -20,7 +20,7 @@ public class CubeAngler extends Subsystem {
 	
 	
 	public CubeAngler() {
-		angler = new VortxTalon(RobotMap.CubeIntake.anglerMotor);
+		angler = new VortxTalon(RobotMap.CubeIntake.anglerMotor, "Angler");
 		angler.setNeutralMode(NeutralMode.Brake);
 	}
 
