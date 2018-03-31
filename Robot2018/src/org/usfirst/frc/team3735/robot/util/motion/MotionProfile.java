@@ -5,6 +5,7 @@ package org.usfirst.frc.team3735.robot.util.motion;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
@@ -15,7 +16,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.usfirst.frc.team3735.robot.util.motion.exceptions.MissingColumnException;
 
-public class MotionProfile {
+public class MotionProfile implements ProfileName, ProfileSource {
 
 	private static CSVFormat _theFormat = CSVFormat.newFormat(',').withFirstRecordAsHeader();
 
@@ -27,61 +28,23 @@ public class MotionProfile {
 		heading
 	};
 	
-	private Path _left;
-	private Path _right;
-
-	private MotionProfile(Path left, Path right) {
-		_left = left;
-		_right = right;
+	enum Side
+	{
+		left,
+		right
 	}
-
-	/**
-	 * Loads the motion data set from a profile.
-	 * 
-	 * @param pathRoot
-	 *            The root path where the profiles are kept.
-	 * 
-	 * @param profileName
-	 *            The name of the profile, which is the part of the filename before
-	 *            _left_detailed.csv and _right_detailed.csv
-	 * 
-	 * @return An instance of the profile reader.
-	 * @throws FileNotFoundException
-	 * @throws IOException
-	 */
-	public final static MotionProfile withStoredProfile(String pathRoot, String profileName)
-			throws FileNotFoundException {
-
-		Path leftPath = FileSystems.getDefault().getPath(pathRoot, String.format("%s_left_detailed.csv", profileName));
-		Path rightPath = FileSystems.getDefault().getPath(pathRoot,
-				String.format("%s_right_detailed.csv", profileName));
-
-		if (!leftPath.toFile().exists())
-			throw new FileNotFoundException(leftPath.toString());
-
-		if (!rightPath.toFile().exists())
-			throw new FileNotFoundException(rightPath.toString());
-
-		return new MotionProfile(leftPath, rightPath);
-	}
-
-	/**
-	 * Loads the motion data set from a profile.  Uses the current working directory as the path root.
-	 * 
-	 * @param profileName
-	 *            The name of the profile, which is the part of the filename before
-	 *            _left_detailed.csv and _right_detailed.csv
-	 * @return
-	 * @throws FileNotFoundException
-	 */
-	public final static MotionProfile withStoredProfile(String profileName)
-			throws FileNotFoundException {
-		
-		return withStoredProfile (System.getProperty("user.dir"), profileName);
+	
+	private MotionProfile ()
+	{
 	}
 	
 	
-	private void assertHeaderIsValid (Path forFile, Map<String, Integer> columnNames) throws MissingColumnException
+	public static ProfileName builder ()
+	{
+		return new MotionProfile ();
+	}
+
+	private void assertHeaderIsValid (String forFile, Map<String, Integer> columnNames) throws MissingColumnException
 	{
 		
 		for (ColumnsFromFile column : ColumnsFromFile.values() )
@@ -92,14 +55,76 @@ public class MotionProfile {
 		
 	}
 
-	public final MotionSet build() throws IOException, MissingColumnException {
-		CSVParser leftParser = CSVParser.parse(_left, Charset.forName("ASCII"), _theFormat);
-		CSVParser rightParser = CSVParser.parse(_right, Charset.forName("ASCII"), _theFormat);
+	public final MotionSet make () throws IOException, MissingColumnException {
 		
-		assertHeaderIsValid (_right, rightParser.getHeaderMap());
-		assertHeaderIsValid(_left, leftParser.getHeaderMap());
+		
+		CSVParser leftParser = CSVParser.parse(getStream (Side.left), Charset.forName("ASCII"), _theFormat);
+		CSVParser rightParser = CSVParser.parse(getStream(Side.right), Charset.forName("ASCII"), _theFormat);
+		
+		assertHeaderIsValid(getProfileName(Side.right), rightParser.getHeaderMap());
+		assertHeaderIsValid(getProfileName(Side.left), leftParser.getHeaderMap());
 
 		return new MotionSet (leftParser, rightParser);
 	}
 
+	
+	private String getProfileName (Side trackSide)
+	{
+		return String.format("%s_%s_detailed.csv", _profName, trackSide);
+	}
+	
+	
+	private InputStream getStream (Side trackSide) throws FileNotFoundException
+	{
+		
+		if (!_fromJar)
+		{
+			Path p = FileSystems.getDefault().getPath(_rootPath, getProfileName(trackSide) );
+
+			if (!p.toFile().exists())
+				throw new FileNotFoundException(p.toString());
+			
+			return new FileInputStream (p.toFile());
+		}
+		else
+		{
+			return getClass().getResourceAsStream(String.format("%s/%s", _rootPath, getProfileName(trackSide))); 
+		}
+		
+	}
+
+
+	private String _rootPath;
+	private Boolean _fromJar = false;
+	
+	@Override
+	public MotionProfile withProfilesFromFilesystem(String atPath) {
+		_rootPath = atPath;
+		_fromJar = false;
+		return this;
+	}
+
+
+	@Override
+	public MotionProfile withProfilesFromJar() {
+		_rootPath = "/resources";
+		_fromJar = true;
+		return this;
+	}
+
+	@Override
+	public MotionProfile withProfilesFromFilesystem() {
+		_rootPath = System.getProperty("user.dir");
+		_fromJar = false;
+		return this;
+	}
+
+
+	private String _profName;
+	@Override
+	public ProfileSource withProfileName(String profileName) {
+		_profName = profileName;
+
+		return this;
+	}
 }
