@@ -3,9 +3,11 @@ package org.usfirst.frc.team3735.robot.commands.sequences;
 import org.usfirst.frc.team3735.robot.Robot;
 import org.usfirst.frc.team3735.robot.assists.NavxAssist;
 import org.usfirst.frc.team3735.robot.commands.carriage.CarriageLower;
+import org.usfirst.frc.team3735.robot.commands.carriage.CarriageRaise;
 import org.usfirst.frc.team3735.robot.commands.carriage.CarriageRaiseTele;
 import org.usfirst.frc.team3735.robot.commands.carriage.CarriageSetRoller;
 import org.usfirst.frc.team3735.robot.commands.drive.TurnTo;
+import org.usfirst.frc.team3735.robot.commands.drive.movedistance.DriveExp;
 import org.usfirst.frc.team3735.robot.commands.drive.movedistance.DriveRaw;
 import org.usfirst.frc.team3735.robot.commands.drive.movedistance.MoveDDx;
 import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorSetPosDDx;
@@ -37,7 +39,7 @@ public class AutoScaleLineup extends CommandGroup {
 			new ElevatorSetPosDDx(Func.getFunc(Elevator.top), Func.getFunc(.8), Func.getFunc(.02)),
 			new ElevatorSetPosPID(Elevator.top)
 		), 2.5);
-    	addSequential(new DriveRaw(-.4, 0).addT(new HasMoved(new Func() {
+    	addSequential(new DriveExp(-.4, 0).addT(new HasMoved(new Func() {
     		@Override
     		public double getValue() {
     			return getDist();
@@ -46,19 +48,19 @@ public class AutoScaleLineup extends CommandGroup {
     	
     	
     	//shoot it
-    	addSequential(new CarriageRaiseTele());
+    	addSequential(new CarriageRaise());
     	addSequential(new CarriageSetRoller(-.9), 1);
     	
     	
     	//back up same dist, lower elevator and carriage
-    	addSequential(new DriveRaw(.4, 0).addT(new HasMoved(new Func() {
+    	addSequential(new DriveExp(.4, 0).addT(new HasMoved(new Func() {
     		@Override
     		public double getValue() {
     			return -dist;
     		}
-    	})).addA(new NavxAssist(target, false)));
+    	})).addA(new NavxAssist()));
     	
-    	addSequential(new CarriageLower());
+//    	addSequential(new CarriageLower());
     	addSequential(new ElevatorSetPosDDx(Func.getFunc(0), Func.getFunc(.7), Func.getFunc(.03)));
 
     	
