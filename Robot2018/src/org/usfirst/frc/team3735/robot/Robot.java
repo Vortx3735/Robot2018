@@ -81,7 +81,7 @@ public class Robot extends VortxIterative {
 		climber = new Climber();
 		carriage = new Carriage();
 		angler = new CubeAngler();
-		
+//		System.out.println("hello world");
 		oi = new GTAOI(); //MUST be instantiated after the subsystems
 			
 		autoLogic = new Autonomous();
@@ -207,6 +207,7 @@ public class Robot extends VortxIterative {
 		vision.log();
 		elevator.log();
 		carriage.log();
+		angler.log();
 		
 	}
 	

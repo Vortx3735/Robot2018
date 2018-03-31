@@ -81,7 +81,8 @@ public class Drive extends Subsystem {
 	public Drive() {
 		l1 = new VortxTalon(RobotMap.Drive.leftTrain, "Left Drive");
 		r1 = new VortxTalon(RobotMap.Drive.rightTrain, "Right Drive");
-
+		l1.setInchesPerTick(Constants.Drive.InchesPerTick);
+		r1.setInchesPerTick(Constants.Drive.InchesPerTick);
 		brakeEnabled.setIsListening(true);
 		isLimiting.setIsListening(true);
 		initSensors();

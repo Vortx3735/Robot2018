@@ -8,6 +8,7 @@ import org.usfirst.frc.team3735.robot.util.hardware.VortxTalon;
 import org.usfirst.frc.team3735.robot.util.hardware.VortxVictor;
 import org.usfirst.frc.team3735.robot.util.settings.Setting;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
@@ -34,9 +35,13 @@ public class CubeIntake extends Subsystem {
 		leftMotor = new VortxVictor(RobotMap.CubeIntake.leftMotor);
 		rightMotor = new VortxVictor(RobotMap.CubeIntake.rightMotor);
 		
+		leftMotor.setNeutralMode(NeutralMode.Brake);
+		rightMotor.setNeutralMode(NeutralMode.Brake);
 
 		solenoid = new Solenoid(RobotMap.CubeIntake.solenoid);
 		sol2 = new Solenoid(RobotMap.CubeIntake.solenoid2);
+		
+		
 //		cubeIntakeSpeed = new Setting("Cube Intake Speed", Constants.CubeIntake.cubeIntakeSpeed);
 		
 		isGripping = false;

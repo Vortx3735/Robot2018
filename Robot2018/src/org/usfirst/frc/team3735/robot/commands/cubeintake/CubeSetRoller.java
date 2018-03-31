@@ -10,14 +10,15 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class CubeSetRoller extends Command {
 
-    private Func speed;
+    private Func left;
+    private Func right;
+
     
-    private boolean flipped = false;
 
 	public CubeSetRoller(Func spd) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	this(spd, false);
+    	this(spd, spd);
     }
 	
 	public CubeSetRoller(double spd) {
@@ -26,13 +27,11 @@ public class CubeSetRoller extends Command {
     	this(Func.getFunc(spd));
     }
 	
-	public CubeSetRoller(double spd, boolean flipped) {
-		this(Func.getFunc(spd), flipped);
-	}
-	public CubeSetRoller(Func spd, boolean flipped) {
+	
+	public CubeSetRoller(Func left, Func right) {
+		this.left = left;
+		this.right = right;
 		requires(Robot.cubeIntake);
-		this.flipped = flipped;
-    	this.speed = spd;
 	}
 
     // Called just before this Command runs the first time
@@ -41,12 +40,9 @@ public class CubeSetRoller extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	if(flipped) {
-    		Robot.cubeIntake.setLeftMotorCurrent(speed.getValue());
-    		Robot.cubeIntake.setRightMotorCurrent(-speed.getValue());
-    	}else {
-        	Robot.cubeIntake.setMotorsCurrent(speed.getValue());
-    	}
+		Robot.cubeIntake.setLeftMotorCurrent(left.getValue());
+		Robot.cubeIntake.setRightMotorCurrent(right.getValue());
+   
     }
 
     // Make this return true when this Command no longer needs to run execute()

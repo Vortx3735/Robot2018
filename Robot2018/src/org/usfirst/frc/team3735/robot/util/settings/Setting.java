@@ -119,5 +119,14 @@ public class Setting extends Func{
 		};
 	}
 	
+	public Func multiply(Func s) {
+		return new Func() {
+			@Override
+			public double getValue() {
+				return getValueFetched() * s.getValue();
+			}
+		};
+	}
+	
 }
 

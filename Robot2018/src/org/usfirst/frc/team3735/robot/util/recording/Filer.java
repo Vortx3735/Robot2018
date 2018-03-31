@@ -1,6 +1,9 @@
 package org.usfirst.frc.team3735.robot.util.recording;
 
+import java.io.File;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Filer {
 	
@@ -24,4 +27,31 @@ public class Filer {
 		String cat = s.substring(s.indexOf(name));
 		return cat.substring(cat.indexOf(":") + 1, cat.indexOf("#"));
 	}
+	
+	
+//	public static ArrayList<DriveState> getDriveStateArr(String filename) {
+//		ArrayList<DriveState> array;
+//		String filePath;
+//		Scanner sc;
+//    	Thread n = new Thread() {
+//    		@Override
+//    		public void run() {
+//    	    	array = new ArrayList<>();
+//    			filePath = ""  + filename + ".csv";
+//    			//filePath = "C:\\Users\\Andrew\\Desktop\\"  + name + ".txt";
+//
+//    			try{
+//    				sc = new Scanner(new File(filePath));
+//    			}catch(Exception e){
+////    				e.printStackTrace();
+//    				System.out.println("Could not find file: " + filePath);
+//    				return;
+//    			}
+//    	    	while(sc.hasNextLine()) {
+//    	    		array.add(DriveState.fromString(sc.nextLine()));
+//    	    	}
+//    		}
+//    	};
+//    	n.start();
+//	}
 }

@@ -45,7 +45,7 @@ public class VortxTalon extends WPI_TalonSRX{
 	
 	@Override
 	public void setNeutralMode(NeutralMode mode) {
-		this.setNeutralMode(mode);
+		super.setNeutralMode(mode);
 		if(followers != null) {
 			for(VortxTalon t : followers) {
 				t.setNeutralMode(mode);

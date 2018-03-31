@@ -1,6 +1,7 @@
 package org.usfirst.frc.team3735.robot.ois;
 
 import org.usfirst.frc.team3735.robot.assists.NavxAssist;
+import org.usfirst.frc.team3735.robot.commands.RecordDriveData;
 import org.usfirst.frc.team3735.robot.commands.RecordTuringData;
 import org.usfirst.frc.team3735.robot.commands.carriage.CarriageRaiseTele;
 import org.usfirst.frc.team3735.robot.commands.carriage.CarriageSetRoller;
@@ -52,11 +53,14 @@ public class GTAOI implements DriveOI{
 		/*************************************************
 		 * Main-Driver
 		 *************************************************/
-		main.a.whileHeld(new CubeGrab());
-		main.b.whileHeld(new CubeSetRoller(new Setting("Cube Outtake Speed", .5)));
-		main.b.whileHeld(new CarriageSetRoller(new Setting("Carriage Outtake Speed", .5)));
-		main.x.whileHeld(new CubeSetRoller(new Setting("Cube Intake Speed", -.7)));
-		main.x.whileHeld(new CarriageSetRoller(new Setting("Carriage Intake Speed", -.5)).addT(new CarriageOverload(new Setting("Intake MaxPower", 30))));
+//		main.a.whileHeld(new CubeGrab());
+		main.x.whileHeld(new CarriageSetRoller(new Setting("Carriage Outtake Speed", .5)));
+		Setting cubeintake = new Setting("Cube Intake Speed", -.7);
+		main.x.whileHeld(new CubeSetRoller(cubeintake.multiply(new Setting("Cube Intake Slow Mult", .7)), cubeintake));
+		main.b.whileHeld(new CarriageSetRoller(new Setting("Carriage Intake Speed", -.5))
+				.addT(new CarriageOverload(new Setting("Carriage Intake MaxPower", 30))));
+		main.b.whileHeld(new CubeSetRoller(new Setting("Cube Outtake Speed", 1)));
+
 //		main.y
 		
 //		Setting maxp = new Setting("Logis Max P", 1);
@@ -67,8 +71,8 @@ public class GTAOI implements DriveOI{
 
 		Setting spin = new Setting("Cube Spin Speed", .7);
 //		main.lb.whileHeld(new CubeSetSols(true, false));
-		main.lb.whileHeld(new CubeSetRoller(spin.reverse(), true));
-		main.rb.whileHeld(new CubeSetRoller(spin, true));
+		main.lb.whileHeld(new CubeSetRoller(spin.reverse(), spin));
+		main.rb.whileHeld(new CubeSetRoller(spin, spin.reverse()));
 //		main.rb.whileHeld(new CubeSetSols(false, true));
 
 //		main.start
@@ -131,6 +135,7 @@ public class GTAOI implements DriveOI{
 		SmartDashboard.putData("Auto Right Switch Lineup", new AutoSwitchLineup(true));
 		SmartDashboard.putData("Auto Left Switch Lineup", new AutoSwitchLineup(false));
 		SmartDashboard.putData(new RecordTuringData());
+		SmartDashboard.putData(new RecordDriveData());
 		
 		
 

@@ -3,8 +3,16 @@ package org.usfirst.frc.team3735.robot.util;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
 public class PIDCtrl extends PIDController{
+
+	@Override
+	public void initSendable(SendableBuilder builder) {
+		// TODO Auto-generated method stub
+		super.initSendable(builder);
+	}
+
 
 	private double iZone = 0;
 	private double actingI;
