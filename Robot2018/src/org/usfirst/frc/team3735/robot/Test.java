@@ -23,13 +23,7 @@ public class Test {
 //		System.out.println(Math.toDegrees(Math.atan2(-1, 1)));
 //		Position p = new Position(0,0,180);
 //		System.out.println(p.angleTo(Waypoints.Pieces.switchRight));
-//		System.out.println(get());
-		try {
-			MotionSet theSet = MotionProfile.withStoredProfile("").build();
-		} catch (IOException | MissingColumnException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
 
 		
 	}
