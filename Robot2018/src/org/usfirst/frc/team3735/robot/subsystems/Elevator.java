@@ -45,11 +45,11 @@ public class Elevator extends Subsystem {
 		elevatorLeft = new VortxTalon(RobotMap.Elevator.elevatorLeft, "Elevator Left");
 		elevatorRight = new VortxTalon(RobotMap.Elevator.elevatorRight, "Elevator Right");
 		
-		elevatorLeft.setTicksPerInch(Constants.Elevator.ticksPerInch);
-		elevatorRight.setTicksPerInch(Constants.Elevator.ticksPerInch);
-
 		elevatorLeft.setPIDSetting(new PIDSetting(80, .15, 60));
 		elevatorRight.setPIDSetting(new PIDSetting(80, .15, 60));
+		
+		elevatorLeft.setTicksPerInch(Constants.Elevator.ticksPerInch);
+		elevatorRight.setTicksPerInch(Constants.Elevator.ticksPerInch);
 
 		elevatorLeft.putOnDash();
 		elevatorRight.putOnDash();

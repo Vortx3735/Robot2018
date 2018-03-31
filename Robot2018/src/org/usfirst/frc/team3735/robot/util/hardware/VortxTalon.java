@@ -105,6 +105,8 @@ public class VortxTalon extends WPI_TalonSRX{
 		this.configNominalOutputReverse(0, 0);
 		this.configPeakOutputForward(1, 0);
 		this.configPeakOutputReverse(-1, 0);
+//		this.configClosedLoopPeakOutput(0, .7, 0);
+
 	}
 	
 	public void resetPosition(){
@@ -113,7 +115,12 @@ public class VortxTalon extends WPI_TalonSRX{
 	
 	@Override
 	public void set(ControlMode mode, double value){
+
 		if(mode == ControlMode.Position){
+			timer++;
+			if(timer % 25 == 0) {
+				updatePID();
+			}
 			value *= ticksPerInch;
 		}
 		super.set(mode, value);
