@@ -20,11 +20,11 @@ public class MotionData {
 			throws NumberFormatException, ColumnValueMismatchException {
 		_lineNumber = lineNum;
 
-		_centerX = (Double.valueOf(left.get(MotionProfile.ColumnsFromFile.x))
-				+ Double.valueOf(right.get(MotionProfile.ColumnsFromFile.x))) / 2.0;
-
-		_centerY = (Double.valueOf(left.get(MotionProfile.ColumnsFromFile.y))
+		_centerX = (Double.valueOf(left.get(MotionProfile.ColumnsFromFile.y))
 				+ Double.valueOf(right.get(MotionProfile.ColumnsFromFile.y))) / 2.0;
+
+		_centerY = (Double.valueOf(left.get(MotionProfile.ColumnsFromFile.x))
+				+ Double.valueOf(right.get(MotionProfile.ColumnsFromFile.x))) / 2.0;
 
 		assertEqualValues(Double.valueOf(left.get(MotionProfile.ColumnsFromFile.heading)),
 				Double.valueOf(right.get(MotionProfile.ColumnsFromFile.heading)),
@@ -42,15 +42,15 @@ public class MotionData {
 	}
 
 	public Double getCenterX() {
-		return _centerX;
+		return -(_centerX - 13.5)*12;
 	}
 
 	public Double getCenterY() {
-		return _centerY;
+		return _centerY*12.0;
 	}
 
 	public Double getHeading() {
-		return _heading;
+		return -_heading;
 	}
 
 	public Double getLeftV() {

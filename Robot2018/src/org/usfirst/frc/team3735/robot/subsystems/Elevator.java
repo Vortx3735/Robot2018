@@ -35,6 +35,8 @@ public class Elevator extends Subsystem {
 	public static double bottom = 0;
 	public static double switchHeight = 10;
 	public static double top = 36;
+	
+	public static double transferHeight = 3.3;
 
 	// private Setting carriageSpeed;
 
@@ -45,14 +47,14 @@ public class Elevator extends Subsystem {
 		elevatorLeft = new VortxTalon(RobotMap.Elevator.elevatorLeft, "Elevator Left");
 		elevatorRight = new VortxTalon(RobotMap.Elevator.elevatorRight, "Elevator Right");
 		
-		elevatorLeft.setPIDSetting(new PIDSetting(80, .15, 60));
-		elevatorRight.setPIDSetting(new PIDSetting(80, .15, 60));
+		elevatorLeft.setPIDSetting(new PIDSetting(90, .2, 60,0,1,6));
+//		elevatorRight.setPIDSetting(new PIDSetting(90, .15, 80,0,1));
 		
 		elevatorLeft.setTicksPerInch(Constants.Elevator.ticksPerInch);
 		elevatorRight.setTicksPerInch(Constants.Elevator.ticksPerInch);
 
 		elevatorLeft.putOnDash();
-		elevatorRight.putOnDash();
+//		elevatorRight.putOnDash();
 		
 		elevatorLeft.setNeutralMode(NeutralMode.Brake);
 		elevatorRight.setNeutralMode(NeutralMode.Brake);
@@ -60,6 +62,7 @@ public class Elevator extends Subsystem {
 		elevatorLeft.initSensor(FeedbackDevice.QuadEncoder, true);
 		elevatorRight.initSensor(FeedbackDevice.QuadEncoder, true);
 		
+		elevatorRight.follow(elevatorLeft);
 		resetEncoderPositions();
 	}
 
@@ -75,7 +78,7 @@ public class Elevator extends Subsystem {
 
 	public void setPOutput(double speed) {
 		setLeftPOutput(speed);
-		setRightPOutput(speed);
+//		setRightPOutput(speed);
 	}
 	
 	public void setPOutputAdjusted(double speed) {
@@ -107,7 +110,7 @@ public class Elevator extends Subsystem {
 //			elevatorRight.setInverted(true);
 //
 //		}
-		elevatorRight.set(ControlMode.PercentOutput, speed);
+//		elevatorRight.set(ControlMode.PercentOutput, speed);
 
 		//System.out.println("Right Percent" + speed);
 	}
@@ -118,7 +121,7 @@ public class Elevator extends Subsystem {
 	}
 
 	public void setElevatorRightPosition(double position) {
-		elevatorRight.set(ControlMode.Position, position);
+//		elevatorRight.set(ControlMode.Position, position);
 	}
 	
 
@@ -141,6 +144,7 @@ public class Elevator extends Subsystem {
 	
 	public double getPosition() {
 		return (.5 * (elevatorLeft.getPosition() + elevatorRight.getPosition()));
+		
 	}
 
 
@@ -150,7 +154,7 @@ public class Elevator extends Subsystem {
 
 	public void log() {
 		elevatorLeft.log();
-		elevatorRight.log();
+//		elevatorRight.log();
 		
 		SmartDashboard.putNumber("Elevator Position", getPosition());
 	}

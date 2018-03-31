@@ -1,11 +1,15 @@
 package org.usfirst.frc.team3735.robot.util.motion;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.function.Consumer;
 
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.usfirst.frc.team3735.robot.subsystems.Drive;
 import org.usfirst.frc.team3735.robot.util.motion.exceptions.ColumnValueMismatchException;
+import org.usfirst.frc.team3735.robot.util.profiling.Position;
+import org.usfirst.frc.team3735.robot.util.recording.DriveState;
 
 public class MotionSet implements Iterable<MotionData> {
 	
@@ -49,6 +53,19 @@ public class MotionSet implements Iterable<MotionData> {
 	@Override
 	public Iterator<MotionData> iterator() {
 		return new IteratorImpl(this);
+	}
+	
+	public ArrayList<DriveState> list(){
+		ArrayList<DriveState> arr = new ArrayList<>();
+		Iterator<MotionData> it = iterator();
+		while(it.hasNext()) {
+			MotionData d = it.next();
+			arr.add(new DriveState(
+					new Position(d.getCenterX(), d.getCenterY(), d.getHeading()), 
+					Drive.speedToPercent(d.getLeftV()), 
+					Drive.speedToPercent(d.getRightV())));
+		}
+		return arr;
 	}
 
 

@@ -375,8 +375,9 @@ public class Drive extends Subsystem {
      * 			compensates for the deadzone using gathered data
      */
     public static double speedToPercent(double spd){
-    	double speed = Math.abs(spd) * (0.1) / Constants.Drive.InchesPerTick;
-    	return Math.copySign(slope*speed + minPct, spd);
+//    	double speed = Math.abs(spd) * (0.1) / Constants.Drive.InchesPerTick;
+//    	return Math.copySign(slope*speed + minPct, spd);
+    	return spd / 170.0;
     }
     public static double percentToSpeed(double pct){
     	return Math.copySign((pct - minPct) / slope, pct) * Constants.Drive.InchesPerTick/60.0;

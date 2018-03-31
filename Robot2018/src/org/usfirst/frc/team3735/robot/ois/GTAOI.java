@@ -7,6 +7,8 @@ import org.usfirst.frc.team3735.robot.commands.carriage.CarriageRaiseTele;
 import org.usfirst.frc.team3735.robot.commands.carriage.CarriageSetRoller;
 
 import org.usfirst.frc.team3735.robot.commands.climber.ClimberSetSpeed;
+import org.usfirst.frc.team3735.robot.commands.cubeintake.CubeAnglerReset;
+import org.usfirst.frc.team3735.robot.commands.cubeintake.CubeAnglerSetPID;
 import org.usfirst.frc.team3735.robot.commands.cubeintake.CubeGrab;
 import org.usfirst.frc.team3735.robot.commands.cubeintake.CubeSetRoller;
 import org.usfirst.frc.team3735.robot.commands.cubeintake.CubeSetSols;
@@ -26,6 +28,7 @@ import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorSetPosPID;
 import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorSetPosSetting;
 import org.usfirst.frc.team3735.robot.commands.sequences.AutoScaleLineup;
 import org.usfirst.frc.team3735.robot.commands.sequences.AutoSwitchLineup;
+import org.usfirst.frc.team3735.robot.commands.sequences.CubeTransfer;
 import org.usfirst.frc.team3735.robot.settings.Constants;
 import org.usfirst.frc.team3735.robot.subsystems.Elevator;
 import org.usfirst.frc.team3735.robot.triggers.CarriageOverload;
@@ -56,18 +59,23 @@ public class GTAOI implements DriveOI{
 //		main.a.whileHeld(new CubeGrab());
 		main.x.whileHeld(new CarriageSetRoller(new Setting("Carriage Outtake Speed", .5)));
 		Setting cubeintake = new Setting("Cube Intake Speed", -.7);
-		main.x.whileHeld(new CubeSetRoller(cubeintake.multiply(new Setting("Cube Intake Slow Mult", .7)), cubeintake));
+		main.x.whileHeld(new CubeSetRoller(cubeintake,cubeintake.multiply(new Setting("Cube Intake Slow Mult", .6))));
 		main.b.whileHeld(new CarriageSetRoller(new Setting("Carriage Intake Speed", -.5))
 				.addT(new CarriageOverload(new Setting("Carriage Intake MaxPower", 30))));
-		main.b.whileHeld(new CubeSetRoller(new Setting("Cube Outtake Speed", 1)));
+		main.y.whileHeld(new CubeSetRoller(new Setting("Cube Outtake Speed", 1)));
+		main.b.whileHeld(new CubeSetRoller(new Setting("Cube Transfer Speed", .7)));
 
 //		main.y
 		
 //		Setting maxp = new Setting("Logis Max P", 1);
-		main.pov0.whenPressed(new TurnTo(0));
-		main.pov90.whenPressed(new TurnTo(90));
-		main.pov180.whenPressed(new TurnTo(180));
-		main.pov270.whenPressed(new TurnTo(270));
+//		main.pov0.whenPressed(new TurnTo(0));
+//		main.pov90.whenPressed(new TurnTo(90));
+//		main.pov180.whenPressed(new TurnTo(180));
+//		main.pov270.whenPressed(new TurnTo(270));
+		main.pov0.whenPressed(new CubeAnglerSetPID(130));
+		main.pov90.whenPressed(new CubeAnglerSetPID(80));
+		main.pov180.whenPressed(new CubeAnglerSetPID(0));
+		main.pov270.whenPressed(new CubeTransfer());
 
 		Setting spin = new Setting("Cube Spin Speed", .7);
 //		main.lb.whileHeld(new CubeSetSols(true, false));
@@ -82,7 +90,7 @@ public class GTAOI implements DriveOI{
 		/*************************************************
 		 * Co-Driver
 		 *************************************************/
-		Setting carriageFine = new Setting("Carriage Fine Speed", .2);
+		Setting carriageFine = new Setting("Carriage Fine Speed", .3);
 		co.a.whileHeld(new CarriageSetRoller(carriageFine.reverse()));
 		co.b.whileHeld(new CarriageSetRoller(carriageFine));
 		co.x.whenPressed(new ClimberSetSpeed(0));
@@ -136,7 +144,8 @@ public class GTAOI implements DriveOI{
 		SmartDashboard.putData("Auto Left Switch Lineup", new AutoSwitchLineup(false));
 		SmartDashboard.putData(new RecordTuringData());
 		SmartDashboard.putData(new RecordDriveData());
-		
+		SmartDashboard.putData(new CubeAnglerReset());
+		SmartDashboard.putData(new CubeAnglerSetPID(new Setting("Cube Angler SetPos", 0)));
 		
 
 //		Setting position = new Setting("Position", 0);
@@ -198,7 +207,7 @@ public class GTAOI implements DriveOI{
 
 
 	public double getAnglerMove() {
-		return VortxMath.handleDeadband(co.getRightY(), .08);
+		return VortxMath.handleDeadband(co.getRightY(), .08) * .5;
 	}
 
 

@@ -1,6 +1,7 @@
 package org.usfirst.frc.team3735.robot.commands.drive.recorder;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.HashMap;
@@ -10,7 +11,10 @@ import org.usfirst.frc.team3735.robot.Robot;
 import org.usfirst.frc.team3735.robot.util.calc.Average;
 import org.usfirst.frc.team3735.robot.util.calc.RollingAverage;
 import org.usfirst.frc.team3735.robot.util.calc.VortxMath;
+import org.usfirst.frc.team3735.robot.util.motion.MotionData;
+import org.usfirst.frc.team3735.robot.util.motion.MotionProfile;
 import org.usfirst.frc.team3735.robot.util.motion.MotionSet;
+import org.usfirst.frc.team3735.robot.util.motion.exceptions.MissingColumnException;
 import org.usfirst.frc.team3735.robot.util.profiling.Line;
 import org.usfirst.frc.team3735.robot.util.profiling.Ray;
 import org.usfirst.frc.team3735.robot.util.recording.DriveState;
@@ -25,10 +29,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class SendPreProfile extends Command {
 	
-	public static StringSetting fileName = new StringSetting("Sending Profile File", "defaultfile");
 	private String filePath;
 	private Scanner sc;
-	boolean needsLoading = false;
 	private String file;
 	private static HashMap<String, SendPreProfile> comms = new HashMap<>();
 	
@@ -37,11 +39,12 @@ public class SendPreProfile extends Command {
     double angleError = 0;	//	degrees/180
     double distError = 0;	//	inches
     
-//	private MotionSet array;
-    private ArrayList<DriveState> array;
+	private ArrayList<DriveState> arr;
+	private MotionSet data;
 	int index;
     DriveState curState;
     Ray toFollow;
+    boolean error;
 	
 	private static int lookAmount = 25; //.5 seconds
 	private static Setting forwardLookCo = new Setting("Forward Look Co", .9);
@@ -53,17 +56,27 @@ public class SendPreProfile extends Command {
 	Average roll;
 	
     public SendPreProfile(String file) {
+        // Use requires() here to declare subsystem dependencies
+        // eg. requires(chassis);
+    	this.file = file;
+    	try {
+			data = MotionProfile.builder().withProfileName(file).withProfilesFromJar().make();
+			arr = data.list();
+		} catch (IOException | MissingColumnException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			error = true;
+		}
+    	
+    	
     	requires(Robot.drive);
     	requires(Robot.navigation);
     }
     
-
-
+    
     // Called just before this Command runs the first time
     protected void initialize() {
-    	if(needsLoading) {
-    		loadFile(fileName.getValue());
-    	}
+    	
     	
     	index = 0;
     	
@@ -78,40 +91,11 @@ public class SendPreProfile extends Command {
     }
     
 
-    public void loadFile() {
-    	loadFile(file);
-    }
-    
-    public void loadFile(String name) {
-    	
-    	Thread n = new Thread() {
-    		@Override
-    		public void run() {
-    	    	array = new ArrayList<>();
-    			filePath = "/home/lvuser/"  + name + ".txt";
-    			//filePath = "C:\\Users\\Andrew\\Desktop\\"  + name + ".txt";
-
-    			try{
-    				sc = new Scanner(new File(filePath));
-    			}catch(Exception e){
-//    				e.printStackTrace();
-    				System.out.println("Could not find file: " + filePath);
-    				return;
-    			}
-    	    	while(sc.hasNextLine()) {
-    	    		array.add(DriveState.fromString(sc.nextLine()));
-    	    	}
-    		}
-    	};
-    	n.start();
-
-    }
 
 
     
     protected void execute() {
-		ArrayList<DriveState> arr = getArray();
-		curState = getArray().get(limitIndex(arr, index));
+		curState = arr.get(limitIndex(arr, index));
 		//draw line between current point and previous point
 		if(index != 0) {
 	    	toFollow = new Ray(curState.pos, arr.get(index - 1).pos);
@@ -174,7 +158,7 @@ public class SendPreProfile extends Command {
     }
     
     public synchronized ArrayList<DriveState> getArray(){
-    	return array;
+    	return arr;
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -191,11 +175,5 @@ public class SendPreProfile extends Command {
     protected void interrupted() {
     }
     
-    public static void loadCommand(String fileName) {
-    	SendPreProfile c = comms.get(fileName);
-    	if(c != null) {
-    		c.loadFile();
-    	}
-    	
-    }
+
 }

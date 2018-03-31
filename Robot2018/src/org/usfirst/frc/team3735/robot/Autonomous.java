@@ -51,18 +51,23 @@ public class Autonomous {
 	}
 	
 	public void startCommand() {
-		
+		firstCommand.start();
 	}
 	
 	public void chooseAutonomous() {
+
+
 		cancel();
-		String s = DriverStation.getInstance().getGameSpecificMessage().toLowerCase().trim().substring(0,2);
+
 		
+		String s = DriverStation.getInstance().getGameSpecificMessage().toLowerCase().trim().substring(0,2);
+
 		
 		System.out.println("Specific Message interpreted: " + s);
 		
 		if(priority.getSelected() == null || priority.getSelected() == Priority.LINE) {
 			firstCommand = new UnknownStraight();
+			System.out.println("Doing Unknown Straight B");
 			return;
 		}
 		

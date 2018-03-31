@@ -55,10 +55,10 @@ public class RobotMap {
 	}
 	
 	public static class CubeIntake{
-		public static int leftMotor = 			 	-1;
+		public static int leftMotor = 			 	1;
 		public static int rightMotor = 				-12;
 		
-		public static int anglerMotor = 		 	-6;
+		public static int anglerMotor = 		 	6;
 		public static boolean reversedSensor = 		true;
 
 		public static int solenoid = 		1;

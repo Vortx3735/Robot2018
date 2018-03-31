@@ -67,7 +67,7 @@ public static int tick = 0;
 					y = Double.parseDouble(split[1]);
 					a = Double.parseDouble(split[2]);			
 				} catch (Exception e) {
-					System.out.println("Error on string: " + cam);
+					System.out.println("Vision error on string: " + cam);
 				}
 				
 			}

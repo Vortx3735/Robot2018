@@ -3,7 +3,9 @@ package org.usfirst.frc.team3735.robot.subsystems;
 import org.usfirst.frc.team3735.robot.commands.CubeIntakeJoystickMove;
 import org.usfirst.frc.team3735.robot.settings.RobotMap;
 import org.usfirst.frc.team3735.robot.util.PIDCtrl;
+import org.usfirst.frc.team3735.robot.util.calc.VortxMath;
 import org.usfirst.frc.team3735.robot.util.hardware.VortxTalon;
+import org.usfirst.frc.team3735.robot.util.settings.Setting;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
@@ -24,23 +26,31 @@ public class CubeAngler extends Subsystem implements PIDSource, PIDOutput{
     // here. Call these from Commands.
 	
 	VortxTalon angler;
-	PIDCtrl controller;
-	double consForce = 1;
+	public PIDCtrl controller;
+	
+	private Setting cons = new Setting("Angler Cons Power", .12);
 	
 	AnalogPotentiometer p;
-	double offset = -2.3;
+	double offset = 0;
 		
 	public CubeAngler() {
 		angler = new VortxTalon(RobotMap.CubeIntake.anglerMotor, "Angler");
 		angler.setNeutralMode(NeutralMode.Brake);
+		
 		p = new AnalogPotentiometer(3,360,offset);
-		controller = new PIDCtrl(1,0,0,0,this,this);
+		controller = new PIDCtrl(.01,.001,0,0,this,this);
+		SmartDashboard.putData("Cube Angler PID", controller);
+		setVal(130);
 		
 	}
 
 	public void setVal(double val) {
-		offset = -p.get() + val;
-		p = new AnalogPotentiometer(3,360);
+		offset = val - p.get();
+		
+	}
+	
+	public double getPosition() {
+		return (p.get() + offset);
 	}
 	
     public void initDefaultCommand() {
@@ -51,17 +61,20 @@ public class CubeAngler extends Subsystem implements PIDSource, PIDOutput{
     }
 
 	public void setPOutput(double anglerMove) {
+		if(getPosition() < 90) {
+			anglerMove += Math.cos(Math.toRadians(getPosition())) * cons.getValue();
+		}
 		angler.set(anglerMove);
 		
 	}
 
 	@Override
 	public void pidWrite(double val) {
-		angler.set(getConsPower() + val);
+		setPOutput(VortxMath.limit(val, -.5, .5));
 	}
 	
 	public double getConsPower() {
-		return consForce * Math.cos(getPosition());
+		return cons.getValue() * Math.cos(Math.toRadians(getPosition()));
 	}
 
 	@Override
@@ -72,12 +85,10 @@ public class CubeAngler extends Subsystem implements PIDSource, PIDOutput{
 	@Override
 	public double pidGet() {
 		// TODO Auto-generated method stub
-		return angler.getPosition();
+		return getPosition();
 	}
 	
-	public double getPosition() {
-		return -(p.get() + offset);
-	}
+
 	public void log() {
 		SmartDashboard.putNumber("Cube Angler Pos", p.get());
 		SmartDashboard.putNumber("Cube Angler Angle", getPosition());
