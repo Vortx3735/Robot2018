@@ -21,7 +21,7 @@ public class LEDS extends Subsystem {
 		real[0] = 5;
 		com.transaction(real, 1, dummy, 0);
 	}
-	
+	//teleop
 	public void SendDataAutonomous()
 	{
 		byte[] real = new byte[1];
@@ -30,6 +30,7 @@ public class LEDS extends Subsystem {
 		com.transaction(real, 1, dummy, 0);
 		Timer.delay(.03);
 	}
+	//auto
 	public void SendDataTeleop()
 	{
 		byte[] real = new byte[1];
