@@ -50,15 +50,15 @@ public class MotionData {
 	}
 
 	public Double getHeading() {
-		return -_heading;
+		return -Math.toDegrees(_heading);
 	}
 
 	public Double getLeftV() {
-		return _leftV;
+		return _leftV * 12;
 	}
 
 	public Double getRightV() {
-		return _rightV;
+		return _rightV * 12;
 	}
 
 	@Override

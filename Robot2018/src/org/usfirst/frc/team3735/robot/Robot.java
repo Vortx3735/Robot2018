@@ -21,6 +21,7 @@ import org.usfirst.frc.team3735.robot.subsystems.CubeAngler;
 import org.usfirst.frc.team3735.robot.subsystems.CubeIntake;
 import org.usfirst.frc.team3735.robot.subsystems.Drive;
 import org.usfirst.frc.team3735.robot.subsystems.Elevator;
+import org.usfirst.frc.team3735.robot.subsystems.LEDS;
 import org.usfirst.frc.team3735.robot.subsystems.Navigation;
 import org.usfirst.frc.team3735.robot.subsystems.Vision;
 import org.usfirst.frc.team3735.robot.util.bases.VortxIterative;
@@ -34,6 +35,7 @@ import org.usfirst.frc.team3735.robot.util.settings.Setting;
 import org.usfirst.frc.team3735.robot.util.settings.StringSetting;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -66,6 +68,7 @@ public class Robot extends VortxIterative {
 	public static SideChooser sideChooser;
 	public static AutoChooser autoChooser;
 	
+	LEDS leds = new LEDS();
 	
 
 
@@ -81,7 +84,7 @@ public class Robot extends VortxIterative {
 		climber = new Climber();
 		carriage = new Carriage();
 		angler = new CubeAngler();
-//		System.out.println("hello world");
+
 		oi = new GTAOI(); //MUST be instantiated after the subsystems
 			
 		autoLogic = new Autonomous();
@@ -157,6 +160,8 @@ public class Robot extends VortxIterative {
 	public void autonomousPeriodic() {
 		 Scheduler.getInstance().run();
 //		 vision.refresh();
+
+		 leds.SendDataAutonomous();
 	}
 	@Override
 	public void autonomousContinuous() {
@@ -169,10 +174,12 @@ public class Robot extends VortxIterative {
     public void teleopInit() {
         autoChooser.cancel();
         autoLogic.cancel();
+        
     }
 	@Override
 	public void teleopPeriodic() {
         Scheduler.getInstance().run();
+        leds.SendDataTeleop();
 	}
 	@Override
 	public void teleopContinuous() {

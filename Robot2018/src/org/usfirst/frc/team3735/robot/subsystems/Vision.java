@@ -58,7 +58,7 @@ public static int tick = 0;
 	}
 	
 	public void refresh() {
-		if(tick % 2 == 0) {
+		if(tick % 50 == 0) {
 			String cam = readString();
 			if(!cam.equals("")) {
 				try {
