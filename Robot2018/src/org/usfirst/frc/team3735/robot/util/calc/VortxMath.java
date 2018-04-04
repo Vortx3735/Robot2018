@@ -54,6 +54,10 @@ public class VortxMath {
 		return continuousLimit(value, -180, 180);
 	}
 	
+	public static double reverseYaw(double yaw) {
+		return VortxMath.navLimit(yaw + 180);
+	}
+	
 	/**
 	 * Curves a value with fixed points at -1 and 1
 	 * Higher exponents reduce the curve below the y = x line
