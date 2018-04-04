@@ -145,18 +145,18 @@ public class Robot extends VortxIterative {
 	@Override
 	public void autonomousInit() {	
 		navigation.resetPosition(autoLogic.getStartingPosition());
+		System.out.println("Choosing Auto");
+//		autoLogic.chooseAutonomous();
+//		autoLogic.printAuto();
+//		autoLogic.startCommand();
 		
-		autoLogic.chooseAutonomous();
-		autoLogic.printAuto();
-		autoLogic.startCommand();
-		
-//		autoChooser.startSelected();
+		autoChooser.startSelected();
 		
 	}
 	@Override
 	public void autonomousPeriodic() {
 		 Scheduler.getInstance().run();
-		 vision.refresh();
+//		 vision.refresh();
 	}
 	@Override
 	public void autonomousContinuous() {

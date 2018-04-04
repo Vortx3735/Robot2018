@@ -39,9 +39,11 @@ public class MoveDDx extends VortxCommand {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	super.initialize();
     	startSpeed = 0;
     	distHandler.initialize();
     	isAcc = true;
+//    	maxSpeed = Math.abs(maxSpeed) * Math.signum(distHandler.distance());
     	
     	targetSpeed = Math.abs(maxSpeed) * Math.signum(distHandler.distance());
     	System.out.println("Distance to go: " + distHandler.distance());
@@ -50,6 +52,7 @@ public class MoveDDx extends VortxCommand {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	
     	//if we've reached cruise (we're acc)		or		we've reached half way	,	the dist travelled is stopping dist, stop acc
     	if(Math.abs(limiter.value) >= Math.abs(maxSpeed) && isAcc || Math.abs(distHandler.distanceToGo()) < Math.abs(distHandler.distanceTraveled())) {
     		stoppingDist = distHandler.distanceTraveled();
@@ -58,8 +61,8 @@ public class MoveDDx extends VortxCommand {
     	if(!isAcc) {
     		
     		//if we actually need to decelerate
-    		if(Math.abs(distHandler.distanceToGo()) < Math.abs(stoppingDist)) {
-    			targetSpeed = 0;
+    		if(Math.abs(distHandler.distanceToGo()) < Math.abs(stoppingDist) * .7) {
+    			targetSpeed = Math.signum(distHandler.distance()) * .2;
     		}
     	}
     	Robot.drive.normalDrive(limiter.feed(targetSpeed), 0);

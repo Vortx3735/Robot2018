@@ -17,8 +17,9 @@ public class Move extends MoveDDx {
     }
     
     public Move(double dist, double spd, double acc) {
-    	super(Math.signum(dist) * spd, spd, acc);
+//    	super(Math.signum(dist) * spd, spd, acc);
+    	super(dist, Math.signum(dist) * spd, acc);
     	addA(new NavxAssist());
-    	addT(new HasMoved(dist));
+//    	addT(new HasMoved(dist));
     }
 }

@@ -65,12 +65,12 @@ public class Carriage extends Subsystem {
 	}
 	
 	public void raise(){
-		solenoid.set(true);
+		solenoid.set(false);
 		raised = true;
 	}
 	
 	public void lower(){
-		solenoid.set(false);
+		solenoid.set(true);
 		raised = false;
 	}
 	

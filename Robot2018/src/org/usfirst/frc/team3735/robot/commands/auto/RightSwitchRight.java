@@ -21,7 +21,9 @@ public class RightSwitchRight extends CommandGroup {
 //    		addSequential(new SendProfile(Waypoints.Auto.rightSwitchRight5));	//backup from cube, go to scale
     		
     	}else {
-    		
+
+    		addSequential(new AutoSwitchLineup(true));
+
     	}
     }
 }

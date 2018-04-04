@@ -40,7 +40,7 @@ public class CubeAngler extends Subsystem implements PIDSource, PIDOutput{
 		p = new AnalogPotentiometer(3,360,offset);
 		controller = new PIDCtrl(.01,.001,0,0,this,this);
 		SmartDashboard.putData("Cube Angler PID", controller);
-		setVal(130);
+		setVal(187);
 		
 	}
 

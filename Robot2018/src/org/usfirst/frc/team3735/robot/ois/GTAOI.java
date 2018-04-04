@@ -12,6 +12,7 @@ import org.usfirst.frc.team3735.robot.commands.cubeintake.CubeAnglerSetPID;
 import org.usfirst.frc.team3735.robot.commands.cubeintake.CubeGrab;
 import org.usfirst.frc.team3735.robot.commands.cubeintake.CubeSetRoller;
 import org.usfirst.frc.team3735.robot.commands.cubeintake.CubeSetSols;
+import org.usfirst.frc.team3735.robot.commands.cubeintake.ResetPivot;
 import org.usfirst.frc.team3735.robot.commands.drive.TurnTo;
 import org.usfirst.frc.team3735.robot.commands.drive.movedistance.MoveDDx;
 import org.usfirst.frc.team3735.robot.commands.drive.positions.ResetPosition;
@@ -93,15 +94,18 @@ public class GTAOI implements DriveOI{
 		Setting carriageFine = new Setting("Carriage Fine Speed", .3);
 		co.a.whileHeld(new CarriageSetRoller(carriageFine.reverse()));
 		co.b.whileHeld(new CarriageSetRoller(carriageFine));
-		co.x.whenPressed(new ClimberSetSpeed(0));
+		co.x.whileHeld(new CubeSetRoller(-.5));
 		co.y.whileHeld(new ClimberSetSpeed(new Setting("Climb Speed", 1)));
-		
 		
 		Setting elevatorTrim = new Setting("Elevator Trim", .3);
 //		co.pov0
-		co.pov90.whileHeld(new ElevatorCorrect(elevatorTrim));
-//		co.pov180
-		co.pov270.whileHeld(new ElevatorCorrect(elevatorTrim.reverse()));
+//		co.pov90.whileHeld(new ElevatorCorrect(elevatorTrim));
+////		co.pov180
+//		co.pov270.whileHeld(new ElevatorCorrect(elevatorTrim.reverse()));
+		co.pov0.whenPressed(new CubeAnglerSetPID(130));
+		co.pov90.whenPressed(new CubeAnglerSetPID(80));
+		co.pov180.whenPressed(new CubeAnglerSetPID(0));
+		co.pov270.whenPressed(new CubeTransfer());
 		
 		
 		Setting carriageShoot = new Setting("Carriage Shoot Speed", 1);
@@ -109,7 +113,7 @@ public class GTAOI implements DriveOI{
 		co.rt.whileHeld(new CarriageSetRoller(carriageShoot));
 		co.rb.toggleWhenPressed(new CarriageRaiseTele());
 		
-//		co.start
+		co.start.whenPressed(new ResetPivot());
 //		co.back
 		
 		
@@ -187,7 +191,7 @@ public class GTAOI implements DriveOI{
 
 	
 	public double getIntakeMove() {
-		return 0;//VortxMath.handleDeadband(co.getRightY(), .08);
+		return VortxMath.handleDeadband(co.getRightY(), .08);
 	}
 	
 	public double getIntakeTwist() {
@@ -207,7 +211,8 @@ public class GTAOI implements DriveOI{
 
 
 	public double getAnglerMove() {
-		return VortxMath.handleDeadband(co.getRightY(), .08) * .5;
+//		return VortxMath.handleDeadband(co.getRightY(), .08) * .5;
+		return 0;
 	}
 
 

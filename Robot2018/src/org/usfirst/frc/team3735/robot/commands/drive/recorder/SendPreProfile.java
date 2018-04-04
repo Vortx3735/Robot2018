@@ -29,10 +29,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class SendPreProfile extends Command {
 	
-	private String filePath;
-	private Scanner sc;
+
 	private String file;
-	private static HashMap<String, SendPreProfile> comms = new HashMap<>();
 	
     double forwardLook = 0; //	degrees/180
     double angleLook = 0;	// 	degrees/180

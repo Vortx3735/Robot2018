@@ -77,12 +77,14 @@ public class DriveExp extends VortxCommand {
 
     // Called once after isFinished returns true
     public void end() {
+    	Robot.drive.normalDrive(0, 0);
     	super.end();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     public void interrupted() {
+    	end();
     	super.interrupted();
     }
 

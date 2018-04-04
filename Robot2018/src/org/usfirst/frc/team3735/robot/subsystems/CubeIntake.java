@@ -49,16 +49,16 @@ public class CubeIntake extends Subsystem {
 	}
 	
 	public void setLeftMotorCurrent(double speed){
-		leftMotor.set(speed);
+		leftMotor.set(speed + Robot.oi.getIntakeMove());
 	}
 	
 	public void setRightMotorCurrent(double speed){
-		rightMotor.set(speed);
+		rightMotor.set(speed + Robot.oi.getIntakeMove());
 	}
 	
 	public void setMotorsCurrent(double speed){
-		setLeftMotorCurrent(speed + Robot.oi.getIntakeMove() + Robot.oi.getIntakeTwist());
-		setRightMotorCurrent(speed + Robot.oi.getIntakeMove() - Robot.oi.getIntakeTwist());
+		setLeftMotorCurrent(speed);
+		setRightMotorCurrent(speed);
 	}
 //	
 //	public double getDashboardSpeed(){

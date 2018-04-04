@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  */
 public class DriveBrakeUntilStopped extends CommandGroup {
 
-    protected static final double SPEED_THRESH = .4;
+    private static final double SPEED_THRESH = 1;
 
 	public DriveBrakeUntilStopped() {
         addSequential(new DriveBrake(){

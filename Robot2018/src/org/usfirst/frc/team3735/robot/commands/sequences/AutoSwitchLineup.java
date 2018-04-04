@@ -42,7 +42,7 @@ public class AutoSwitchLineup extends CommandGroup {
 		), 2);
     	addSequential(new CarriageLower());
 
-    	addSequential(new DriveExp(-.8, 0).addT(new Bumped(.5)).addA(new NavxAssist(target, true)));
+    	addSequential(new DriveExp(-.8, 0).addT(new Bumped(.8)).addA(new NavxAssist(target, true)));
     	
     	double hugtime = 1;
     	addParallel(new DriveRaw(-.2,0),hugtime);
