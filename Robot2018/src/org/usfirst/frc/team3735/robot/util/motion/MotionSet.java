@@ -58,6 +58,19 @@ public class MotionSet implements Iterable<MotionData> {
 	public ArrayList<DriveState> list(){
 		ArrayList<DriveState> arr = new ArrayList<>();
 		Iterator<MotionData> it = iterator();
+
+		// Proposed new code - you don't have to manage the iterator, let Java do it
+		// for you.
+/*		
+		for (MotionData d : this)
+		{
+			arr.add(new DriveState(
+					new Position(d.getCenterX(), d.getCenterY(), d.getHeading()), 
+					Drive.speedToPercent(d.getLeftV()), 
+					Drive.speedToPercent(d.getRightV())));
+		}
+		
+*/		
 		while(it.hasNext()) {
 			MotionData d = it.next();
 			arr.add(new DriveState(
@@ -65,6 +78,7 @@ public class MotionSet implements Iterable<MotionData> {
 					Drive.speedToPercent(d.getLeftV()), 
 					Drive.speedToPercent(d.getRightV())));
 		}
+		
 		return arr;
 	}
 
