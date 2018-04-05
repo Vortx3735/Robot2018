@@ -1,25 +1,23 @@
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.io.IOException;
 
 import org.junit.Assert;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.usfirst.frc.team3735.robot.util.motion.MotionData;
 import org.usfirst.frc.team3735.robot.util.motion.MotionProfile;
 import org.usfirst.frc.team3735.robot.util.motion.MotionSet;
 import org.usfirst.frc.team3735.robot.util.motion.exceptions.MissingColumnException;
 
-class MotionProfileFileSystemTests {
+public class MotionProfileFileSystemTests {
 
 	@Test
-	void testCanary ()
+	public void testCanary ()
 	{
 		Assert.assertTrue(true);
 	}
 
 	
 	@Test
-	void testLoadBigFromFS () throws IOException, MissingColumnException
+	public void testLoadBigFromFS () throws IOException, MissingColumnException
 	{
 		String temp = System.getProperty("user.dir");
 		

@@ -40,7 +40,7 @@
 	<import file="${wpilib.ant.dir}/build.xml" as="wpilib_build" />
 
 
-	<target name="deploy" description="The build target that is called before the wpilib deploy target.">
+	<target name="deploy" description="The build target that is called before the wpilib deploy target." depends="clean">
 
 		<!-- Execute the wpilib deployment tasks -->
 		<antcall target="wpilib_build.deploy" />
