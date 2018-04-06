@@ -18,6 +18,7 @@ public class ElevatorSetPosDDx extends Command {
 
 //	final double startingPower = .4;
 	Func maxPower;		
+	double minPct = .08;
 	
 	DDxLimiter limiter;
 	//If we are going down, we can go 1.1 at max, because we are adding
@@ -42,6 +43,11 @@ public class ElevatorSetPosDDx extends Command {
     	limiter = new DDxLimiter(0, new Range(acc));
     	requires(Robot.elevator);
     }
+    
+    public ElevatorSetPosDDx(double targetPos, double maxPower, double acc) {
+    	this(Func.getFunc(targetPos), Func.getFunc(maxPower), Func.getFunc(acc));
+    }
+
     
     public ElevatorSetPosDDx(double pos) {
     	this(Func.getFunc(pos), Func.getFunc(.8), Func.getFunc(.03));
@@ -69,7 +75,7 @@ public class ElevatorSetPosDDx extends Command {
     		pval = .4;
     	}
     	if(Math.abs(calcDy()) < pval * Math.abs(dy)) {
-        	pow = Math.signum(calcDy()) * Math.abs(limiter.feed(0));
+        	pow = Math.signum(calcDy()) * Math.abs(limiter.feed(Math.signum(dy) * minPct));
 
     	}else {
     		

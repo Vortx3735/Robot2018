@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 import org.usfirst.frc.team3735.robot.Robot;
+import org.usfirst.frc.team3735.robot.subsystems.Drive;
 import org.usfirst.frc.team3735.robot.util.calc.Average;
 import org.usfirst.frc.team3735.robot.util.calc.RollingAverage;
 import org.usfirst.frc.team3735.robot.util.calc.VortxMath;
@@ -53,13 +54,19 @@ public class SendPreProfile extends Command {
 
 	Average roll;
 	
-    public SendPreProfile(String file) {
+    public SendPreProfile(String file, boolean rev) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	this.file = file;
     	try {
 			data = MotionProfile.builder().withProfileName(file).withProfilesFromJar().make();
-			arr = data.list();
+//			MotionProfile.builder().withProfileName(file).withProfilesFromFilesystem().make();
+			if(rev) {
+				arr = data.reverseList();
+			}else {
+				arr = data.list();
+
+			}
 		} catch (IOException | MissingColumnException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -131,7 +138,7 @@ public class SendPreProfile extends Command {
 		
 		
 		roll.add(distError);
-//		double turn = curState.getTurn() + angleError * angleErrorCo.getValue() + forwardLook * lookCo.getValue() + distError * distErrorCo.getValue() + angleLook * angleLookCo.getValue();
+//		double turn = angleError * angleErrorCo.getValue() + forwardLook * lookCo.getValue() + distError * distErrorCo.getValue() + angleLook * angleLookCo.getValue();
 		
 		double p = Math.abs(VortxMath.squish(distError, halfWay.getValue()));
 		//System.out.println("P: " + p);
@@ -143,11 +150,17 @@ public class SendPreProfile extends Command {
 //			
 //		}
 		
-		Robot.drive.normalDrive(curState.getMove(), turn);
+//		Robot.drive.normalDrive(curState, turn);
+		Robot.drive.setLeftVelocity(curState.left + Drive.percentToSpeed(turn));
+		Robot.drive.setRightVelocity(curState.right - Drive.percentToSpeed(turn));
+
+//		Robot.drive.setLeftVelocity(left + turn * 10);
 //		System.out.println("Move: " + curState.getMove() + "\t\t\t Turn: " + turn);
 //		System.out.print("forward look" + forwardLook + "\t\t\t");
 //		System.out.println("lookco" + forwardLookCo.getValue() + "\t\t");
     	index++;
+    	System.out.println(Robot.navigation.getPosition().distanceFrom(curState.pos));
+
     	SmartDashboard.putNumber("Average Dist Error", roll.getAverage());
     }
     

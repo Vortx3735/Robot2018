@@ -13,6 +13,7 @@ import org.usfirst.frc.team3735.robot.settings.Dms;
 import org.usfirst.frc.team3735.robot.settings.RobotMap;
 import org.usfirst.frc.team3735.robot.util.hardware.VortxTalon;
 import org.usfirst.frc.team3735.robot.util.settings.BooleanSetting;
+import org.usfirst.frc.team3735.robot.util.settings.PIDSetting;
 import org.usfirst.frc.team3735.robot.util.settings.Setting;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -36,6 +37,7 @@ public class Drive extends Subsystem {
 	private static double dD = 0.0;
 	private static double dF = 0.0;
 	private static int iZone = 2;
+	private static double maxV = 160;
 
 	//for speed profiling
 	public static final double slope = 0.00113174;
@@ -55,6 +57,7 @@ public class Drive extends Subsystem {
 	public static Setting scaledMaxTurn = new Setting("Scaled Max Turn", Constants.Drive.scaledMaxTurn);
 	
 	private DDxDrive defCommand;
+	private PIDSetting driveV;
 	public static BooleanSetting brakeEnabled = new BooleanSetting("Brake Mode On", false){
 		@Override
 		public void valueChanged(boolean val) {
@@ -83,6 +86,13 @@ public class Drive extends Subsystem {
 		r1 = new VortxTalon(RobotMap.Drive.rightTrain, "Right Drive");
 		l1.setInchesPerTick(Constants.Drive.InchesPerTick);
 		r1.setInchesPerTick(Constants.Drive.InchesPerTick);
+
+		driveV = new PIDSetting(.001, 0, 0, 0,0,0);
+		l1.setPIDSetting(driveV);
+		r1.setPIDSetting(driveV);
+		l1.setFMaxV(maxV);
+		r1.setFMaxV(maxV);
+		driveV.sendToDash("Drive PID");
 		brakeEnabled.setIsListening(true);
 		isLimiting.setIsListening(true);
 		initSensors();
@@ -377,10 +387,11 @@ public class Drive extends Subsystem {
     public static double speedToPercent(double spd){
 //    	double speed = Math.abs(spd) * (0.1) / Constants.Drive.InchesPerTick;
 //    	return Math.copySign(slope*speed + minPct, spd);
-    	return spd / 170.0;
+    	return spd / 104.0;
     }
     public static double percentToSpeed(double pct){
-    	return Math.copySign((pct - minPct) / slope, pct) * Constants.Drive.InchesPerTick/60.0;
+//    	return Math.copySign((pct - minPct) / slope, pct) * Constants.Drive.InchesPerTick/60.0;
+    	return maxV * pct;
     }
     /**
      * @param 	percent [0,1] of the max speed to go
@@ -409,6 +420,12 @@ public class Drive extends Subsystem {
     	return speedToPercent(getAverageSpeed());
     }
     
+    public void setLeftVelocity(double v) {
+    	l1.set(ControlMode.Velocity, v);
+    }
+    public void setRightVelocity(double v) {
+    	r1.set(ControlMode.Velocity, v);
+    }
     /**
      * 
      * @return the speed from the current on motors -- needs to be tested and made

@@ -36,18 +36,20 @@ public class Elevator extends Subsystem {
 	public static double switchHeight = 10;
 	public static double top = 36;
 	
-	public static double transferHeight = 3.3;
+	public static double transferHeight = 4.1;
 
 	// private Setting carriageSpeed;
 
-	public Setting consPower = new Setting("Elevator ConsPower", 0);	//.183 on the final
+	public Setting consPower = new Setting("Elevator ConsPower", .16);	//.183 on the final
 
 
 	public Elevator() {
 		elevatorLeft = new VortxTalon(RobotMap.Elevator.elevatorLeft, "Elevator Left");
 		elevatorRight = new VortxTalon(RobotMap.Elevator.elevatorRight, "Elevator Right");
 		
-		elevatorLeft.setPIDSetting(new PIDSetting(90, .2, 60,0,1,6));
+		PIDSetting controller = new PIDSetting(90, .15, 145,0,.8,6);
+		
+		elevatorLeft.setPIDSetting(new PIDSetting(90, .15, 145,0,.8,6));
 //		elevatorRight.setPIDSetting(new PIDSetting(90, .15, 80,0,1));
 		
 		elevatorLeft.setTicksPerInch(Constants.Elevator.ticksPerInch);
@@ -59,8 +61,8 @@ public class Elevator extends Subsystem {
 		elevatorLeft.setNeutralMode(NeutralMode.Brake);
 		elevatorRight.setNeutralMode(NeutralMode.Brake);
 
-		elevatorLeft.initSensor(FeedbackDevice.QuadEncoder, true);
-		elevatorRight.initSensor(FeedbackDevice.QuadEncoder, true);
+		elevatorLeft.initSensor(FeedbackDevice.QuadEncoder, false);
+		elevatorRight.initSensor(FeedbackDevice.QuadEncoder, false);
 		
 		elevatorRight.follow(elevatorLeft);
 		resetEncoderPositions();
@@ -84,7 +86,7 @@ public class Elevator extends Subsystem {
 	public void setPOutputAdjusted(double speed) {
 //		System.out.print("Trying: " + speed + "\t");
 //		double actual = speed;
-		if((getPosition() < 4 ) && (speed == 0)) {
+		if((getPosition() < .5 ) && (speed == 0)) {
 //			actual = 0;
 			setPOutput(0);
 		}else {
@@ -143,8 +145,8 @@ public class Elevator extends Subsystem {
 
 	
 	public double getPosition() {
-		return (.5 * (elevatorLeft.getPosition() + elevatorRight.getPosition()));
-		
+//		return (.5 * (elevatorLeft.getPosition() + elevatorRight.getPosition()));
+		return elevatorLeft.getPosition();
 	}
 
 

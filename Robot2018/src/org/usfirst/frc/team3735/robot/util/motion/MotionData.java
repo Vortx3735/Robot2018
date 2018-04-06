@@ -23,16 +23,42 @@ public class MotionData {
 		_centerX = (Double.valueOf(left.get(MotionProfile.ColumnsFromFile.y))
 				+ Double.valueOf(right.get(MotionProfile.ColumnsFromFile.y))) / 2.0;
 
+		_centerX = -(_centerX - 13.5)*12;
+		
 		_centerY = (Double.valueOf(left.get(MotionProfile.ColumnsFromFile.x))
 				+ Double.valueOf(right.get(MotionProfile.ColumnsFromFile.x))) / 2.0;
-
+		_centerY*=12.0;
 		assertEqualValues(Double.valueOf(left.get(MotionProfile.ColumnsFromFile.heading)),
 				Double.valueOf(right.get(MotionProfile.ColumnsFromFile.heading)),
 				MotionProfile.ColumnsFromFile.heading);
 		_heading = Double.valueOf(left.get(MotionProfile.ColumnsFromFile.heading));
+		_heading = -Math.toDegrees(_heading);
+		_leftV = Double.valueOf(left.get(MotionProfile.ColumnsFromFile.velocity)) * 12;
+		_rightV = Double.valueOf(right.get(MotionProfile.ColumnsFromFile.velocity)) * 12;
 
-		_leftV = Double.valueOf(left.get(MotionProfile.ColumnsFromFile.velocity));
-		_rightV = Double.valueOf(right.get(MotionProfile.ColumnsFromFile.velocity));
+	}
+	
+	/**
+	 * This one gets raw drive values, that were recorded
+	 * @param left
+	 * @param right
+	 * @param lineNum
+	 * @param flag
+	 * @throws NumberFormatException
+	 * @throws ColumnValueMismatchException
+	 */
+	MotionData(CSVRecord record, long lineNum)
+			throws NumberFormatException {
+		_lineNumber = lineNum;
+		_centerX = (Double.valueOf(record.get(MotionProfile.ColumnsFromFileRaw.x)));
+
+		_centerY = (Double.valueOf(record.get(MotionProfile.ColumnsFromFileRaw.y)));
+
+		_heading = Double.valueOf(record.get(MotionProfile.ColumnsFromFileRaw.heading));
+
+		_leftV = Double.valueOf(record.get(MotionProfile.ColumnsFromFileRaw.left));
+		
+		_rightV = Double.valueOf(record.get(MotionProfile.ColumnsFromFileRaw.right));
 
 	}
 
@@ -42,23 +68,23 @@ public class MotionData {
 	}
 
 	public Double getCenterX() {
-		return -(_centerX - 13.5)*12;
+		return _centerX;
 	}
 
 	public Double getCenterY() {
-		return _centerY*12.0;
+		return _centerY;
 	}
 
 	public Double getHeading() {
-		return -Math.toDegrees(_heading);
+		return _heading;
 	}
 
 	public Double getLeftV() {
-		return _leftV * 12;
+		return _leftV;
 	}
 
 	public Double getRightV() {
-		return _rightV * 12;
+		return _rightV;
 	}
 
 	@Override

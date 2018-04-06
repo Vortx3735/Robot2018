@@ -3,6 +3,7 @@ package org.usfirst.frc.team3735.robot;
 import org.usfirst.frc.team3735.robot.commands.auto.*;
 import org.usfirst.frc.team3735.robot.commands.auto.cows.*;
 import org.usfirst.frc.team3735.robot.commands.auto.sec.*;
+import org.usfirst.frc.team3735.robot.commands.sequences.GrabWallCube;
 import org.usfirst.frc.team3735.robot.settings.Dms;
 import org.usfirst.frc.team3735.robot.settings.Waypoints;
 import org.usfirst.frc.team3735.robot.util.choosers.DoNothing;
@@ -45,7 +46,7 @@ public class Autonomous {
 			priority.addObject("Scale if Easy", Priority.SCALEIFEASY);
 		SmartDashboard.putData("Priority", priority);
 		
-		complexity = new BooleanSetting("Complex Auto", true);
+		complexity = new BooleanSetting("Complex Auto", false);
 		
 		
 	}
@@ -72,28 +73,41 @@ public class Autonomous {
 		}
 		
 		boolean complex = complexity.getValue();
+		
+		big:
 		switch(posChooser.getSelected()) {
 		
 		
 		case LEFT:
-			switch(s) {
-			case "lr"://Switch
-//				firstCommand = (priority.getSelected() == Priority.SCALE) ? new LeftScaleRight(complex) : new LeftSwitchLeft(complex); //priority choose
-				firstCommand = new UnknownStraight();
-				break;
-			case "rl"://Scale
-				firstCommand = new LeftScaleLeft(true);
-				break;
-			case "ll"://Scale and Switch
-//				firstCommand = (priority.getSelected() == Priority.SCALE || priority.getSelected() == Priority.SCALEIFEASY) ? 
-//						new LeftScaleLeft(complex) : new LeftSwitchLeft(complex); //priority choose
-				firstCommand = new LeftScaleLeft(true);
-
-				break;
-			case "rr":
-//				firstCommand = new LeftScaleRight(complex);
-				firstCommand = new UnknownStraight();
-				break;
+			switch(priority.getSelected()) {
+			case SCALE:
+				switch(s) {
+				case "ll":
+				case "rl":
+					firstCommand = new LeftScaleLeft(complex); break big;
+				case "lr":
+				case "rr":
+					firstCommand = new LeftScaleRight(complex); break big;
+				}
+			case SCALEIFEASY:
+				switch(s) {
+				case "ll":
+				case "rl":
+					firstCommand = new LeftScaleLeft(complex); break big;
+				case "lr":
+					firstCommand = new LeftSwitchLeft(complex); break big;
+				case "rr":
+					firstCommand = new UnknownStraight(); break big;
+				}
+			case SWITCH:
+				switch(s) {
+				case "lr":
+				case "ll":
+					firstCommand = new LeftSwitchLeft(complex); break big;
+				case "rr":
+				case "rl":
+					firstCommand = new UnknownStraight(); break big;
+				}
 			}
 			
 			
@@ -101,87 +115,68 @@ public class Autonomous {
 			
 			
 		case MID:
-			switch(s) {
-			case "lr":
-				switch(priority.getSelected()) {
-				case SCALE:
-				case SCALEIFEASY:
-					firstCommand = new MidScaleRight(complex);
-					secondCommand = new ScaleRightScaleRight(complex);			
-					break;
-				case SWITCH:
-					firstCommand = new MidSwitchLeft(complex);
-					secondCommand = new SwitchLeft(complex);			
-					break;
+			switch(priority.getSelected()){
+			case SCALE:
+				switch(s) {
+				case "ll":
+				case "rl":
+					firstCommand = new MidScaleLeft(complex); break big;
+				case "rr":
+				case "lr":
+					firstCommand = new MidScaleRight(complex); break big;
+				}
+			case SCALEIFEASY:
+			case SWITCH:
+				switch(s) {
+				case "ll":
+				case "lr":
+					firstCommand = new MidSwitchLeft(complex); break big;
+				case "rl":
+				case "rr":
+					firstCommand = new MidSwitchRight(complex); break big;
 				}
 				break;
-			case "rl":
-				switch(priority.getSelected()) {
-				case SCALE:
-				case SCALEIFEASY:
-					firstCommand = new MidScaleLeft(complex);
-					secondCommand = new ScaleLeftScaleLeft(complex);			
-					break;
-				case SWITCH:
-					firstCommand = new MidSwitchRight(complex);
-					secondCommand = new SwitchRight(complex);			
-					break;
-				}
-				break;
-			case "ll":
-				switch(priority.getSelected()) {
-				case SCALE:
-				case SCALEIFEASY:
-					firstCommand = new MidScaleLeft(complex);
-					secondCommand = new ScaleLeftScaleLeft(complex);			
-					break;
-				case SWITCH:
-					firstCommand = new MidSwitchLeft(complex);
-					secondCommand = new SwitchLeft(complex);		
-					break;
-				}
-				break;
-			case "rr":
-				switch(priority.getSelected()) {
-				case SCALE:
-				case SCALEIFEASY:
-					firstCommand = new MidScaleRight(complex);
-					secondCommand = new ScaleRightScaleRight(complex);			
-					break;
-				case SWITCH:
-					firstCommand = new MidSwitchRight(complex);
-					secondCommand = new SwitchRight(complex);			
-					break;
-				}
-				break;
+				
 			}
-			break;
+
 			
 			
 			
 			
 		case RIGHT:
-			switch(s) {
-			case "lr"://Scale
-				firstCommand = new RightScaleRight(complex);
-				break;
-			case "rl"://Switch
-				firstCommand = (priority.getSelected() == Priority.SCALE) ? 
-						new RightScaleLeft(complex) : new RightSwitchRight(complex); //priority choose				break;
-			case "ll":
-				firstCommand = new RightScaleLeft(complex);
-				break;
-			case "rr"://Scale and Switch
-				firstCommand = (priority.getSelected() == Priority.SCALE || priority.getSelected() == Priority.SCALEIFEASY) ? 
-						new RightScaleRight(complex) : new RightSwitchRight(complex); //priority choose
-			}
-			break;
-			
-			
+			switch(priority.getSelected()) {
+			case SCALE:
+				switch(s) {
+				case "lr":
+				case "rr":
+					firstCommand = new RightScaleRight(complex); break big;
+				case "ll":
+				case "rl":
+					firstCommand = new RightScaleLeft(complex); break big;
+				}
+			case SCALEIFEASY:
+				switch(s) {
+				case "lr":
+				case "rr":
+					firstCommand = new RightScaleRight(complex); break big;
+				case "rl":
+					firstCommand = new RightSwitchRight(complex); break big;
+				case "ll":
+					firstCommand = new UnknownStraight(); break big;
+				}
+			case SWITCH:
+				switch(s) {
+				case "rl":
+				case "rr":
+					firstCommand = new RightSwitchRight(complex); break big;
+				case "ll":
+				case "lr":
+					firstCommand = new UnknownStraight(); break big;
+				}
+			}			
 			
 		case UNKNOWN:
-			break;
-						
+			break;	
 			
 		}
 	}
@@ -194,6 +189,8 @@ public class Autonomous {
 		if(firstCommand != null && secondCommand != null) {
 			//PUT SECOND COMMANAD HERE WHEN READY
 			VortxCommand.asSequence(firstCommand, new DoNothing()).start();
+//			VortxCommand.asSequence(firstCommand, secondCommand).start();
+
 		}
 	}
 	

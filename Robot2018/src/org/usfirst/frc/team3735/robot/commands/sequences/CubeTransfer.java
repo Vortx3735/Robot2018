@@ -30,14 +30,15 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class CubeTransfer extends CommandGroup {
 
     public CubeTransfer() {
+    	requires(Robot.elevator);
     	addParallel(new CubeSetRoller(-.3),2);
-    	addSequential(new ElevatorSetPosPID(Elevator.transferHeight),1);
-    	addSequential(new CubeAnglerSetPID(130),1);
+    	addParallel(new ElevatorSetPosPID(Elevator.transferHeight),3);
+    	addSequential(new CubeAnglerSetPID(130, false),1);
     	
     	addParallel(new CubeSetRoller(.5),1);
-    	addSequential(new CarriageSetRoller(-.5).addT(new CarriageOverload(50)),1);
-    	addSequential(new CarriageSetRoller(-.6),.2);
-    	addSequential(new CubeAnglerSetPID(70),1);
+    	addSequential(new CarriageSetRoller(-.4).addT(new CarriageOverload(900)),.5);
+//    	addSequential(new CarriageSetRoller(-.4),.2);
+    	addSequential(new CubeAnglerSetPID(70, false),1);
     	
 
     	

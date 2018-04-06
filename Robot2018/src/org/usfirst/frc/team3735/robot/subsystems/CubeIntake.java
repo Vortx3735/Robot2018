@@ -101,5 +101,9 @@ public class CubeIntake extends Subsystem {
 		sol2.set(left);
 		
 	}
+	
+	public double getPower() {
+		return .5 * (leftMotor.getPower() + rightMotor.getPower());
+	}
 }
 

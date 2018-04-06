@@ -1,25 +1,21 @@
-package org.usfirst.frc.team3735.robot.commands.elevator;
+package org.usfirst.frc.team3735.robot.commands.drive;
 
 import org.usfirst.frc.team3735.robot.Robot;
-import org.usfirst.frc.team3735.robot.util.settings.Func;
+import org.usfirst.frc.team3735.robot.util.settings.Setting;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class ElevatorSetPosPID extends Command {
-	Func inches;
-    public ElevatorSetPosPID(double inches) {
+public class DriveSetPID extends Command {
+
+	private static Setting set = new Setting("Drive Set Speed", 0);
+    public DriveSetPID() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	this(Func.getFunc(inches));
+    	requires(Robot.drive);
     	
-    }
-    
-    public ElevatorSetPosPID(Func f) {
-    	this.inches = f;
-    	requires(Robot.elevator);
     }
 
     // Called just before this Command runs the first time
@@ -28,7 +24,9 @@ public class ElevatorSetPosPID extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.elevator.setElevatorPosition(inches.getValue());
+    	Robot.drive.setLeftVelocity(set.getValue());
+    	Robot.drive.setRightVelocity(set.getValue());
+
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -38,7 +36,8 @@ public class ElevatorSetPosPID extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.elevator.setPOutput(0);
+    	Robot.drive.setLeftRight(0,0);
+
     }
 
     // Called when another command which requires one or more of the same

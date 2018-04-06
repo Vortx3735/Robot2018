@@ -85,6 +85,13 @@ public class VortxTalon extends WPI_TalonSRX{
 		this.config_IntegralZone(0, (int)(setting.getiZone() * ticksPerInch), 0);
 		this.configClosedloopRamp(setting.getRampRate(), 0);
 	}
+	
+	public void setFMaxV(double maxv) {
+		double nat = maxv * ticksPerInch;
+		double f = 1023/nat;
+		this.config_kF(0, f, 0);
+		setting.setF(f);
+	}
 
 	
 	public void setTicksPerInch(double ticks){
@@ -116,7 +123,7 @@ public class VortxTalon extends WPI_TalonSRX{
 	@Override
 	public void set(ControlMode mode, double value){
 
-		if(mode == ControlMode.Position){
+		if(mode == ControlMode.Position || mode == ControlMode.Velocity){
 			timer++;
 			if(timer % 25 == 0) {
 				updatePID();
@@ -130,6 +137,7 @@ public class VortxTalon extends WPI_TalonSRX{
 		setPIDSetting(setting);
 		super.set(ControlMode.Position, value * ticksPerInch);
 	}
+	
 	
 	public PIDSetting getPIDSetting(){
 		return setting;
@@ -150,7 +158,7 @@ public class VortxTalon extends WPI_TalonSRX{
 	
 	public void debugLog() {
 		SmartDashboard.putNumber(name + " P Output", this.getMotorOutputPercent());
-//		SmartDashboard.putNumber(name + " S Pos", this.getSelectedSensorPosition(0));
+		SmartDashboard.putNumber(name + " S Pos", this.getSelectedSensorPosition(0));
 	}
 
 	

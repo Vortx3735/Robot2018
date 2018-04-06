@@ -5,8 +5,8 @@ import org.usfirst.frc.team3735.robot.util.profiling.Position;
 public class DriveState {
 
 	public Position pos;
-	double left;
-	double right;
+	public double left;
+	public double right;
 	
 	public DriveState(Position p, double l, double r) {
 		this.pos = p;
@@ -16,6 +16,13 @@ public class DriveState {
 	
 	public String toString() {
 		return Filer.make("Left", left, 3) + Filer.make("Right", right, 3) + pos.toString();
+	}
+	
+	public static String getCSVHeader() {
+		return "x,y,heading,left,right";
+	}
+	public String toCSV() {
+		return String.format("%.4f,%.4f,%.4f,%.4f,%.4f", pos.x, pos.y, pos.yaw, left, right);
 	}
 	
 	public static DriveState fromString(String s) {

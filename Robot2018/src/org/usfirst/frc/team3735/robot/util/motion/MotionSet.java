@@ -44,11 +44,17 @@ public class MotionSet implements Iterable<MotionData> {
 		}
 		
 	}
+	
+
 
 	MotionSet (CSVParser left, CSVParser right)
 	{
 		_leftParser = left;
 		_rightParser = right;
+	}
+
+	MotionSet (CSVParser record){
+		_leftParser = record;
 	}
 
 	@Override
@@ -64,8 +70,8 @@ public class MotionSet implements Iterable<MotionData> {
 		{
 			arr.add(new DriveState(
 					new Position(d.getCenterX(), d.getCenterY(), d.getHeading()), 
-					Drive.speedToPercent(d.getLeftV()), 
-					Drive.speedToPercent(d.getRightV())));
+					d.getLeftV(), 
+					d.getRightV()));
 		}
 		
 
@@ -73,6 +79,20 @@ public class MotionSet implements Iterable<MotionData> {
 		
 		return arr;
 	}
+	
+//	public ArrayList<DriveState> listRaw(){
+//		ArrayList<DriveState> arr = new ArrayList<>();
+//		for (CSVRecord d : _leftParser)
+//		{
+//			
+//			arr.add(new DriveState(
+//					new Position(d.getCenterX(), d.getCenterY(), d.getHeading()), 
+//					d.getLeftV(), 
+//					d.getRightV()));
+//		}
+//
+//	}
+
 	
 	public ArrayList<DriveState> reverseList(){
 		ArrayList<DriveState> arr = new ArrayList<>();

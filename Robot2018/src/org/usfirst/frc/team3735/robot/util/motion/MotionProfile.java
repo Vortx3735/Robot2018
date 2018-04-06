@@ -28,6 +28,14 @@ public class MotionProfile implements ProfileName, ProfileSource {
 		heading
 	};
 	
+	enum ColumnsFromFileRaw{
+		x,
+		y,
+		heading,
+		left,
+		right
+	}
+	
 	enum Side
 	{
 		left,
@@ -66,6 +74,12 @@ public class MotionProfile implements ProfileName, ProfileSource {
 
 		return new MotionSet (leftParser, rightParser);
 	}
+	
+//	public final MotionSet makeRaw() throws IOException, MissingColumnException{
+//		CSVParser parser = CSVParser.parse(getStream(_profName), Charset.forName("ASCII"), _theFormat);
+//		return new MotionSet(parser)
+//		
+//	}
 
 	
 	private String getProfileName (Side trackSide)
@@ -91,6 +105,22 @@ public class MotionProfile implements ProfileName, ProfileSource {
 			return getClass().getResourceAsStream(String.format("%s/%s", _rootPath, getProfileName(trackSide))); 
 		}
 		
+	}
+	
+	private InputStream getStream(String name)  throws FileNotFoundException{
+		if (!_fromJar)
+		{
+			Path p = FileSystems.getDefault().getPath(_rootPath, name);
+
+			if (!p.toFile().exists())
+				throw new FileNotFoundException(p.toString());
+			
+			return new FileInputStream (p.toFile());
+		}
+		else
+		{
+			return getClass().getResourceAsStream(String.format("%s/%s", _rootPath, name)); 
+		}
 	}
 
 

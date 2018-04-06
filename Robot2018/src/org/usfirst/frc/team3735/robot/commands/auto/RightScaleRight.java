@@ -25,7 +25,7 @@ public class RightScaleRight extends CommandGroup {
     public RightScaleRight(boolean complex) {
     	if(complex) {
 //    		addSequential(new SendProfile(Waypoints.Auto.rightScaleRight));	//initial cross to scale
-    		addSequential(new SendPreProfile("right_RightScale"));
+//    		addSequential(new SendPreProfile("right_RightScale"));
     		
 //    		addSequential(new AutoScaleLineup(true));
 //    		addSequential(new SendProfile(Waypoints.Auto.rightScaleRight2));	//backup and go to cube

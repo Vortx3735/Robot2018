@@ -10,15 +10,17 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class CubeAnglerSetPID extends Command {
 	Func f;
-    public CubeAnglerSetPID(Func f) {
+	boolean ends;
+    public CubeAnglerSetPID(Func f, boolean ends) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	this.f = f;
+    	this.ends = ends;
     	requires(Robot.angler);
     }
     
-    public CubeAnglerSetPID(double n) {
-    	this(Func.getFunc(n));
+    public CubeAnglerSetPID(double n, boolean ends) {
+    	this(Func.getFunc(n), ends);
     }
 
     // Called just before this Command runs the first time
@@ -35,7 +37,7 @@ public class CubeAnglerSetPID extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return ends && Robot.angler.controller.onTarget();
     }
 
     // Called once after isFinished returns true

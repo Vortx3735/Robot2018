@@ -22,11 +22,13 @@ import org.usfirst.frc.team3735.robot.subsystems.CubeIntake;
 import org.usfirst.frc.team3735.robot.subsystems.Drive;
 import org.usfirst.frc.team3735.robot.subsystems.Elevator;
 import org.usfirst.frc.team3735.robot.subsystems.LEDS;
+import org.usfirst.frc.team3735.robot.subsystems.LEDS.Data;
 import org.usfirst.frc.team3735.robot.subsystems.Navigation;
 import org.usfirst.frc.team3735.robot.subsystems.Vision;
 import org.usfirst.frc.team3735.robot.util.bases.VortxIterative;
 import org.usfirst.frc.team3735.robot.util.choosers.AutoChooser;
 import org.usfirst.frc.team3735.robot.util.choosers.DoNothing;
+import org.usfirst.frc.team3735.robot.util.choosers.Side;
 import org.usfirst.frc.team3735.robot.util.choosers.SideChooser;
 import org.usfirst.frc.team3735.robot.util.oi.DriveOI;
 import org.usfirst.frc.team3735.robot.util.profiling.Position;
@@ -134,7 +136,9 @@ public class Robot extends VortxIterative {
 //        navigation.integrate();
         navigation.displayPosition();
         drive.debugLog();
-        
+        if(DriverStation.getInstance().getMatchTime() > 120) {
+//        	leds.sendData(Data.);
+        }
         
         log();       
 	}
@@ -149,11 +153,13 @@ public class Robot extends VortxIterative {
 	public void autonomousInit() {	
 		navigation.resetPosition(autoLogic.getStartingPosition());
 		System.out.println("Choosing Auto");
-//		autoLogic.chooseAutonomous();
-//		autoLogic.printAuto();
-//		autoLogic.startCommand();
 		
-		autoChooser.startSelected();
+		autoLogic.chooseAutonomous();
+		autoLogic.printAuto();
+		autoLogic.startCommand();
+//		autoChooser.startSelected();
+		leds.SendDataAutonomous();
+
 		
 	}
 	@Override
@@ -161,7 +167,6 @@ public class Robot extends VortxIterative {
 		 Scheduler.getInstance().run();
 //		 vision.refresh();
 
-		 leds.SendDataAutonomous();
 	}
 	@Override
 	public void autonomousContinuous() {
@@ -174,12 +179,17 @@ public class Robot extends VortxIterative {
     public void teleopInit() {
         autoChooser.cancel();
         autoLogic.cancel();
+        if(sideChooser.getSelected() == Side.RED) {
+        	leds.sendData(Data.REDFIRE);
+        }else {
+        	leds.sendData(Data.BLUEFIRE);
+        }
+
         
     }
 	@Override
 	public void teleopPeriodic() {
         Scheduler.getInstance().run();
-        leds.SendDataTeleop();
 	}
 	@Override
 	public void teleopContinuous() {

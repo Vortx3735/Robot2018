@@ -38,12 +38,12 @@ public class AutoScaleLineup extends CommandGroup {
     	
     	
     	//Turn to target, go, and elevator up
-    	addSequential(new CubeAnglerSetPID(0),2);
+    	addSequential(new CubeAnglerSetPID(0, true), 1);
     	addSequential(new TurnTo(target, true),1);
     	addSequential(
 			VortxCommand.asParallel(
 				VortxCommand.asSequence(
-					new ElevatorSetPosDDx(Func.getFunc(Elevator.top), Func.getFunc(.8), Func.getFunc(.02)),
+					new ElevatorSetPosDDx(Elevator.top, .8, .02),
 					new ElevatorSetPosPID(Elevator.top)
 				)
 				,new DriveExp(-.5, 0).addT(new LocationProximity(target, prox)).addA(new NavxAssist(target, true))
@@ -61,7 +61,7 @@ public class AutoScaleLineup extends CommandGroup {
     	addSequential(new DriveExp(.5, 0).addT(new HasMoved(30)).addA(new NavxAssist()));
     	
 //    	addSequential(new CarriageLower());
-    	addSequential(new ElevatorSetPosDDx(Func.getFunc(0), Func.getFunc(.7), Func.getFunc(.03)));
+    	addSequential(new ElevatorSetPosDDx(0, .7, .03));
 
     	
     	

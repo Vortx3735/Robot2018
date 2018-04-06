@@ -53,13 +53,14 @@ public class SendProfile extends Command {
     public SendProfile(String file) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	if(file != null) {
-    		this.file = file;
-    		loadFile(file);
-    		comms.put(file, this);
-    	}else {
-    		needsLoading = true;
-    	}
+//    	if(file != null) {
+//    		this.file = file;
+//    		loadFile(file);
+//    		comms.put(file, this);
+//    	}else {
+//    		needsLoading = true;
+//    	}
+    	
     	requires(Robot.drive);
     	requires(Robot.navigation);
     }
@@ -173,7 +174,7 @@ public class SendProfile extends Command {
 //			
 //		}
 		
-		Robot.drive.normalDrive(curState.getMove(), turn);
+		Robot.drive.normalDrive(curState.getMove(), curState.getTurn() + turn);
 //		System.out.println("Move: " + curState.getMove() + "\t\t\t Turn: " + turn);
 //		System.out.print("forward look" + forwardLook + "\t\t\t");
 //		System.out.println("lookco" + forwardLookCo.getValue() + "\t\t");

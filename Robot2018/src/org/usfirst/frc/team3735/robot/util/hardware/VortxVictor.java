@@ -115,6 +115,10 @@ public class VortxVictor extends WPI_VictorSPX{
 		SmartDashboard.putNumber(name + " P Output", this.getMotorOutputPercent());
 //		SmartDashboard.putNumber(name + " S Pos", this.getSelectedSensorPosition(0));
 	}
+	
+	public double getPower() {
+		return this.getOutputCurrent() * this.getMotorOutputVoltage();
+	}
 
 	
 

@@ -29,9 +29,12 @@ public class RecordProfile extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-		filePath = "/home/lvuser/"  + fileName.getValue() + ".txt";
+		filePath = "/home/lvuser/"  + fileName.getValue() + ".csv";
 		try{
 			formatter = new Formatter(filePath);
+			formatter.format("%s", DriveState.getCSVHeader());
+			formatter.format("%s", System.getProperty("line.separator"));
+
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -40,7 +43,9 @@ public class RecordProfile extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-		formatter.format("%s", new DriveState(Robot.navigation.getPosition(), Robot.drive.getLeftPercent(), Robot.drive.getRightPercent()).toString());
+//		formatter.format("%s", new DriveState(Robot.navigation.getPosition(), Robot.drive.getLeftPercent(), Robot.drive.getRightPercent()).toString());
+		formatter.format("%s", new DriveState(Robot.navigation.getPosition(), Robot.drive.getLeftPercent(), Robot.drive.getRightPercent()).toCSV());
+
 		formatter.format("%s", System.getProperty("line.separator"));
     }
 

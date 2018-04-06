@@ -37,10 +37,11 @@ public class CubeAngler extends Subsystem implements PIDSource, PIDOutput{
 		angler = new VortxTalon(RobotMap.CubeIntake.anglerMotor, "Angler");
 		angler.setNeutralMode(NeutralMode.Brake);
 		
-		p = new AnalogPotentiometer(3,360,offset);
+		p = new AnalogPotentiometer(1,-360 * 10);
 		controller = new PIDCtrl(.01,.001,0,0,this,this);
+		controller.setAbsoluteTolerance(3);
 		SmartDashboard.putData("Cube Angler PID", controller);
-		setVal(187);
+		setVal(183);
 		
 	}
 
@@ -92,6 +93,7 @@ public class CubeAngler extends Subsystem implements PIDSource, PIDOutput{
 	public void log() {
 		SmartDashboard.putNumber("Cube Angler Pos", p.get());
 		SmartDashboard.putNumber("Cube Angler Angle", getPosition());
+		
 
 	}
 

@@ -25,7 +25,8 @@ public class MidSwitchLeft extends CommandGroup {
 //    		addSequential(new SendProfile(Waypoints.Auto.midSwitchLeft5));	//backup from cube, go to scale
     		
     	}else {
-    		
+    		addSequential(new AutoSwitchLineup(false));
+
     	}
     }
 }

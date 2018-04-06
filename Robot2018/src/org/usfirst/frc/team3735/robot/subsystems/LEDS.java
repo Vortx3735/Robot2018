@@ -12,30 +12,53 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 
 public class LEDS extends Subsystem {
-	I2C com = new I2C(I2C.Port.kOnboard, 5);
+	I2C com;
 	
-	public LEDS()
-	{
-		byte[] real = new byte[1];
-		byte[] dummy = new byte[0];
-		real[0] = 5;
-		com.transaction(real, 1, dummy, 0);
+	public static enum Data{
+		NOTHING(5),
+		BGFLASH(10),
+		REDFIRE(20),
+		BLUEFIRE(40),
+		NORMALFIRE(30);
+		
+		
+		private final byte value;
+		
+		Data(int i){
+			if(i < 128 && i > -129) {
+				value = (byte)i;
+			}else {
+				System.out.println("Error parsing LED Data... " + i + " is not a valid byte value");
+				value = 0;
+			}
+		}
+		
+		public byte convert() {
+			return value;
+		}
 	}
+	
+	public LEDS(){
+		com = new I2C(I2C.Port.kOnboard, 5);
+		sendData(Data.NOTHING);
+	}
+	
 	//teleop
-	public void SendDataAutonomous()
-	{
-		byte[] real = new byte[1];
-		byte[] dummy = new byte[0];
-		real[0] = 10;
-		com.transaction(real, 1, dummy, 0);
-		Timer.delay(.03);
+	public void SendDataAutonomous(){
+		sendData(Data.BGFLASH);
 	}
+	
 	//auto
-	public void SendDataTeleop()
-	{
+	public void SendDataTeleop(){
+		sendData(Data.NORMALFIRE);
+	}
+	
+	
+
+	public void sendData(Data dat) {
 		byte[] real = new byte[1];
 		byte[] dummy = new byte[0];
-		real[0] = 30;
+		real[0] = dat.convert();
 		com.transaction(real, 1, dummy, 0);
 		Timer.delay(.03);
 	}
@@ -47,5 +70,7 @@ public class LEDS extends Subsystem {
 		// TODO Auto-generated method stub
 		
 	}
+	
+
 		
 }

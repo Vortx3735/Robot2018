@@ -1,6 +1,7 @@
 package org.usfirst.frc.team3735.robot.commands.cubeintake;
 
 import org.usfirst.frc.team3735.robot.Robot;
+import org.usfirst.frc.team3735.robot.util.cmds.VortxCommand;
 import org.usfirst.frc.team3735.robot.util.settings.Func;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -8,7 +9,7 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class CubeSetRoller extends Command {
+public class CubeSetRoller extends VortxCommand {
 
     private Func left;
     private Func right;
@@ -33,6 +34,11 @@ public class CubeSetRoller extends Command {
 		this.right = right;
 		requires(Robot.cubeIntake);
 	}
+	
+	public CubeSetRoller(double left, double right) {
+		this(Func.getFunc(left), Func.getFunc(right));
+	}
+
 
     // Called just before this Command runs the first time
     protected void initialize() {
@@ -47,7 +53,7 @@ public class CubeSetRoller extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return super.isFinished();
     }
 
     // Called once after isFinished returns true

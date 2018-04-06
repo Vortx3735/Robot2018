@@ -3,12 +3,16 @@ package org.usfirst.frc.team3735.robot.util.settings;
 import org.usfirst.frc.team3735.robot.commands.elevator.BlankPID;
 
 import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class PIDSetting extends PIDController{
 	private Setting iZone;
 	private Setting rampRate;
 
+	private double actingI;
+	
 	public PIDSetting(double P, double I, double D){
 		this(P, I, D, 0);
 	}
@@ -29,6 +33,20 @@ public class PIDSetting extends PIDController{
 		this.iZone = new Setting("", iZone, false);
 		this.rampRate = new Setting("", rampRate, false);
 		
+	}
+	
+	public PIDSetting(double P, double I, double D, double F, double rampRate, double iZone, PIDSource source, PIDOutput out){
+		super(P, I, D, F, source, out);
+		
+		this.iZone = new Setting("", iZone, false);
+		this.rampRate = new Setting("", rampRate, false);
+		
+	}
+	
+	public void updateI() {
+		if(Math.abs(getError()) < iZone.getValue()) {
+			
+		}
 	}
 	
 	public void sendToDash(String name){

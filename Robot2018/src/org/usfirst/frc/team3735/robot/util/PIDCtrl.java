@@ -77,6 +77,10 @@ public class PIDCtrl extends PIDController{
 		actingI = i;
 		super.setPID(p, 0, d, f);
 	}
+	
+//	public void sendToDash(String name) {
+//		
+//	}
 
 
 
