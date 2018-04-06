@@ -37,7 +37,7 @@ public class GrabWallCube extends CommandGroup {
     	addSequential(new TurnTo(target));
     	addParallel(VortxCommand.asSequence(
 			new ElevatorSetPosDDx(Func.getFunc(0), Func.getFunc(.7), Func.getFunc(.03)),
-			new ElevatorSetPosPID(Elevator.bottom)
+			new ElevatorSetPosPID(Elevator.bottom, true)
 		),1);
 
     	addSequential(VortxCommand.asParallel(

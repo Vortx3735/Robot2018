@@ -1,38 +1,44 @@
 package org.usfirst.frc.team3735.robot.util;
 
+import org.usfirst.frc.team3735.robot.util.settings.Func;
+import org.usfirst.frc.team3735.robot.util.settings.Setting;
+
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class PIDCtrl extends PIDController{
 
-	@Override
-	public void initSendable(SendableBuilder builder) {
-		// TODO Auto-generated method stub
-		super.initSendable(builder);
-	}
 
 
-	private double iZone = 0;
+
+	private Func iZone;
 	private double actingI;
-	private boolean isUsingIZone = false;
 	
-	public PIDCtrl(double Kp, double Ki, double Kd, PIDSource source, PIDOutput output, double period) {
-		super(Kp, 0, Kd, source, output, period);
-		actingI = Ki;
-	}
-	public PIDCtrl(double Kp, double Ki, double Kd, PIDSource source, PIDOutput output) {
+//	public PIDCtrl(double Kp, double Ki, double Kd, PIDSource source, PIDOutput output, double period) {
+//		super(Kp, 0, Kd, source, output, period);
+//		actingI = Ki;
+//	}
+	public PIDCtrl(double Kp, double Ki, double Kd, PIDSource source, PIDOutput output, double iz) {
 		super(Kp, 0, Kd, source, output);
 		actingI = Ki;
+		iZone = Func.getFunc(iz);
 	}
-	public PIDCtrl(double Kp, double Ki, double Kd, double Kf, PIDSource source, PIDOutput output, double period) {
-		super(Kp, 0, Kd, Kf, source, output, period);		
-		actingI = Ki;
-	}
-	public PIDCtrl(double Kp, double Ki, double Kd, double Kf, PIDSource source, PIDOutput output) {
+//	public PIDCtrl(double Kp, double Ki, double Kd, double Kf, PIDSource source, PIDOutput output, double period) {
+//		super(Kp, 0, Kd, Kf, source, output, period);		
+//		actingI = Ki;
+//	}
+	public PIDCtrl(double Kp, double Ki, double Kd, double Kf, PIDSource source, PIDOutput output, double iz) {
 		super(Kp, 0, Kd, Kf, source, output);
 		actingI = Ki;
+		iZone = Func.getFunc(iz);
+	}
+	
+	public void sendToDash(String name) {
+		SmartDashboard.putData(name, this);
+		iZone = new Setting(name + " IZone", iZone.getValue());
 	}
 	
 	/*
@@ -40,26 +46,22 @@ public class PIDCtrl extends PIDController{
 
 	 */
 	
-	public synchronized void setIZone(double izone){
-		iZone = izone;
-	}
+
 	
-	public synchronized void setIsUsingIZone(boolean b){
-		isUsingIZone = b;
-	}
 	
-	public synchronized void updateI(double i){
-		actingI = i;
-		if(isUsingIZone){
-			if(Math.abs(super.getError()) < iZone){
-				super.setPID(super.getP(), actingI, super.getD());
-			}else{
-				super.setPID(super.getP(), 0, super.getD());
-			}
-		}else{
+	public synchronized void updateI(){
+		if(Math.abs(super.getError()) < iZone.getValue()){
 			super.setPID(super.getP(), actingI, super.getD());
+		}else{
+			super.setPID(super.getP(), 0, super.getD());
 		}
 		
+	}
+	
+	
+	@Override
+	public void setI(double i) {
+		actingI = i;
 	}
 	
 	

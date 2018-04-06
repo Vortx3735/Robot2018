@@ -44,7 +44,7 @@ public class AutoScaleLineup extends CommandGroup {
 			VortxCommand.asParallel(
 				VortxCommand.asSequence(
 					new ElevatorSetPosDDx(Elevator.top, .8, .02),
-					new ElevatorSetPosPID(Elevator.top)
+					new ElevatorSetPosPID(Elevator.top, true)
 				)
 				,new DriveExp(-.5, 0).addT(new LocationProximity(target, prox)).addA(new NavxAssist(target, true))
     		)
@@ -53,8 +53,8 @@ public class AutoScaleLineup extends CommandGroup {
     	
     	
     	//shoot it
-    	addSequential(new CarriageRaise());
-    	addParallel(new CarriageSetRoller(-.9), 1);
+    	addSequential(new CarriageLower());
+    	addParallel(new CarriageSetRoller(-.6), 1);
     	addSequential(new Wait(.2));
     	
     	//back up same dist, lower elevator and carriage

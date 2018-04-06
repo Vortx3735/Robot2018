@@ -32,7 +32,7 @@ public class CubeTransfer extends CommandGroup {
     public CubeTransfer() {
     	requires(Robot.elevator);
     	addParallel(new CubeSetRoller(-.3),2);
-    	addParallel(new ElevatorSetPosPID(Elevator.transferHeight),3);
+    	addParallel(new ElevatorSetPosPID(Elevator.transferHeight, false),3);
     	addSequential(new CubeAnglerSetPID(130, false),1);
     	
     	addParallel(new CubeSetRoller(.5),1);

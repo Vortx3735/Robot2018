@@ -36,7 +36,7 @@ double dy;
 //			Robot.elevator.setElevatorMotorsCurrent(Robot.oi.getElevatorMove()*Robot.elevator.getMultiplierSmartDashboard());
 //		}
 			
-		Robot.elevator.setPOutput(Math.signum(dy)* .7);
+		Robot.elevator.setPOutput(Math.signum(dy)* .4);
 
 
 	}

@@ -10,8 +10,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class PIDSetting extends PIDController{
 	private Setting iZone;
 	private Setting rampRate;
-
-	private double actingI;
 	
 	public PIDSetting(double P, double I, double D){
 		this(P, I, D, 0);
@@ -42,13 +40,7 @@ public class PIDSetting extends PIDController{
 		this.rampRate = new Setting("", rampRate, false);
 		
 	}
-	
-	public void updateI() {
-		if(Math.abs(getError()) < iZone.getValue()) {
-			
-		}
-	}
-	
+
 	public void sendToDash(String name){
 		SmartDashboard.putData(name, this);
 		

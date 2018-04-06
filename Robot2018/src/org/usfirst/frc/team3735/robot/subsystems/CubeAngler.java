@@ -38,7 +38,7 @@ public class CubeAngler extends Subsystem implements PIDSource, PIDOutput{
 		angler.setNeutralMode(NeutralMode.Brake);
 		
 		p = new AnalogPotentiometer(1,-360 * 10);
-		controller = new PIDCtrl(.01,.001,0,0,this,this);
+		controller = new PIDCtrl(.01,.001,0,0,this,this, 5);
 		controller.setAbsoluteTolerance(3);
 		SmartDashboard.putData("Cube Angler PID", controller);
 		setVal(183);
@@ -85,7 +85,6 @@ public class CubeAngler extends Subsystem implements PIDSource, PIDOutput{
 
 	@Override
 	public double pidGet() {
-		// TODO Auto-generated method stub
 		return getPosition();
 	}
 	

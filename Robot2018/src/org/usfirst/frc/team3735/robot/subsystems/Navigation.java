@@ -33,14 +33,6 @@ public class Navigation extends Subsystem implements PIDSource, PIDOutput {
 	private PIDCtrl controller;
 	//PID Controller stuff
 	private static Setting outputExponent = new Setting("Nav Output Exponent", 1, false);
-    public static Setting iZone = 			new Setting("Nav Turning IZone", 10) {
-    	@Override
-    	public void valueChanged(double c) {
-    		if(Robot.navigation.controller != null) {
-    			Robot.navigation.controller.setIZone(c);
-    		}
-    	}
-    };
     public static Setting actingI = 		new Setting("Nav Acting I Value", 0.004);
     
 //    public static Setting hInitialOffset =	new Setting("Horizontal Offset", 0);
@@ -63,14 +55,11 @@ public class Navigation extends Subsystem implements PIDSource, PIDOutput {
 		table = NetworkTableInstance.getDefault().getTable("MAP");
 		
 		ahrs = new VortxAhrs(SPI.Port.kMXP);
-		controller = new PIDCtrl(.016,0.0,0.061,this,this);
+		controller = new PIDCtrl(.016,0.0,0.061,this,this, 10);
     	controller.setOutputRange(-.7, .7);
     	controller.setInputRange(-180, 180);
     	controller.setContinuous();
-    	controller.setIsUsingIZone(true);
-    	controller.setIZone(10);
-    	controller.setAbsoluteTolerance(1);
-    	iZone.setIsListening(true);
+    	controller.setAbsoluteTolerance(3);
     	SmartDashboard.putData("Nav Turning Controller", controller);
     	
 		curLeft = Robot.drive.getLeftPosition();

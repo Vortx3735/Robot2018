@@ -10,30 +10,36 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class ElevatorSetPosPID extends Command {
 	Func inches;
-    public ElevatorSetPosPID(double inches) {
+	private boolean finishes;
+    public ElevatorSetPosPID(double inches, boolean finishes) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	this(Func.getFunc(inches));
+    	this(Func.getFunc(inches), finishes);
     	
     }
     
-    public ElevatorSetPosPID(Func f) {
+    public ElevatorSetPosPID(Func f, boolean finishes) {
     	this.inches = f;
+    	this.finishes = finishes;
     	requires(Robot.elevator);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	Robot.elevator.controller.setSetpoint(inches.getValue());
+    	Robot.elevator.controller.enable();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.elevator.setElevatorPosition(inches.getValue());
+    	Robot.elevator.controller.updateI();
+    	Robot.elevator.controller.setSetpoint(inches.getValue());
+//    	Robot.elevator.setElevatorPosition(inches.getValue());
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return finishes && Robot.elevator.controller.onTarget();
     }
 
     // Called once after isFinished returns true

@@ -38,7 +38,7 @@ public class AutoSwitchLineup extends CommandGroup {
     	addSequential(new CubeAnglerSetPID(0, true),1);
     	addParallel(VortxCommand.asSequence(
 			new ElevatorSetPosDDx(Func.getFunc(Elevator.switchHeight), Func.getFunc(.7), Func.getFunc(.03)),
-			new ElevatorSetPosPID(Elevator.switchHeight)
+			new ElevatorSetPosPID(Elevator.switchHeight, false)
 		), 2);
     	addSequential(new CarriageLower());
 

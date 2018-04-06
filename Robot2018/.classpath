@@ -13,7 +13,7 @@
 	<classpathentry kind="lib" path="wpilib/java/current/lib/opencv-sources.jar"/>
 	<classpathentry kind="lib" path="wpilib/java/current/lib/opencv.jar"/>
 	<classpathentry kind="lib" path="wpilib/java/current/lib/WPILib-sources.jar"/>
-	<classpathentry kind="lib" path="wpilib/java/current/lib/WPILib.jar"/>
+	<classpathentry kind="lib" path="wpilib/java/current/lib/WPILib.jar" sourcepath="wpilib/java/current/lib/WPILib-sources.jar"/>
 	<classpathentry kind="lib" path="wpilib/java/current/lib/wpiutil-sources.jar"/>
 	<classpathentry kind="lib" path="wpilib/java/current/lib/wpiutil.jar"/>
 	<classpathentry kind="var" path="wpilib" sourcepath="wpilib.sources"/>

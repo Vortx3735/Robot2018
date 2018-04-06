@@ -13,7 +13,7 @@ public class ElevatorSetAndHold extends CommandGroup {
 	
 	public ElevatorSetAndHold(Func inches, Func power) {
 		addSequential(new ElevatorSetPosLgs(inches, power));
-		addSequential(new ElevatorSetPosPID(inches));
+		addSequential(new ElevatorSetPosPID(inches, false));
 	}
 	
 }

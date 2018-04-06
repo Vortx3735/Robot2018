@@ -75,8 +75,7 @@ public class TurnTo extends Command{
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.navigation.getController().setIZone(Navigation.iZone.getValue());
-    	Robot.navigation.getController().updateI(Navigation.actingI.getValue());
+    	Robot.navigation.getController().updateI();
     	
     	if(Robot.navigation.getController().onTarget()){
     		timeOnTarget += .02;

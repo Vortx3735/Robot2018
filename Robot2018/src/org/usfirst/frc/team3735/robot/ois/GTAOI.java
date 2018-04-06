@@ -140,7 +140,7 @@ public class GTAOI implements DriveOI{
 		SmartDashboard.putData(new SetToLastPosition());
 		
 		Setting position = new Setting("Elevator Jamal Position", 0);
-		SmartDashboard.putData(new ElevatorSetPosPID(position));
+		SmartDashboard.putData(new ElevatorSetPosPID(position, false));
 		SmartDashboard.putData(new ElevatorSetPosDDx(position, new Setting("Elevator DDx maxp", .7), new Setting("Elevator DDx acc", .03)));
 		SmartDashboard.putData("Elevator Reset", new ElevatorResetPos());
 		SmartDashboard.putData("Auto Right Scale Lineup", new AutoScaleLineup(true));
