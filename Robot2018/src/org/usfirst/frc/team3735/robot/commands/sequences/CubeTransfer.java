@@ -5,7 +5,7 @@ import org.usfirst.frc.team3735.robot.assists.NavxAssist;
 import org.usfirst.frc.team3735.robot.commands.carriage.CarriageLower;
 import org.usfirst.frc.team3735.robot.commands.carriage.CarriageRaiseTele;
 import org.usfirst.frc.team3735.robot.commands.carriage.CarriageSetRoller;
-import org.usfirst.frc.team3735.robot.commands.cubeintake.CubeAnglerSetPID;
+import org.usfirst.frc.team3735.robot.commands.cubeintake.PivotSetPID;
 import org.usfirst.frc.team3735.robot.commands.cubeintake.CubeSetRoller;
 import org.usfirst.frc.team3735.robot.commands.drive.TurnTo;
 import org.usfirst.frc.team3735.robot.commands.drive.movedistance.DriveRaw;
@@ -33,12 +33,12 @@ public class CubeTransfer extends CommandGroup {
     	requires(Robot.elevator);
     	addParallel(new CubeSetRoller(-.3),2);
     	addParallel(new ElevatorSetPosPID(Elevator.transferHeight, false),3);
-    	addSequential(new CubeAnglerSetPID(130, false),1);
+    	addSequential(new PivotSetPID(130, false),1);
     	
     	addParallel(new CubeSetRoller(.5),1);
-    	addSequential(new CarriageSetRoller(-.4).addT(new CarriageOverload(900)),.5);
+    	addSequential(new CarriageSetRoller(-.35).addT(new CarriageOverload(900)),.45);
 //    	addSequential(new CarriageSetRoller(-.4),.2);
-    	addSequential(new CubeAnglerSetPID(70, false),1);
+    	addSequential(new PivotSetPID(70, false),1);
     	
 
     	

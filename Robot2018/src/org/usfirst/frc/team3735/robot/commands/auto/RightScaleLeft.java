@@ -15,7 +15,7 @@ public class RightScaleLeft extends CommandGroup {
     public RightScaleLeft(boolean complex) {
     	if(complex) {
 //    		System.out.println("loading file B");
-    		addSequential(new SendPreProfile("Right_LeftScale", true));	//initial cross to scale
+//    		addSequential(new SendPreProfile("Right_LeftScale", true));	//initial cross to scale
 //    		addSequential(new AutoScaleLineup(false));
 //    		addSequential(new SendProfile(Waypoints.Auto.rightScaleLeft2));	//backup and go to cube
 //    		addSequential(new SendProfile(Waypoints.Auto.rightScaleLeft3));	//backup from cube, go to scale

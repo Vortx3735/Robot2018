@@ -5,7 +5,7 @@ import org.usfirst.frc.team3735.robot.assists.NavxAssist;
 import org.usfirst.frc.team3735.robot.commands.carriage.CarriageLower;
 import org.usfirst.frc.team3735.robot.commands.carriage.CarriageRaiseTele;
 import org.usfirst.frc.team3735.robot.commands.carriage.CarriageSetRoller;
-import org.usfirst.frc.team3735.robot.commands.cubeintake.CubeAnglerSetPID;
+import org.usfirst.frc.team3735.robot.commands.cubeintake.PivotSetPID;
 import org.usfirst.frc.team3735.robot.commands.cubeintake.CubeSetRoller;
 import org.usfirst.frc.team3735.robot.commands.drive.TurnTo;
 import org.usfirst.frc.team3735.robot.commands.drive.movedistance.DriveExp;
@@ -35,19 +35,22 @@ public class AutoSwitchLineup extends CommandGroup {
     	Location target = (right) ? Waypoints.Pieces.switchRight : Waypoints.Pieces.switchLeft;
     	
 //    	addSequential(new TurnTo(target, true),2);
-    	addSequential(new CubeAnglerSetPID(0, true),1);
-    	addParallel(VortxCommand.asSequence(
-			new ElevatorSetPosDDx(Func.getFunc(Elevator.switchHeight), Func.getFunc(.7), Func.getFunc(.03)),
-			new ElevatorSetPosPID(Elevator.switchHeight, false)
-		), 2);
-    	addSequential(new CarriageLower());
+    	addSequential(new PivotSetPID(0, true),1);
+//    	addParallel(VortxCommand.asSequence(
+////			new ElevatorSetPosDDx(Func.getFunc(Elevator.switchHeight), Func.getFunc(.7), Func.getFunc(.03)),
+//			new ElevatorSetPosPID(Elevator.switchHeight, false)
+//		), 2);
+    	
+		addParallel(new ElevatorSetPosPID(Elevator.switchHeight, false));
 
-    	addSequential(new DriveExp(-.7, 0).addT(new Bumped(.8)).addA(new NavxAssist(target, true)));
+    	addSequential(new CarriageLower());
+    	addSequential(new DriveExp(-.7, 0).addA(new NavxAssist(target, true)).addT(new Bumped(1.8)),2.5);
     	
     	double hugtime = 1;
     	
     	addParallel(new DriveRaw(-.3,0),hugtime);
-		addSequential(new CarriageSetRoller(-.6), hugtime);
+ 
+    	addSequential(new CarriageSetRoller(-.6), hugtime);
     	addSequential(new DriveRaw(.4, 0), .4);
     	
     }

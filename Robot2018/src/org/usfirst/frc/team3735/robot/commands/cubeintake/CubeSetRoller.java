@@ -35,6 +35,10 @@ public class CubeSetRoller extends VortxCommand {
 		requires(Robot.cubeIntake);
 	}
 	
+	public CubeSetRoller() {
+		this(-.42, -.7);
+	}
+	
 	public CubeSetRoller(double left, double right) {
 		this(Func.getFunc(left), Func.getFunc(right));
 	}
@@ -42,6 +46,7 @@ public class CubeSetRoller extends VortxCommand {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	super.initialize();
     }
 
     // Called repeatedly when this Command is scheduled to run

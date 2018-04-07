@@ -7,12 +7,9 @@ import org.usfirst.frc.team3735.robot.commands.carriage.CarriageRaiseTele;
 import org.usfirst.frc.team3735.robot.commands.carriage.CarriageSetRoller;
 
 import org.usfirst.frc.team3735.robot.commands.climber.ClimberSetSpeed;
-import org.usfirst.frc.team3735.robot.commands.cubeintake.CubeAnglerReset;
-import org.usfirst.frc.team3735.robot.commands.cubeintake.CubeAnglerSetPID;
-import org.usfirst.frc.team3735.robot.commands.cubeintake.CubeGrab;
+import org.usfirst.frc.team3735.robot.commands.cubeintake.PivotSetPID;
 import org.usfirst.frc.team3735.robot.commands.cubeintake.CubeSetRoller;
-import org.usfirst.frc.team3735.robot.commands.cubeintake.CubeSetSols;
-import org.usfirst.frc.team3735.robot.commands.cubeintake.ResetPivot;
+import org.usfirst.frc.team3735.robot.commands.cubeintake.PivotReset;
 import org.usfirst.frc.team3735.robot.commands.drive.DriveSetPID;
 import org.usfirst.frc.team3735.robot.commands.drive.TurnTo;
 import org.usfirst.frc.team3735.robot.commands.drive.movedistance.MoveDDx;
@@ -59,12 +56,12 @@ public class GTAOI implements DriveOI{
 		 * Main-Driver
 		 *************************************************/
 //		main.a.whileHeld(new CubeGrab());
-		main.x.whileHeld(new CarriageSetRoller(new Setting("Carriage Outtake Speed", .5)));
+		main.a.whileHeld(new CarriageSetRoller(new Setting("Carriage Outtake Speed", .5)));
 		Setting cubeintake = new Setting("Cube Intake Speed", -.7);
-		main.x.whileHeld(new CubeSetRoller(cubeintake.multiply(new Setting("Cube Intake Slow Mult", .6)),cubeintake));
+		main.a.whileHeld(new CubeSetRoller(cubeintake.multiply(new Setting("Cube Intake Slow Mult", .6)),cubeintake));
 		main.b.whileHeld(new CarriageSetRoller(new Setting("Carriage Intake Speed", -.5))
 				.addT(new CarriageOverload(new Setting("Carriage Intake MaxPower", 30))));
-		main.y.whileHeld(new CubeSetRoller(new Setting("Cube Outtake Speed", 1)));
+		main.x.whileHeld(new CubeSetRoller(new Setting("Cube Outtake Speed", 1)));
 		main.b.whileHeld(new CubeSetRoller(new Setting("Cube Transfer Speed", .7)));
 
 //		main.y
@@ -74,9 +71,9 @@ public class GTAOI implements DriveOI{
 //		main.pov90.whenPressed(new TurnTo(90));
 //		main.pov180.whenPressed(new TurnTo(180));
 //		main.pov270.whenPressed(new TurnTo(270));
-		main.pov0.whenPressed(new CubeAnglerSetPID(130, false));
-		main.pov90.whenPressed(new CubeAnglerSetPID(80, false));
-		main.pov180.whenPressed(new CubeAnglerSetPID(0, false));
+		main.pov0.whenPressed(new PivotSetPID(130, false));
+		main.pov90.whenPressed(new PivotSetPID(75, false));
+		main.pov180.whenPressed(new PivotSetPID(0, false));
 		main.pov270.whenPressed(new CubeTransfer());
 
 		Setting spin = new Setting("Cube Spin Speed", .7);
@@ -85,7 +82,8 @@ public class GTAOI implements DriveOI{
 		main.rb.whileHeld(new CubeSetRoller(spin, spin.reverse()));
 //		main.rb.whileHeld(new CubeSetSols(false, true));
 
-//		main.start
+		main.start.whileHeld(new PivotReset());
+		main.back.whenPressed(new ElevatorResetPos());
 //		main.back
 		
 		
@@ -103,9 +101,9 @@ public class GTAOI implements DriveOI{
 //		co.pov90.whileHeld(new ElevatorCorrect(elevatorTrim));
 ////		co.pov180
 //		co.pov270.whileHeld(new ElevatorCorrect(elevatorTrim.reverse()));
-		co.pov0.whenPressed(new CubeAnglerSetPID(130, false));
-		co.pov90.whenPressed(new CubeAnglerSetPID(80, false));
-		co.pov180.whenPressed(new CubeAnglerSetPID(0, false));
+		co.pov0.whenPressed(new PivotSetPID(130, false));
+		co.pov90.whenPressed(new PivotSetPID(75, false));
+		co.pov180.whenPressed(new PivotSetPID(0, false));
 		co.pov270.whenPressed(new CubeTransfer());
 		
 		
@@ -114,7 +112,9 @@ public class GTAOI implements DriveOI{
 		co.rt.whileHeld(new CarriageSetRoller(carriageShoot));
 		co.rb.toggleWhenPressed(new CarriageRaiseTele());
 		
-		co.start.whileHeld(new ResetPivot());
+		co.start.whileHeld(new PivotReset());
+		co.back.whenPressed(new ElevatorResetPos());
+
 //		co.back
 		
 		
@@ -149,8 +149,8 @@ public class GTAOI implements DriveOI{
 		SmartDashboard.putData("Auto Left Switch Lineup", new AutoSwitchLineup(false));
 		SmartDashboard.putData(new RecordTuringData());
 		SmartDashboard.putData(new RecordDriveData());
-		SmartDashboard.putData(new CubeAnglerReset());
-		SmartDashboard.putData(new CubeAnglerSetPID(new Setting("Cube Angler SetPos", 0), false));
+//		SmartDashboard.putData(new PivotReset());
+		SmartDashboard.putData(new PivotSetPID(new Setting("Cube Angler SetPos", 0), false));
 		SmartDashboard.putData(new DriveSetPID());	
 
 //		Setting position = new Setting("Position", 0);
@@ -200,7 +200,7 @@ public class GTAOI implements DriveOI{
 	}
 
 	public double getCarriageMove() {
-		return .8 * VortxMath.handleDeadband(Math.pow(co.getRightTrigger(), 2) - Math.pow(co.getLeftTrigger(), 2), .08);
+		return .5 * VortxMath.handleDeadband(Math.pow(co.getRightTrigger(), 2) - Math.pow(co.getLeftTrigger(), 2), .08);
 	}
 	
 	public void log() {

@@ -17,7 +17,7 @@ import org.usfirst.frc.team3735.robot.ois.GTAOI;
 import org.usfirst.frc.team3735.robot.settings.Dms;
 import org.usfirst.frc.team3735.robot.subsystems.Carriage;
 import org.usfirst.frc.team3735.robot.subsystems.Climber;
-import org.usfirst.frc.team3735.robot.subsystems.CubeAngler;
+import org.usfirst.frc.team3735.robot.subsystems.Pivot;
 import org.usfirst.frc.team3735.robot.subsystems.CubeIntake;
 import org.usfirst.frc.team3735.robot.subsystems.Drive;
 import org.usfirst.frc.team3735.robot.subsystems.Elevator;
@@ -60,7 +60,7 @@ public class Robot extends VortxIterative {
 	public static Elevator elevator;
 	public static Climber climber;
 	public static Carriage carriage;
-	public static CubeAngler angler;
+	public static Pivot pivot;
 	
 	public static Autonomous autoLogic;
 	
@@ -85,7 +85,7 @@ public class Robot extends VortxIterative {
 		elevator = new Elevator();
 		climber = new Climber();
 		carriage = new Carriage();
-		angler = new CubeAngler();
+		pivot = new Pivot();
 
 		oi = new GTAOI(); //MUST be instantiated after the subsystems
 			
@@ -135,7 +135,7 @@ public class Robot extends VortxIterative {
 //        vision.debugLog();
 //        navigation.integrate();
         navigation.displayPosition();
-        drive.debugLog();
+//        drive.debugLog();
         if(DriverStation.getInstance().getMatchTime() > 120) {
 //        	leds.sendData(Data.);
         }
@@ -152,6 +152,8 @@ public class Robot extends VortxIterative {
 	@Override
 	public void autonomousInit() {	
 		navigation.resetPosition(autoLogic.getStartingPosition());
+		elevator.resetEncoderPositions();
+//		pivot.resetInside();
 		System.out.println("Choosing Auto");
 		
 		autoLogic.chooseAutonomous();
@@ -218,19 +220,19 @@ public class Robot extends VortxIterative {
 	
 	
 	public void log(){
-		drive.log();
-		navigation.log();
-		vision.log();
-		elevator.log();
-		carriage.log();
-		angler.log();
+//		drive.log();
+//		navigation.log();
+//		vision.log();
+//		elevator.log();
+//		carriage.log();
+//		pivot.log();
 		
 	}
 	
 	public void debugLog(){
 //		drive.debugLog();
 //		navigation.debugLog();
-		elevator.debugLog();
+//		elevator.debugLog();
 //		vision.debugLog();
 		
 	}

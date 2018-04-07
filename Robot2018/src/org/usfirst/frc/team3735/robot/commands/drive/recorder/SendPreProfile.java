@@ -61,17 +61,19 @@ public class SendPreProfile extends Command {
     	try {
 			data = MotionProfile.builder().withProfileName(file).withProfilesFromJar().make();
 //			MotionProfile.builder().withProfileName(file).withProfilesFromFilesystem().make();
-			if(rev) {
-				arr = data.reverseList();
-			}else {
-				arr = data.list();
 
-			}
 		} catch (IOException | MissingColumnException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			error = true;
 		}
+    	if(data != null) {
+			if(rev) {
+				arr = data.reverseList();
+			}else {
+				arr = data.list();
+			}
+    	}
     	
     	
     	requires(Robot.drive);

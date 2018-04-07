@@ -12,7 +12,7 @@ public class CubeIntakeJoystickMove extends Command {
     public CubeIntakeJoystickMove() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.angler);
+    	requires(Robot.pivot);
     }
 
     // Called just before this Command runs the first time
@@ -22,7 +22,7 @@ public class CubeIntakeJoystickMove extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.angler.setPOutput(Robot.oi.getAnglerMove());
+    	Robot.pivot.setPOutput(Robot.oi.getAnglerMove());
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -32,7 +32,7 @@ public class CubeIntakeJoystickMove extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.angler.setPOutput(0);
+    	Robot.pivot.setPOutput(0);
 
     }
 

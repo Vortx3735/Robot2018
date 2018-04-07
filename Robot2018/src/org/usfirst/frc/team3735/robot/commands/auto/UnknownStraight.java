@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class UnknownStraight extends CommandGroup {
 
     public UnknownStraight() {
-    	addSequential(new MoveDDx(-Dms.Field.TOBASELINE - 36, .6, .05).addA(new NavxAssist()));
+//    	addSequential(new MoveDDx(-Dms.Field.TOBASELINE - 36, .6, .05).addA(new NavxAssist()));
     	addSequential(new DriveExp(-.7,0).addA(new NavxAssist()), 2.5);
     }
     

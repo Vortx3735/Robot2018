@@ -3,7 +3,6 @@ package org.usfirst.frc.team3735.robot.ois;
 import org.usfirst.frc.team3735.robot.commands.carriage.CarriageSetRoller;
 
 import org.usfirst.frc.team3735.robot.commands.climber.ClimberSetSpeed;
-import org.usfirst.frc.team3735.robot.commands.cubeintake.CubeGrab;
 import org.usfirst.frc.team3735.robot.commands.cubeintake.CubeSetRoller;
 import org.usfirst.frc.team3735.robot.commands.drive.simple.DriveAddSensitiveLeft;
 import org.usfirst.frc.team3735.robot.commands.drive.simple.DriveAddSensitiveRight;
@@ -25,7 +24,6 @@ public class WheelOI implements DriveOI{
 		stick = new GraphiteJoystick(1);
 		box = new XboxController(2);
 		
-		stick.trig.whileHeld(new CubeGrab());
 
 //		main.pov90.whileHeld(new DriveAddSensitiveRight());
 //		main.pov270.whileHeld(new DriveAddSensitiveLeft());

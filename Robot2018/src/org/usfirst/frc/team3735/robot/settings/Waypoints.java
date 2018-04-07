@@ -19,8 +19,13 @@ public class Waypoints {
 	public static class Pieces{
 		public static final Location scaleLeft = new Location(-72, Dms.Field.HALFLENGTH);
 		public static final Location scaleRight = new Location(72, Dms.Field.HALFLENGTH);
-		public static final Location switchLeft = new Location(-54, 168);
-		public static final Location switchRight = new Location(54, 168);
+		public static final Location switchLeft = new Location(-64, 168); //abs center is 54
+		public static final Location switchRight = new Location(64, 168);
+		public static final Location switchLineupLeft =  new Location(-58, 78);
+		public static final Location switchLineupRight =  new Location(58, 78);
+
+		
+		public static final Location headCube = new Location(0, 110.4);
 		
 	}
 

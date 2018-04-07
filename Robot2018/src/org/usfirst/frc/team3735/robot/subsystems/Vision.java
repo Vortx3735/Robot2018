@@ -3,6 +3,7 @@ package org.usfirst.frc.team3735.robot.subsystems;
 import org.usfirst.frc.team3735.robot.util.settings.Setting;
 import org.usfirst.frc.team3735.robot.util.vision.VisionHandler;
 
+import edu.wpi.cscore.AxisCamera;
 import edu.wpi.cscore.MjpegServer;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
@@ -26,8 +27,10 @@ public static int tick = 0;
 	static final int BAUD_RATE = 115200;
 	
 	public Vision(){
-		camera1 = CameraServer.getInstance().startAutomaticCapture(0); //trying to start it on second usb port
-		camera1.setResolution(320, 240);
+//		AxisCamera c;
+//		camera1 = CameraServer.getInstance().startAutomaticCapture(0); //trying to start it on second usb port
+//		camera1.setResolution(320, 240);
+//		camera1.setResolution(160, 120);
 //		camera2 = CameraServer.getInstance().startAutomaticCapture(1); //trying to start it on second usb port
 //		camera2.setResolution(320, 240);
 

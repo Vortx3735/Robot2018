@@ -87,7 +87,8 @@ public class Autonomous {
 					firstCommand = new LeftScaleLeft(complex); break big;
 				case "lr":
 				case "rr":
-					firstCommand = new LeftScaleRight(complex); break big;
+//					firstCommand = new LeftScaleRight(complex); break big;
+					firstCommand = new UnknownStraight(); break big;
 				}
 			case SCALEIFEASY:
 				switch(s) {
@@ -130,7 +131,8 @@ public class Autonomous {
 				switch(s) {
 				case "ll":
 				case "lr":
-					firstCommand = new MidSwitchLeft(complex); break big;
+					firstCommand = new MidSwitchLeft(complex);break big;
+//					secondCommand = new SecondSwitchCube(false); break big;
 				case "rl":
 				case "rr":
 					firstCommand = new MidSwitchRight(complex); break big;
@@ -152,7 +154,8 @@ public class Autonomous {
 					firstCommand = new RightScaleRight(complex); break big;
 				case "ll":
 				case "rl":
-					firstCommand = new RightScaleLeft(complex); break big;
+//					firstCommand = new RightScaleLeft(complex); break big;
+					firstCommand = new UnknownStraight(); break big;
 				}
 			case SCALEIFEASY:
 				switch(s) {

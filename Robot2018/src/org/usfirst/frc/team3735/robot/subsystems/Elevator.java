@@ -7,6 +7,8 @@ import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorMoveJoystick;
 import org.usfirst.frc.team3735.robot.settings.Constants;
 import org.usfirst.frc.team3735.robot.settings.RobotMap;
 import org.usfirst.frc.team3735.robot.util.PIDCtrl;
+import org.usfirst.frc.team3735.robot.util.calc.DDxLimiter;
+import org.usfirst.frc.team3735.robot.util.calc.Range;
 import org.usfirst.frc.team3735.robot.util.hardware.VortxTalon;
 import org.usfirst.frc.team3735.robot.util.settings.PIDSetting;
 import org.usfirst.frc.team3735.robot.util.settings.Setting;
@@ -43,19 +45,24 @@ public class Elevator extends Subsystem implements PIDSource, PIDOutput {
 	public static double transferHeight = 4.1;
 
 	public PIDCtrl controller;
+	private DDxLimiter limiter;
 	// private Setting carriageSpeed;
 
 	public Setting consPower = new Setting("Elevator ConsPower", .16);	//.183 on the final
 
 
 	public Elevator() {
+		limiter = new DDxLimiter(0, new Range(new Setting("Elevator DDx Limit", 4)));
+
 		elevatorLeft = new VortxTalon(RobotMap.Elevator.elevatorLeft, "Elevator Left");
 		elevatorRight = new VortxTalon(RobotMap.Elevator.elevatorRight, "Elevator Right");
 		
-		controller = new PIDCtrl(.01,0,0,this,this,3);
+		controller = new PIDCtrl(.15,.01,0,this,this,2);
 		controller.setAbsoluteTolerance(.1);
-		controller.setOutputRange(-.7, .7);
+		controller.setOutputRange(-.7, 1);
 		controller.sendToDash("Elevator PID");
+		controller.disable();
+		
 //		elevatorLeft.setPIDSetting(new PIDSetting(90, .15, 145,0,.8,6));
 //		elevatorRight.setPIDSetting(new PIDSetting(90, .15, 80,0,1));
 		
@@ -87,6 +94,7 @@ public class Elevator extends Subsystem implements PIDSource, PIDOutput {
 
 	public void setPOutput(double speed) {
 		setLeftPOutput(speed);
+//		System.out.println(speed);
 //		setRightPOutput(speed);
 	}
 	
@@ -100,6 +108,7 @@ public class Elevator extends Subsystem implements PIDSource, PIDOutput {
 			setPOutput(speed + consPower.getValue());
 //			actual = speed + consPower.getValue();
 		}
+//		System.out.println(speed);
 //		System.out.println("Sending: " + actual );
 
 		
@@ -163,7 +172,7 @@ public class Elevator extends Subsystem implements PIDSource, PIDOutput {
 
 	public void log() {
 		elevatorLeft.log();
-//		elevatorRight.log();
+		elevatorRight.log();
 		
 		SmartDashboard.putNumber("Elevator Position", getPosition());
 	}
@@ -195,6 +204,10 @@ public class Elevator extends Subsystem implements PIDSource, PIDOutput {
 
 	@Override
 	public void pidWrite(double output) {
-		setPOutputAdjusted(output);
+		setPOutputAdjusted(limiter.feed(output));
+	}
+	
+	public void resetDDx() {
+		limiter.reset(0);
 	}
 }

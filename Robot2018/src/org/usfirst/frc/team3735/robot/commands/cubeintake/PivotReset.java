@@ -10,23 +10,23 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
 /**
  *
  */
-public class ResetPivot extends VortxCommand {
+public class PivotReset extends VortxCommand {
 
-    public ResetPivot() {
-        requires(Robot.angler);
+    public PivotReset() {
+        requires(Robot.pivot);
     }
 
 
 	@Override
 	protected void initialize() {
 		super.initialize();
-		Robot.angler.controller.disable();
+		Robot.pivot.controller.disable();
 	}
 
 
 	@Override
 	protected void execute() {
-		Robot.angler.setPOutput(-.4);
+		Robot.pivot.setPOutput(-.5);
 	}
 
 	@Override
@@ -36,7 +36,7 @@ public class ResetPivot extends VortxCommand {
 	
 	@Override
 	protected void end() {
-		Robot.angler.setVal(0);
+		Robot.pivot.setVal(0);
 	}
 
 

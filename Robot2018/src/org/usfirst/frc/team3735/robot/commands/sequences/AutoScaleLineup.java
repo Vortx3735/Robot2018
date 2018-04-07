@@ -7,7 +7,7 @@ import org.usfirst.frc.team3735.robot.commands.carriage.CarriageLower;
 import org.usfirst.frc.team3735.robot.commands.carriage.CarriageRaise;
 import org.usfirst.frc.team3735.robot.commands.carriage.CarriageRaiseTele;
 import org.usfirst.frc.team3735.robot.commands.carriage.CarriageSetRoller;
-import org.usfirst.frc.team3735.robot.commands.cubeintake.CubeAnglerSetPID;
+import org.usfirst.frc.team3735.robot.commands.cubeintake.PivotSetPID;
 import org.usfirst.frc.team3735.robot.commands.drive.TurnTo;
 import org.usfirst.frc.team3735.robot.commands.drive.movedistance.DriveExp;
 import org.usfirst.frc.team3735.robot.commands.drive.movedistance.DriveRaw;
@@ -38,7 +38,7 @@ public class AutoScaleLineup extends CommandGroup {
     	
     	
     	//Turn to target, go, and elevator up
-    	addSequential(new CubeAnglerSetPID(0, true), 1);
+    	addSequential(new PivotSetPID(0, true), 1);
     	addSequential(new TurnTo(target, true),1);
     	addSequential(
 			VortxCommand.asParallel(

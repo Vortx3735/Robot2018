@@ -20,29 +20,34 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  *
  */
-public class CubeAngler extends Subsystem implements PIDSource, PIDOutput{
+public class Pivot extends Subsystem implements PIDSource, PIDOutput{
 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 	
-	VortxTalon angler;
+	VortxTalon pivot;
 	public PIDCtrl controller;
+	private static double startingVal = 183;
 	
 	private Setting cons = new Setting("Angler Cons Power", .12);
 	
 	AnalogPotentiometer p;
 	double offset = 0;
 		
-	public CubeAngler() {
-		angler = new VortxTalon(RobotMap.CubeIntake.anglerMotor, "Angler");
-		angler.setNeutralMode(NeutralMode.Brake);
+	public Pivot() {
+		pivot = new VortxTalon(RobotMap.CubeIntake.anglerMotor, "Angler");
+		pivot.setNeutralMode(NeutralMode.Brake);
 		
 		p = new AnalogPotentiometer(1,-360 * 10);
-		controller = new PIDCtrl(.01,.001,0,0,this,this, 5);
-		controller.setAbsoluteTolerance(3);
+		controller = new PIDCtrl(.015,.001,0.01,0,this,this, 5);
+		controller.setAbsoluteTolerance(2);
 		SmartDashboard.putData("Cube Angler PID", controller);
-		setVal(183);
+		resetInside();
 		
+	}
+	
+	public void resetInside() {
+		setVal(startingVal);
 	}
 
 	public void setVal(double val) {
@@ -65,7 +70,7 @@ public class CubeAngler extends Subsystem implements PIDSource, PIDOutput{
 		if(getPosition() < 90) {
 			anglerMove += Math.cos(Math.toRadians(getPosition())) * cons.getValue();
 		}
-		angler.set(anglerMove);
+		pivot.set(anglerMove);
 		
 	}
 

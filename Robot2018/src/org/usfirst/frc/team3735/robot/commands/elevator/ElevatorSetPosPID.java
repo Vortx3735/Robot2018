@@ -26,6 +26,7 @@ public class ElevatorSetPosPID extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	Robot.elevator.resetDDx();
     	Robot.elevator.controller.setSetpoint(inches.getValue());
     	Robot.elevator.controller.enable();
     }
@@ -45,6 +46,7 @@ public class ElevatorSetPosPID extends Command {
     // Called once after isFinished returns true
     protected void end() {
     	Robot.elevator.setPOutput(0);
+    	Robot.elevator.controller.disable();
     }
 
     // Called when another command which requires one or more of the same

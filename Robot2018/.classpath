@@ -7,7 +7,7 @@
 	<classpathentry kind="lib" path="wpilib/user/java/lib/CTRE_Phoenix.jar"/>
 	<classpathentry kind="lib" path="wpilib/user/java/lib/navx_frc.jar"/>
 	<classpathentry kind="lib" path="wpilib/java/current/lib/cscore-sources.jar"/>
-	<classpathentry kind="lib" path="wpilib/java/current/lib/cscore.jar"/>
+	<classpathentry kind="lib" path="wpilib/java/current/lib/cscore.jar" sourcepath="wpilib/java/current/lib/cscore-sources.jar"/>
 	<classpathentry kind="lib" path="wpilib/java/current/lib/ntcore-sources.jar"/>
 	<classpathentry kind="lib" path="wpilib/java/current/lib/ntcore.jar"/>
 	<classpathentry kind="lib" path="wpilib/java/current/lib/opencv-sources.jar"/>
