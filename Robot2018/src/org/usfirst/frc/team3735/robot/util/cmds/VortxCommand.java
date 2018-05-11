@@ -83,7 +83,7 @@ public class VortxCommand extends Command{
 		return this;
 	}
 	
-	public static CommandGroup asSequence(Command...commands ) {
+	public static CommandGroup asSequence(Command...commands) {
 		CommandGroup group = new CommandGroup();
 		for(Command c : commands) {
 			group.addSequential(c);

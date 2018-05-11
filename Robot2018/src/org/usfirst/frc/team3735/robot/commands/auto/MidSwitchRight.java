@@ -37,7 +37,7 @@ public class MidSwitchRight extends CommandGroup {
     	}else {
     		addParallel(new DelayedIntakeOut(.7));
 
-//        	addSequential(new DriveExp(-.5, 0).addT(new HasPassedWaypoint(Waypoints.Pieces.switchLineupRight)).addA(new NavxAssist(Waypoints.Pieces.switchLineupRight, true)));
+        	addSequential(new DriveExp(-.5, 0).addT(new HasPassedWaypoint(Waypoints.Pieces.switchLineupRight)).addA(new NavxAssist(Waypoints.Pieces.switchLineupRight, true)));
     		addSequential(new AutoSwitchLineup(true));
 
     	}

@@ -1,5 +1,7 @@
 package org.usfirst.frc.team3735.robot.commands.auto;
 
+import org.usfirst.frc.team3735.robot.commands.drive.ExpDrive;
+import org.usfirst.frc.team3735.robot.commands.drive.movedistance.DriveExp;
 import org.usfirst.frc.team3735.robot.commands.drive.recorder.SendProfile;
 import org.usfirst.frc.team3735.robot.commands.sequences.AutoSwitchLineup;
 import org.usfirst.frc.team3735.robot.settings.Waypoints;
@@ -21,7 +23,9 @@ public class LeftSwitchLeft extends CommandGroup {
 //    		addSequential(new SendProfile(Waypoints.Auto.leftSwitchLeft5));	//initial cross to scale
 
     	}else {
-    		
+//    		addSequential(new DriveExp(-.8, -.4),.8);
+    		addSequential(new AutoSwitchLineup(false));
+
     	}
     }
 }

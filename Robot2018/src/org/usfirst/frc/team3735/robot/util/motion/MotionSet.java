@@ -74,24 +74,26 @@ public class MotionSet implements Iterable<MotionData> {
 					d.getRightV()));
 		}
 		
-
-
-		
 		return arr;
 	}
 	
-//	public ArrayList<DriveState> listRaw(){
-//		ArrayList<DriveState> arr = new ArrayList<>();
-//		for (CSVRecord d : _leftParser)
-//		{
-//			
-//			arr.add(new DriveState(
-//					new Position(d.getCenterX(), d.getCenterY(), d.getHeading()), 
-//					d.getLeftV(), 
-//					d.getRightV()));
-//		}
-//
-//	}
+	public ArrayList<DriveState> listRaw(){
+		ArrayList<DriveState> arr = new ArrayList<>();
+		for (CSVRecord record : _leftParser){
+			double _centerX = (Double.valueOf(record.get(MotionProfile.ColumnsFromFileRaw.x)));
+
+			double _centerY = (Double.valueOf(record.get(MotionProfile.ColumnsFromFileRaw.y)));
+
+			double _heading = Double.valueOf(record.get(MotionProfile.ColumnsFromFileRaw.heading));
+
+			double _leftV = Double.valueOf(record.get(MotionProfile.ColumnsFromFileRaw.left));
+			
+			double _rightV = Double.valueOf(record.get(MotionProfile.ColumnsFromFileRaw.right));
+			arr.add(new DriveState(new Position(_centerX, _centerY, _heading), _leftV, _rightV));
+		}
+		return arr;
+
+	}
 
 	
 	public ArrayList<DriveState> reverseList(){

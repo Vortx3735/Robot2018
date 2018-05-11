@@ -9,6 +9,8 @@ import org.usfirst.frc.team3735.robot.commands.sequences.AutoSwitchLineup;
 import org.usfirst.frc.team3735.robot.commands.sequences.DelayedIntakeOut;
 import org.usfirst.frc.team3735.robot.settings.Waypoints;
 import org.usfirst.frc.team3735.robot.triggers.HasPassedWaypoint;
+import org.usfirst.frc.team3735.robot.triggers.LocationProximity;
+import org.usfirst.frc.team3735.robot.util.profiling.Location;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -29,9 +31,9 @@ public class MidSwitchLeft extends CommandGroup {
 //    		addSequential(new SendProfile(Waypoints.Auto.midSwitchLeft5));	//backup from cube, go to scale
     		
     	}else {
-    		addParallel(new DelayedIntakeOut(.7));
-//        	addSequential(new DriveExp(-.5, 0).addT(new HasPassedWaypoint(Waypoints.Pieces.switchLineupLeft)).addA(new NavxAssist(Waypoints.Pieces.switchLineupLeft, true)));
-
+//    		addParallel(new DelayedIntakeOut(.7));
+    		Location loc = Waypoints.Pieces.switchLineupLeft;
+//        	addSequential(new DriveExp(-.5, 0).addT(new LocationProximity(loc, 30)).addA(new NavxAssist(loc, true)));
     		addSequential(new AutoSwitchLineup(false));
 
     	}

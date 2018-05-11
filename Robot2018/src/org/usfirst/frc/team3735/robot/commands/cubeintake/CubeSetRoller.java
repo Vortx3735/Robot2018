@@ -42,6 +42,11 @@ public class CubeSetRoller extends VortxCommand {
 	public CubeSetRoller(double left, double right) {
 		this(Func.getFunc(left), Func.getFunc(right));
 	}
+	
+	public CubeSetRoller(double left, double right, double time) {
+		this(Func.getFunc(left), Func.getFunc(right));
+		this.setTimeout(time);
+	}
 
 
     // Called just before this Command runs the first time
@@ -51,6 +56,7 @@ public class CubeSetRoller extends VortxCommand {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	super.execute();
 		Robot.cubeIntake.setLeftMotorCurrent(left.getValue());
 		Robot.cubeIntake.setRightMotorCurrent(right.getValue());
    
@@ -58,7 +64,7 @@ public class CubeSetRoller extends VortxCommand {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return super.isFinished();
+        return super.isFinished() || this.isTimedOut();
     }
 
     // Called once after isFinished returns true

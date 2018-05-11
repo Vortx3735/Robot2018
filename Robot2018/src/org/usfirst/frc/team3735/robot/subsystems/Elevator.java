@@ -2,6 +2,7 @@ package org.usfirst.frc.team3735.robot.subsystems;
 
 import java.nio.charset.Charset;
 
+import org.usfirst.frc.team3735.robot.Robot;
 import org.usfirst.frc.team3735.robot.commands.elevator.BlankPID;
 import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorMoveJoystick;
 import org.usfirst.frc.team3735.robot.settings.Constants;
@@ -58,7 +59,7 @@ public class Elevator extends Subsystem implements PIDSource, PIDOutput {
 		elevatorRight = new VortxTalon(RobotMap.Elevator.elevatorRight, "Elevator Right");
 		
 		controller = new PIDCtrl(.15,.01,0,this,this,2);
-		controller.setAbsoluteTolerance(.1);
+		controller.setAbsoluteTolerance(.5);
 		controller.setOutputRange(-.7, 1);
 		controller.sendToDash("Elevator PID");
 		controller.disable();
@@ -94,6 +95,7 @@ public class Elevator extends Subsystem implements PIDSource, PIDOutput {
 
 	public void setPOutput(double speed) {
 		setLeftPOutput(speed);
+		
 //		System.out.println(speed);
 //		setRightPOutput(speed);
 	}
@@ -103,11 +105,16 @@ public class Elevator extends Subsystem implements PIDSource, PIDOutput {
 //		double actual = speed;
 		if((getPosition() < .5 ) && (speed == 0)) {
 //			actual = 0;
-			setPOutput(0);
+			speed = 0;
 		}else {
-			setPOutput(speed + consPower.getValue());
+			speed+= consPower.getValue();
 //			actual = speed + consPower.getValue();
 		}
+		
+		if(Robot.pivot.getPosition() > 100 && this.getPosition() < 15 && speed < consPower.getValue()) {
+			speed = 0;
+		}
+		setPOutput(speed);
 //		System.out.println(speed);
 //		System.out.println("Sending: " + actual );
 

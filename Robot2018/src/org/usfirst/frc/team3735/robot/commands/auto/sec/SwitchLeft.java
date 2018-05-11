@@ -8,6 +8,7 @@ import org.usfirst.frc.team3735.robot.commands.drive.recorder.SendProfile;
 import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorSetPosRaw;
 import org.usfirst.frc.team3735.robot.commands.sequences.AutoScaleLineup;
 import org.usfirst.frc.team3735.robot.commands.sequences.AutoSwitchLineup;
+import org.usfirst.frc.team3735.robot.commands.sequences.CubeTransfer;
 import org.usfirst.frc.team3735.robot.commands.sequences.GrabWallCube;
 import org.usfirst.frc.team3735.robot.commands.sequences.SecondCubeSwitchGrab;
 import org.usfirst.frc.team3735.robot.settings.Waypoints;
@@ -22,8 +23,7 @@ public class SwitchLeft extends CommandGroup {
     public SwitchLeft(boolean complex) {
     	
     	addSequential(new SecondCubeSwitchGrab());
-    	addSequential(new TurnTo(Waypoints.Pieces.switchLeft), 1);
-    	
+    	addSequential(new TurnTo(Waypoints.Pieces.switchLeft, true), 1);
     	addSequential(new AutoSwitchLineup(false));
     }
 }

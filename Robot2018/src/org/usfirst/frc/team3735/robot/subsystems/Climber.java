@@ -5,6 +5,7 @@ import org.usfirst.frc.team3735.robot.settings.RobotMap;
 import org.usfirst.frc.team3735.robot.util.hardware.VortxTalon;
 import org.usfirst.frc.team3735.robot.util.settings.Setting;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -27,6 +28,7 @@ public class Climber extends Subsystem {
 	
 	public Climber(){
 		motor1 = new VortxTalon(RobotMap.Climber.motor);
+		motor1.setNeutralMode(NeutralMode.Coast);
 				
 	}
 	

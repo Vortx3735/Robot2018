@@ -25,7 +25,8 @@ public class Autonomous {
 	
 	private Command firstCommand = new DoNothing();
 	private Command secondCommand = new DoNothing();
-
+	
+	private Command mainCommand = new DoNothing();
 	public Autonomous() {
 		
 
@@ -52,7 +53,17 @@ public class Autonomous {
 	}
 	
 	public void startCommand() {
-		firstCommand.start();
+//		firstCommand.start();
+		if(firstCommand != null && secondCommand != null) {
+			//PUT SECOND COMMANAD HERE WHEN READY
+//			mainCommand = VortxCommand.asSequence(firstCommand, new DoNothing());
+			mainCommand = VortxCommand.asSequence(firstCommand, secondCommand);
+
+
+			mainCommand.start();
+					
+
+		}
 	}
 	
 	public void chooseAutonomous() {
@@ -131,11 +142,13 @@ public class Autonomous {
 				switch(s) {
 				case "ll":
 				case "lr":
-					firstCommand = new MidSwitchLeft(complex);break big;
-//					secondCommand = new SecondSwitchCube(false); break big;
+					firstCommand = new MidSwitchLeft(complex);//break big;
+					secondCommand = new SwitchLeft(complex); break big;
 				case "rl":
 				case "rr":
-					firstCommand = new MidSwitchRight(complex); break big;
+					firstCommand = new MidSwitchRight(complex); //break big;
+					secondCommand = new SwitchRight(complex); break big;
+
 				}
 				break;
 				
@@ -188,22 +201,12 @@ public class Autonomous {
 		System.out.println("Auto Logic Selected: " + firstCommand.getName() + " and " + secondCommand.getName());
 	}
 	
-	public void start() {
-		if(firstCommand != null && secondCommand != null) {
-			//PUT SECOND COMMANAD HERE WHEN READY
-			VortxCommand.asSequence(firstCommand, new DoNothing()).start();
-//			VortxCommand.asSequence(firstCommand, secondCommand).start();
-
-		}
-	}
 	
 	public void cancel() {
-		if(firstCommand != null) {
-			firstCommand.cancel();
+		if(mainCommand != null) {
+			mainCommand.cancel();
 		}
-		if(secondCommand != null) {
-			secondCommand.cancel();
-		}
+	
 		
 	}
 	

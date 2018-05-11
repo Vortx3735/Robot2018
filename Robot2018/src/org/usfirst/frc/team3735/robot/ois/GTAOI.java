@@ -55,14 +55,16 @@ public class GTAOI implements DriveOI{
 		/*************************************************
 		 * Main-Driver
 		 *************************************************/
-//		main.a.whileHeld(new CubeGrab());
-		main.a.whileHeld(new CarriageSetRoller(new Setting("Carriage Outtake Speed", .5)));
 		Setting cubeintake = new Setting("Cube Intake Speed", -.7);
+
+		main.a.whileHeld(new CarriageSetRoller(new Setting("Carriage Outtake Speed", .5)));
 		main.a.whileHeld(new CubeSetRoller(cubeintake.multiply(new Setting("Cube Intake Slow Mult", .6)),cubeintake));
-		main.b.whileHeld(new CarriageSetRoller(new Setting("Carriage Intake Speed", -.5))
+		main.a.whenPressed(new PivotSetPID(0, false));
+		main.a.whenReleased(new PivotSetPID(75, false));
+		main.x.whileHeld(new CarriageSetRoller(new Setting("Carriage Intake Speed", -.5))
 				.addT(new CarriageOverload(new Setting("Carriage Intake MaxPower", 30))));
-		main.x.whileHeld(new CubeSetRoller(new Setting("Cube Outtake Speed", 1)));
-		main.b.whileHeld(new CubeSetRoller(new Setting("Cube Transfer Speed", .7)));
+		main.x.whileHeld(new CubeSetRoller(new Setting("Cube Transfer Speed", .7)));
+		main.b.whileHeld(new CubeSetRoller(new Setting("Cube Outtake Speed", 1)));
 
 //		main.y
 		
@@ -126,16 +128,16 @@ public class GTAOI implements DriveOI{
 //		SmartDashboard.putData("Reset Yaw", new ZeroYaw());
 		SmartDashboard.putData(new MoveDDx(100, .6, .03).addA(new NavxAssist()));
 		
-		SendProfile s = new SendProfile();
-		StringSetting loadFile= new StringSetting("Loading File", "defaultfile");
-		SmartDashboard.putData("Load File", new InstantCommand() {
-			@Override
-			protected void initialize() {
-				SendProfile.loadCommand(loadFile.getValue());
-			}
-			
-		});
-		SmartDashboard.putData(s);
+//		SendProfile s = new SendProfile();
+//		StringSetting loadFile= new StringSetting("Loading File", "defaultfile");
+//		SmartDashboard.putData("Load File", new InstantCommand() {
+//			@Override
+//			protected void initialize() {
+//				SendProfile.loadCommand(loadFile.getValue());
+//			}
+//			
+//		});
+////		SmartDashboard.putData(s);
 		SmartDashboard.putData(new RecordProfile());
 		SmartDashboard.putData(new SetToLastPosition());
 		

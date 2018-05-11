@@ -1,6 +1,7 @@
 package org.usfirst.frc.team3735.robot.commands.drive.recorder;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.HashMap;
@@ -10,6 +11,9 @@ import org.usfirst.frc.team3735.robot.Robot;
 import org.usfirst.frc.team3735.robot.util.calc.Average;
 import org.usfirst.frc.team3735.robot.util.calc.RollingAverage;
 import org.usfirst.frc.team3735.robot.util.calc.VortxMath;
+import org.usfirst.frc.team3735.robot.util.motion.MotionProfile;
+import org.usfirst.frc.team3735.robot.util.motion.MotionSet;
+import org.usfirst.frc.team3735.robot.util.motion.exceptions.MissingColumnException;
 import org.usfirst.frc.team3735.robot.util.profiling.Line;
 import org.usfirst.frc.team3735.robot.util.profiling.Ray;
 import org.usfirst.frc.team3735.robot.util.recording.DriveState;
@@ -49,6 +53,7 @@ public class SendProfile extends Command {
 	private static Setting halfWay = new Setting("Half Way Co", 25);
 
 	Average roll;
+	private boolean error = false;
 	
     public SendProfile(String file) {
         // Use requires() here to declare subsystem dependencies
@@ -60,6 +65,25 @@ public class SendProfile extends Command {
 //    	}else {
 //    		needsLoading = true;
 //    	}
+    	MotionSet prof;
+    	try{
+    		prof = MotionProfile.builder().withProfileName(file).withProfilesFromRoborio().makeRaw();
+    	}catch(IOException e) {
+    		System.out.println("File Not found on Jar... looking in Roborio: " + file);
+//    		e.printStackTrace();
+    		try {
+    			prof = MotionProfile.builder().withProfileName(file).withProfilesFromRoborio().makeRaw();
+    		}catch(IOException ex) {
+        		System.out.println(file + "File Not found on Roborio... I give up");
+    		} catch (MissingColumnException e1) {
+    			System.out.println("Missing Colum in Profile: " + file);
+        		e.printStackTrace();
+        		error = true;
+			}
+    	} catch (MissingColumnException e) {
+    		System.out.println("Missing Colum in Profile: " + file);
+    		e.printStackTrace();
+		}
     	
     	requires(Robot.drive);
     	requires(Robot.navigation);
@@ -74,9 +98,9 @@ public class SendProfile extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	if(needsLoading) {
-    		loadFile(fileName.getValue());
-    	}
+//    	if(needsLoading) {
+//    		loadFile(fileName.getValue());
+//    	}
     	
     	index = 0;
     	
@@ -91,34 +115,34 @@ public class SendProfile extends Command {
     }
     
 
-    public void loadFile() {
-    	loadFile(file);
-    }
-    
-    public void loadFile(String name) {
-    	
-    	Thread n = new Thread() {
-    		@Override
-    		public void run() {
-    	    	array = new ArrayList<>();
-    			filePath = "/home/lvuser/"  + name + ".txt";
-    			//filePath = "C:\\Users\\Andrew\\Desktop\\"  + name + ".txt";
-
-    			try{
-    				sc = new Scanner(new File(filePath));
-    			}catch(Exception e){
-//    				e.printStackTrace();
-    				System.out.println("Could not find file: " + filePath);
-    				return;
-    			}
-    	    	while(sc.hasNextLine()) {
-    	    		array.add(DriveState.fromString(sc.nextLine()));
-    	    	}
-    		}
-    	};
-    	n.start();
-
-    }
+//    public void loadFile() {
+//    	loadFile(file);
+//    }
+//    
+//    public void loadFile(String name) {
+//    	
+//    	Thread n = new Thread() {
+//    		@Override
+//    		public void run() {
+//    	    	array = new ArrayList<>();
+//    			filePath = "/home/lvuser/"  + name + ".txt";
+//    			//filePath = "C:\\Users\\Andrew\\Desktop\\"  + name + ".txt";
+//
+//    			try{
+//    				sc = new Scanner(new File(filePath));
+//    			}catch(Exception e){
+////    				e.printStackTrace();
+//    				System.out.println("Could not find file: " + filePath);
+//    				return;
+//    			}
+//    	    	while(sc.hasNextLine()) {
+//    	    		array.add(DriveState.fromString(sc.nextLine()));
+//    	    	}
+//    		}
+//    	};
+//    	n.start();
+//
+//    }
 
 
     
@@ -205,10 +229,10 @@ public class SendProfile extends Command {
     }
     
     public static void loadCommand(String fileName) {
-    	SendProfile c = comms.get(fileName);
-    	if(c != null) {
-    		c.loadFile();
-    	}
-    	
+//    	SendProfile c = comms.get(fileName);
+//    	if(c != null) {
+//    		c.loadFile();
+//    	}
+//    	
     }
 }

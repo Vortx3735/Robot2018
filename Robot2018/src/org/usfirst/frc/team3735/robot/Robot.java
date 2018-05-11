@@ -81,11 +81,12 @@ public class Robot extends VortxIterative {
 		drive = new Drive();
 		navigation = new Navigation();
 		vision = new Vision();
+		pivot = new Pivot();
+
 		cubeIntake = new CubeIntake();
 		elevator = new Elevator();
 		climber = new Climber();
 		carriage = new Carriage();
-		pivot = new Pivot();
 
 		oi = new GTAOI(); //MUST be instantiated after the subsystems
 			
@@ -158,6 +159,7 @@ public class Robot extends VortxIterative {
 		
 		autoLogic.chooseAutonomous();
 		autoLogic.printAuto();
+//		autoLogic.startCommand();
 		autoLogic.startCommand();
 //		autoChooser.startSelected();
 		leds.SendDataAutonomous();
@@ -223,8 +225,10 @@ public class Robot extends VortxIterative {
 //		drive.log();
 //		navigation.log();
 //		vision.log();
-//		elevator.log();
+		elevator.log();
+		elevator.debugLog();
 //		carriage.log();
+		carriage.debugLog();
 //		pivot.log();
 		
 	}
@@ -232,7 +236,7 @@ public class Robot extends VortxIterative {
 	public void debugLog(){
 //		drive.debugLog();
 //		navigation.debugLog();
-//		elevator.debugLog();
+		elevator.debugLog();
 //		vision.debugLog();
 		
 	}

@@ -75,11 +75,11 @@ public class MotionProfile implements ProfileName, ProfileSource {
 		return new MotionSet (leftParser, rightParser);
 	}
 	
-//	public final MotionSet makeRaw() throws IOException, MissingColumnException{
-//		CSVParser parser = CSVParser.parse(getStream(_profName), Charset.forName("ASCII"), _theFormat);
-//		return new MotionSet(parser)
-//		
-//	}
+	public final MotionSet makeRaw() throws IOException, MissingColumnException{
+		CSVParser parser = CSVParser.parse(getStream(_profName), Charset.forName("ASCII"), _theFormat);
+		return new MotionSet(parser);
+		
+	}
 
 	
 	private String getProfileName (Side trackSide)
@@ -148,6 +148,15 @@ public class MotionProfile implements ProfileName, ProfileSource {
 		_fromJar = false;
 		return this;
 	}
+	
+	@Override
+	public MotionProfile withProfilesFromRoborio() {
+		_rootPath = "/home/lvuser/";
+		_fromJar = false;
+		return this;
+	}
+	
+	
 
 
 	private String _profName;

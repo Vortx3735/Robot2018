@@ -2,6 +2,8 @@ package org.usfirst.frc.team3735.robot.commands.sequences;
 
 import org.usfirst.frc.team3735.robot.Robot;
 import org.usfirst.frc.team3735.robot.assists.NavxAssist;
+import org.usfirst.frc.team3735.robot.commands.EndAll;
+import org.usfirst.frc.team3735.robot.commands.Wait;
 import org.usfirst.frc.team3735.robot.commands.carriage.CarriageLower;
 import org.usfirst.frc.team3735.robot.commands.carriage.CarriageRaiseTele;
 import org.usfirst.frc.team3735.robot.commands.carriage.CarriageSetRoller;
@@ -43,15 +45,16 @@ public class AutoSwitchLineup extends CommandGroup {
     	
 		addParallel(new ElevatorSetPosPID(Elevator.switchHeight, false));
 
-    	addSequential(new CarriageLower());
-    	addSequential(new DriveExp(-.7, 0).addA(new NavxAssist(target, true)).addT(new Bumped(1.8)),2.5);
+//    	addSequential(new CarriageLower());
+    	addSequential(new DriveExp(-.6, 0).addA(new NavxAssist(target, true)).addT(new Bumped(2)),2.5);
     	
     	double hugtime = 1;
     	
     	addParallel(new DriveRaw(-.3,0),hugtime);
- 
+    	addSequential(new Wait(.9));
     	addSequential(new CarriageSetRoller(-.6), hugtime);
-    	addSequential(new DriveRaw(.4, 0), .4);
+    	addSequential(new EndAll(),.2);
+//    	addSequential(new DriveRaw(.4, 0), .4);
     	
     }
     

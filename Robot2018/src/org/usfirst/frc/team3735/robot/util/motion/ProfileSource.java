@@ -18,6 +18,8 @@ public interface ProfileSource {
 	 * Uses the current jar to find the profiles in the /resources folder
 	 */
 	MotionProfile withProfilesFromJar ();
+	
+	MotionProfile withProfilesFromRoborio();
 
 
 }
