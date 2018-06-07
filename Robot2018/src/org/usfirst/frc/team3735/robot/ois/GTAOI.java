@@ -1,8 +1,6 @@
 package org.usfirst.frc.team3735.robot.ois;
 
 import org.usfirst.frc.team3735.robot.assists.NavxAssist;
-import org.usfirst.frc.team3735.robot.commands.RecordDriveData;
-import org.usfirst.frc.team3735.robot.commands.RecordTuringData;
 import org.usfirst.frc.team3735.robot.commands.carriage.CarriageRaiseTele;
 import org.usfirst.frc.team3735.robot.commands.carriage.CarriageSetRoller;
 
@@ -149,8 +147,6 @@ public class GTAOI implements DriveOI{
 		SmartDashboard.putData("Auto Left Scale Lineup", new AutoScaleLineup(false));
 		SmartDashboard.putData("Auto Right Switch Lineup", new AutoSwitchLineup(true));
 		SmartDashboard.putData("Auto Left Switch Lineup", new AutoSwitchLineup(false));
-		SmartDashboard.putData(new RecordTuringData());
-		SmartDashboard.putData(new RecordDriveData());
 //		SmartDashboard.putData(new PivotReset());
 		SmartDashboard.putData(new PivotSetPID(new Setting("Cube Angler SetPos", 0), false));
 		SmartDashboard.putData(new DriveSetPID());	

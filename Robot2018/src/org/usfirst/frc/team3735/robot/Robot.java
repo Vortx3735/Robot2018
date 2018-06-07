@@ -229,7 +229,7 @@ public class Robot extends VortxIterative {
 		elevator.debugLog();
 //		carriage.log();
 		carriage.debugLog();
-//		pivot.log();
+		pivot.log();
 		
 	}
 	

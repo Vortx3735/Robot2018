@@ -1,7 +1,6 @@
 package org.usfirst.frc.team3735.robot;
 
 import org.usfirst.frc.team3735.robot.commands.auto.*;
-import org.usfirst.frc.team3735.robot.commands.auto.cows.*;
 import org.usfirst.frc.team3735.robot.commands.auto.sec.*;
 import org.usfirst.frc.team3735.robot.commands.sequences.GrabWallCube;
 import org.usfirst.frc.team3735.robot.settings.Dms;

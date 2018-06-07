@@ -3,7 +3,6 @@ package org.usfirst.frc.team3735.robot.commands.auto;
 import org.usfirst.frc.team3735.robot.assists.NavxAssist;
 import org.usfirst.frc.team3735.robot.commands.carriage.CarriageSetRoller;
 import org.usfirst.frc.team3735.robot.commands.drive.movedistance.DriveExp;
-import org.usfirst.frc.team3735.robot.commands.drive.positions.HitWaypoint;
 import org.usfirst.frc.team3735.robot.commands.drive.recorder.SendPreProfile;
 import org.usfirst.frc.team3735.robot.commands.drive.recorder.SendProfile;
 import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorSetPosRaw;

@@ -1,6 +1,6 @@
 package org.usfirst.frc.team3735.robot.subsystems;
 
-import org.usfirst.frc.team3735.robot.commands.CubeIntakeJoystickMove;
+import org.usfirst.frc.team3735.robot.commands.cubeintake.CubeIntakeJoystickMove;
 import org.usfirst.frc.team3735.robot.settings.RobotMap;
 import org.usfirst.frc.team3735.robot.util.PIDCtrl;
 import org.usfirst.frc.team3735.robot.util.calc.VortxMath;
