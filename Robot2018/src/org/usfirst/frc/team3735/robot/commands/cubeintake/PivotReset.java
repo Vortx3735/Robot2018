@@ -36,7 +36,7 @@ public class PivotReset extends VortxCommand {
 	
 	@Override
 	protected void end() {
-		Robot.pivot.setVal(0);
+		Robot.pivot.resetEncoderPositions();
 	}
 
 

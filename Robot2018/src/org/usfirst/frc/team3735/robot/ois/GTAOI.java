@@ -8,6 +8,7 @@ import org.usfirst.frc.team3735.robot.commands.climber.ClimberSetSpeed;
 import org.usfirst.frc.team3735.robot.commands.cubeintake.PivotSetPID;
 import org.usfirst.frc.team3735.robot.commands.cubeintake.CubeSetRoller;
 import org.usfirst.frc.team3735.robot.commands.cubeintake.PivotReset;
+import org.usfirst.frc.team3735.robot.commands.cubeintake.PivotSet;
 import org.usfirst.frc.team3735.robot.commands.drive.DriveSetPID;
 import org.usfirst.frc.team3735.robot.commands.drive.TurnTo;
 import org.usfirst.frc.team3735.robot.commands.drive.movedistance.MoveDDx;
@@ -71,10 +72,14 @@ public class GTAOI implements DriveOI{
 //		main.pov90.whenPressed(new TurnTo(90));
 //		main.pov180.whenPressed(new TurnTo(180));
 //		main.pov270.whenPressed(new TurnTo(270));
+		
 		main.pov0.whenPressed(new PivotSetPID(130, false));
 		main.pov90.whenPressed(new PivotSetPID(75, false));
 		main.pov180.whenPressed(new PivotSetPID(0, false));
 		main.pov270.whenPressed(new CubeTransfer());
+//		main.pov0.whileHeld(new PivotSet(.5));
+//		main.pov180.whileHeld(new PivotSet(-.5));
+		//SmartDashboard.putNumber("Reset Cube Encoder", new PivotReset());
 
 		Setting spin = new Setting("Cube Spin Speed", .7);
 //		main.lb.whileHeld(new CubeSetSols(true, false));

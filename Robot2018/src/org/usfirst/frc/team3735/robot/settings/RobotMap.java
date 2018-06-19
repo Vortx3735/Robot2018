@@ -48,7 +48,7 @@ public class RobotMap {
 
 	public static class Drive{
 		
-		public static int[] leftTrain = 			{2,3};
+		public static int[] leftTrain = 			{2,3};//2,3
 		public static int[] rightTrain = 			{-11,-10};
 
 		
@@ -58,7 +58,7 @@ public class RobotMap {
 		public static int leftMotor = 			 	1;
 		public static int rightMotor = 				-12;
 		
-		public static int anglerMotor = 		 	-6;
+		public static int anglerMotor = 		 	-6;//-6
 		public static boolean reversedSensor = 		true;
 
 		public static int solenoid = 		1;
