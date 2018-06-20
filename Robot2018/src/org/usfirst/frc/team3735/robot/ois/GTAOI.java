@@ -74,7 +74,7 @@ public class GTAOI implements DriveOI{
 //		main.pov270.whenPressed(new TurnTo(270));
 		
 		main.pov0.whenPressed(new PivotSetPID(130, false));
-		main.pov90.whenPressed(new PivotSetPID(75, false));
+		main.pov90.whenPressed(new PivotSetPID(85, false));
 		main.pov180.whenPressed(new PivotSetPID(0, false));
 		main.pov270.whenPressed(new CubeTransfer());
 //		main.pov0.whileHeld(new PivotSet(.5));

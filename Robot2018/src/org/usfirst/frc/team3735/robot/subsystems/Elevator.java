@@ -180,7 +180,7 @@ public class Elevator extends Subsystem implements PIDSource, PIDOutput {
 	public void log() {
 		elevatorLeft.log();
 		elevatorRight.log();
-		
+		SmartDashboard.putNumber("Joysticks", Robot.oi.getElevatorMove());
 		SmartDashboard.putNumber("Elevator Position", getPosition());
 	}
 	

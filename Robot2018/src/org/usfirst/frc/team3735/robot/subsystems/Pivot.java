@@ -32,7 +32,7 @@ public class Pivot extends Subsystem implements PIDSource, PIDOutput{
 	private static double startingVal = 183;
 	
 	private Setting cons = new Setting("Angler Cons Power", .12);
-	public Setting ticksPerDegree = new Setting("Pivot Ticks Per Degree", 2.8444444);
+	public Setting ticksPerDegree = new Setting("Pivot Ticks Per Degree", 2.8444444);//- For practice
 	
 	//AnalogPotentiometer p;
 	double offset = 0;
@@ -42,7 +42,7 @@ public class Pivot extends Subsystem implements PIDSource, PIDOutput{
 		pivot.setNeutralMode(NeutralMode.Brake);
 		
 		//p = new AnalogPotentiometer(1,-360 * 10);
-		controller = new PIDCtrl(.015,.001,0.01,0,this,this, 5);
+		controller = new PIDCtrl(.017,.002,0.01,0,this,this, 5);
 		controller.setAbsoluteTolerance(2);
 		SmartDashboard.putData("Cube Angler PID", controller);
 		//resetInside();
