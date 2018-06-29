@@ -50,6 +50,11 @@ public class Pivot extends Subsystem implements PIDSource, PIDOutput{
 		pivot.setTicksPerInch(ticksPerDegree.getValue());//Will be ticksPerDegree
 		pivot.initSensor(FeedbackDevice.QuadEncoder, false);
 		resetEncoderPositions();
+		
+		pivot.configContinuousCurrentLimit(0, 0);
+		pivot.configPeakCurrentLimit(2, 0);
+		pivot.configPeakCurrentDuration(2000, 0);
+		pivot.enableCurrentLimit(true);
 	}
 	
 //	public void resetInside() {

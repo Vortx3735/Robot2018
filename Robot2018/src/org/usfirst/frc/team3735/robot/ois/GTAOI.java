@@ -1,6 +1,7 @@
 package org.usfirst.frc.team3735.robot.ois;
 
 import org.usfirst.frc.team3735.robot.assists.NavxAssist;
+import org.usfirst.frc.team3735.robot.commands.EndAll;
 import org.usfirst.frc.team3735.robot.commands.carriage.CarriageRaiseTele;
 import org.usfirst.frc.team3735.robot.commands.carriage.CarriageSetRoller;
 
@@ -74,7 +75,7 @@ public class GTAOI implements DriveOI{
 //		main.pov270.whenPressed(new TurnTo(270));
 		
 		main.pov0.whenPressed(new PivotSetPID(130, false));
-		main.pov90.whenPressed(new PivotSetPID(85, false));
+		main.pov90.whenPressed(new PivotSetPID(70, false));
 		main.pov180.whenPressed(new PivotSetPID(0, false));
 		main.pov270.whenPressed(new CubeTransfer());
 //		main.pov0.whileHeld(new PivotSet(.5));
@@ -107,7 +108,7 @@ public class GTAOI implements DriveOI{
 ////		co.pov180
 //		co.pov270.whileHeld(new ElevatorCorrect(elevatorTrim.reverse()));
 		co.pov0.whenPressed(new PivotSetPID(130, false));
-		co.pov90.whenPressed(new PivotSetPID(75, false));
+		co.pov90.whenPressed(new PivotSetPID(70, false));
 		co.pov180.whenPressed(new PivotSetPID(0, false));
 		co.pov270.whenPressed(new CubeTransfer());
 		
@@ -184,6 +185,7 @@ public class GTAOI implements DriveOI{
 	}
 
 	public double getElevatorMove() {
+		System.out.println("Elevator Move " + VortxMath.handleDeadband(main.getRightY()+ co.getLeftY(), .05));
 		return VortxMath.handleDeadband(main.getRightY()+ co.getLeftY(), .05);
 	}
 	
