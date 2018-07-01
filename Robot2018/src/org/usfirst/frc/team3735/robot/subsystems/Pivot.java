@@ -32,7 +32,7 @@ public class Pivot extends Subsystem implements PIDSource, PIDOutput{
 	private static double startingVal = 183;
 	
 	private Setting cons = new Setting("Angler Cons Power", .12);
-	public Setting ticksPerDegree = new Setting("Pivot Ticks Per Degree", 2.8444444);//- For practice
+	public Setting ticksPerDegree = new Setting("Pivot Ticks Per Degree", -2.8444444);//- For practice
 	
 	//AnalogPotentiometer p;
 	double offset = 0;

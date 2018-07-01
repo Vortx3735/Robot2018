@@ -34,6 +34,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class AutoSwitchLineup extends CommandGroup {
 
     public AutoSwitchLineup(boolean right) {
+    	System.out.println("Auto Switch Lineup called");
     	Location target = (right) ? Waypoints.Pieces.switchRight : Waypoints.Pieces.switchLeft;
     	
 //    	addSequential(new TurnTo(target, true),2);
@@ -45,8 +46,8 @@ public class AutoSwitchLineup extends CommandGroup {
     	
 		addParallel(new ElevatorSetPosPID(Elevator.switchHeight, false));
 
-//    	addSequential(new CarriageLower());
-    	addSequential(new DriveExp(-.6, 0).addA(new NavxAssist(target, true)).addT(new Bumped(2)),2.5);
+    	addSequential(new CarriageLower());
+    	addSequential(new DriveExp(-.6, 0));//.addA(new NavxAssist(target, true)).addT(new Bumped(2)),2.5);
     	
     	double hugtime = 1;
     	
@@ -54,7 +55,7 @@ public class AutoSwitchLineup extends CommandGroup {
     	addSequential(new Wait(.9));
     	addSequential(new CarriageSetRoller(-.6), hugtime);
     	addSequential(new EndAll(),.2);
-//    	addSequential(new DriveRaw(.4, 0), .4);
+    	addSequential(new DriveRaw(.4, 0), .4);
     	
     }
     

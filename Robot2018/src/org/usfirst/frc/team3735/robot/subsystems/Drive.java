@@ -31,6 +31,8 @@ public class Drive extends Subsystem {
 	
 	private VortxTalon l1;
 	private VortxTalon r1;
+	
+	private boolean switched = false;
 
 	private static double dP = 1.0;
 	private static double dI = 0.0;
@@ -435,6 +437,23 @@ public class Drive extends Subsystem {
     	return 0;
     }
 
+    public void switchDirection(){
+		if(switched){
+			l1 = new VortxTalon(RobotMap.Drive.leftTrain, "Left Drive");
+			r1 = new VortxTalon(RobotMap.Drive.rightTrain, "Right Drive");
+			switched = false;
+			
+			initSensors();
+			setEnableBrake(true);
+		}else{
+			r1 = new VortxTalon(RobotMap.Drive.leftTrain, "Left Drive");
+			l1 = new VortxTalon(RobotMap.Drive.rightTrain, "Right Drive");
+			switched = true;
+			
+			initSensors();
+			setEnableBrake(true);
+		}
+    }
 	/******************************************
 	 * The Logs
 	 ******************************************/

@@ -58,8 +58,8 @@ public class RobotMap {
 		public static int leftMotor = 			 	1;
 		public static int rightMotor = 				-12;
 		
-		public static int anglerMotor = 		 	-6;//-6 for final, 6 for practice
-		public static boolean reversedSensor = 		true;
+		public static int anglerMotor = 		 	6;//-6 for final, 6 for practice
+		public static boolean reversedSensor = 		false;
 
 		public static int solenoid = 		1;
 		public static int solenoid2 = 		3;

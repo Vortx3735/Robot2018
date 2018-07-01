@@ -30,8 +30,6 @@ public static int tick = 0;
 		AxisCamera c;
 		camera1 = CameraServer.getInstance().startAutomaticCapture(0); //trying to start it on second usb port
 		camera1.setResolution(320, 240);
-		camera2 = CameraServer.getInstance().startAutomaticCapture(1); //trying to start it on second usb port
-		camera2.setResolution(320, 240);
 		//camera2.setResolution(160, 120);
 
 

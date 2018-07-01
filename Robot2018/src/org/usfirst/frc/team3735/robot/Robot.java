@@ -152,7 +152,9 @@ public class Robot extends VortxIterative {
 
 	@Override
 	public void autonomousInit() {	
+		navigation.resetAhrs();
 		navigation.resetPosition(autoLogic.getStartingPosition());
+		navigation.PIDAuto();
 		elevator.resetEncoderPositions();
 //		pivot.resetInside();
 		System.out.println("Choosing Auto");
@@ -183,6 +185,7 @@ public class Robot extends VortxIterative {
     public void teleopInit() {
         autoChooser.cancel();
         autoLogic.cancel();
+        navigation.PIDNormal();
         if(sideChooser.getSelected() == Side.RED) {
         	leds.sendData(Data.REDFIRE);
         }else {
@@ -223,7 +226,7 @@ public class Robot extends VortxIterative {
 	
 	public void log(){
 //		drive.log();
-//		navigation.log();
+		navigation.log();
 //		vision.log();
 		elevator.log();
 		elevator.debugLog();

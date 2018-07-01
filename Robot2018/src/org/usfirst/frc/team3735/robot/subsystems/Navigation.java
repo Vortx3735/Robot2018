@@ -265,6 +265,22 @@ public class Navigation extends Subsystem implements PIDSource, PIDOutput {
 		return pos.yawTo(loc);
 	}
 	
+	public void PIDAuto(){
+		controller = new PIDCtrl(.02,0.0,0.061,this,this, 10);
+    	controller.setOutputRange(-.7, .7);
+    	controller.setInputRange(-180, 180);
+    	controller.setContinuous();
+    	controller.setAbsoluteTolerance(3);	
+	}
+	
+	public void PIDNormal(){
+		controller = new PIDCtrl(.016,0.0,0.061,this,this, 10);
+    	controller.setOutputRange(-.7, .7);
+    	controller.setInputRange(-180, 180);
+    	controller.setContinuous();
+    	controller.setAbsoluteTolerance(3);
+	}
+	
     
 }
 

@@ -11,6 +11,7 @@ import org.usfirst.frc.team3735.robot.commands.cubeintake.CubeSetRoller;
 import org.usfirst.frc.team3735.robot.commands.cubeintake.PivotReset;
 import org.usfirst.frc.team3735.robot.commands.cubeintake.PivotSet;
 import org.usfirst.frc.team3735.robot.commands.drive.DriveSetPID;
+import org.usfirst.frc.team3735.robot.commands.drive.SwitchDirection;
 import org.usfirst.frc.team3735.robot.commands.drive.TurnTo;
 import org.usfirst.frc.team3735.robot.commands.drive.movedistance.MoveDDx;
 import org.usfirst.frc.team3735.robot.commands.drive.positions.ResetPosition;
@@ -60,7 +61,7 @@ public class GTAOI implements DriveOI{
 		main.a.whileHeld(new CarriageSetRoller(new Setting("Carriage Outtake Speed", .5)));
 		main.a.whileHeld(new CubeSetRoller(cubeintake.multiply(new Setting("Cube Intake Slow Mult", .6)),cubeintake));
 		main.a.whenPressed(new PivotSetPID(0, false));
-		main.a.whenReleased(new PivotSetPID(75, false));
+		//main.a.whenReleased(new PivotSetPID(75, false));
 		main.x.whileHeld(new CarriageSetRoller(new Setting("Carriage Intake Speed", -.5))
 				.addT(new CarriageOverload(new Setting("Carriage Intake MaxPower", 30))));
 		main.x.whileHeld(new CubeSetRoller(new Setting("Cube Transfer Speed", .7)));
@@ -89,7 +90,8 @@ public class GTAOI implements DriveOI{
 //		main.rb.whileHeld(new CubeSetSols(false, true));
 
 		main.start.whileHeld(new PivotReset());
-		main.back.whenPressed(new ElevatorResetPos());
+		//main.back.whenPressed(new ElevatorResetPos());
+		main.back.whenPressed(new SwitchDirection());
 //		main.back
 		
 		
@@ -108,7 +110,7 @@ public class GTAOI implements DriveOI{
 ////		co.pov180
 //		co.pov270.whileHeld(new ElevatorCorrect(elevatorTrim.reverse()));
 		co.pov0.whenPressed(new PivotSetPID(130, false));
-		co.pov90.whenPressed(new PivotSetPID(70, false));
+		co.pov90.whenPressed(new PivotSetPID(73, false));
 		co.pov180.whenPressed(new PivotSetPID(0, false));
 		co.pov270.whenPressed(new CubeTransfer());
 		
@@ -117,6 +119,8 @@ public class GTAOI implements DriveOI{
 		co.lt.whileHeld(new CarriageSetRoller(carriageShoot.reverse()));
 		co.rt.whileHeld(new CarriageSetRoller(carriageShoot));
 		co.rb.toggleWhenPressed(new CarriageRaiseTele());
+		//co.rb.whileHeld(new PivotSet(.25));
+		//co.lb.whileHeld(new PivotSet(-.25));
 		
 		co.start.whileHeld(new PivotReset());
 		co.back.whenPressed(new ElevatorResetPos());

@@ -84,116 +84,150 @@ public class Autonomous {
 		
 		boolean complex = complexity.getValue();
 		
-		big:
+//		if(s.charAt(0) == 'r'){
+//			firstCommand = new MuchoSimpleRight(true);
+//		}else{
+//			firstCommand = new MuchoSimpleRight(false);
+//		}
+		
 		switch(posChooser.getSelected()) {
-		
-		
 		case LEFT:
-			switch(priority.getSelected()) {
-			case SCALE:
-				switch(s) {
-				case "ll":
-				case "rl":
-					firstCommand = new LeftScaleLeft(complex); break big;
-				case "lr":
-				case "rr":
-//					firstCommand = new LeftScaleRight(complex); break big;
-					firstCommand = new UnknownStraight(); break big;
-				}
-			case SCALEIFEASY:
-				switch(s) {
-				case "ll":
-				case "rl":
-					firstCommand = new LeftScaleLeft(complex); break big;
-				case "lr":
-					firstCommand = new LeftSwitchLeft(complex); break big;
-				case "rr":
-					firstCommand = new UnknownStraight(); break big;
-				}
-			case SWITCH:
-				switch(s) {
-				case "lr":
-				case "ll":
-					firstCommand = new LeftSwitchLeft(complex); break big;
-				case "rr":
-				case "rl":
-					firstCommand = new UnknownStraight(); break big;
-				}
+			if(s.charAt(0) == 'l'){
+				firstCommand = new MuchoSimpleLeft(true);
+			}else{
+				firstCommand = new MuchoSimpleLeft(false);
 			}
-			
-			
-			
-			
-			
+			break;
 		case MID:
-			switch(priority.getSelected()){
-			case SCALE:
-				switch(s) {
-				case "ll":
-				case "rl":
-					firstCommand = new MidScaleLeft(complex); break big;
-				case "rr":
-				case "lr":
-					firstCommand = new MidScaleRight(complex); break big;
-				}
-			case SCALEIFEASY:
-			case SWITCH:
-				switch(s) {
-				case "ll":
-				case "lr":
-					firstCommand = new MidSwitchLeft(complex);//break big;
-					secondCommand = new SwitchLeft(complex); break big;
-				case "rl":
-				case "rr":
-					firstCommand = new MidSwitchRight(complex); //break big;
-					secondCommand = new SwitchRight(complex); break big;
-
-				}
-				break;
-				
+			if(s.charAt(0) == 'r'){
+				firstCommand = new MuchoSimpleCenter(true);
+			}else{
+				firstCommand = new MuchoSimpleCenter(false);
 			}
-
-			
-			
-			
-			
-		case RIGHT:
-			switch(priority.getSelected()) {
-			case SCALE:
-				switch(s) {
-				case "lr":
-				case "rr":
-					firstCommand = new RightScaleRight(complex); break big;
-				case "ll":
-				case "rl":
-//					firstCommand = new RightScaleLeft(complex); break big;
-					firstCommand = new UnknownStraight(); break big;
-				}
-			case SCALEIFEASY:
-				switch(s) {
-				case "lr":
-				case "rr":
-					firstCommand = new RightScaleRight(complex); break big;
-				case "rl":
-					firstCommand = new RightSwitchRight(complex); break big;
-				case "ll":
-					firstCommand = new UnknownStraight(); break big;
-				}
-			case SWITCH:
-				switch(s) {
-				case "rl":
-				case "rr":
-					firstCommand = new RightSwitchRight(complex); break big;
-				case "ll":
-				case "lr":
-					firstCommand = new UnknownStraight(); break big;
-				}
-			}			
-			
+			break;
 		case UNKNOWN:
-			break;	
-			
+			break;
+		case RIGHT:
+			if(s.charAt(0) == 'r'){
+				firstCommand = new MuchoSimpleRight(true);
+			}else{
+				firstCommand = new MuchoSimpleRight(false);
+			}
+			break;
+		default:
+			//return new Position(0, Dms.Bot.HALFLENGTH, 180);
 		}
+		
+//		big:
+//		switch(posChooser.getSelected()) {
+//		
+//		
+//		case LEFT:
+//			switch(priority.getSelected()) {
+//			case SCALE:
+//				switch(s) {
+//				case "ll":
+//				case "rl":
+//					firstCommand = new LeftScaleLeft(complex); break big;
+//				case "lr":
+//				case "rr":
+////					firstCommand = new LeftScaleRight(complex); break big;
+//					firstCommand = new UnknownStraight(); break big;
+//				}
+//			case SCALEIFEASY:
+//				switch(s) {
+//				case "ll":
+//				case "rl":
+//					firstCommand = new LeftScaleLeft(complex); break big;
+//				case "lr":
+//					firstCommand = new LeftSwitchLeft(complex); break big;
+//				case "rr":
+//					firstCommand = new UnknownStraight(); break big;
+//				}
+//			case SWITCH:
+//				switch(s) {
+//				case "lr":
+//				case "ll":
+//					firstCommand = new LeftSwitchLeft(complex); break big;
+//				case "rr":
+//				case "rl":
+//					firstCommand = new UnknownStraight(); break big;
+//				}
+//			}
+//			
+//			
+//			
+//			
+//			
+//		case MID:
+//			switch(priority.getSelected()){
+//			case SCALE:
+//				switch(s) {
+//				case "ll":
+//				case "rl":
+//					firstCommand = new MidScaleLeft(complex); break big;
+//				case "rr":
+//				case "lr":
+//					firstCommand = new MidScaleRight(complex); break big;
+//				}
+//			case SCALEIFEASY:
+//			case SWITCH:
+//				switch(s) {
+//				case "ll":
+//				case "lr":
+//					firstCommand = new MidSwitchLeft(complex);//break big;
+//					secondCommand = new SwitchLeft(complex); break big;
+//				case "rl":
+//				case "rr":
+//					firstCommand = new MidSwitchRight(complex); //break big;
+//					secondCommand = new SwitchRight(complex); break big;
+//
+//				}
+//				break;
+//				
+//			}
+//
+//			
+//			
+//			
+//			
+//		case RIGHT:
+//			switch(priority.getSelected()) {
+//			case SCALE:
+//				switch(s) {
+//				case "lr":
+//				case "rr":
+//					firstCommand = new RightScaleRight(complex); break big;
+//				case "ll":
+//				case "rl":
+////					firstCommand = new RightScaleLeft(complex); break big;
+//					firstCommand = new UnknownStraight(); break big;
+//				}
+//			case SCALEIFEASY:
+//				switch(s) {
+//				case "lr":
+//				case "rr":
+//					firstCommand = new RightScaleRight(complex); break big;
+//				case "rl":
+//					firstCommand = new RightSwitchRight(complex); break big;
+//				case "ll":
+//					firstCommand = new UnknownStraight(); break big;
+//				}
+//			case SWITCH:
+//				switch(s) {
+//				case "rl":
+//				case "rr":
+//					firstCommand = new RightSwitchRight(complex); break big;
+//				case "ll":
+//				case "lr":
+//					firstCommand = new UnknownStraight(); break big;
+//				}
+//			}			
+//			
+//		case UNKNOWN:
+//			break;	
+//			
+//		}
 	}
 	
 	public void printAuto() {
