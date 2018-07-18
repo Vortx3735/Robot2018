@@ -38,6 +38,7 @@ import org.usfirst.frc.team3735.robot.util.settings.StringSetting;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -145,7 +146,7 @@ public class Robot extends VortxIterative {
 	}
 	@Override
 	public void robotContinuous() {
-		navigation.integrate();
+		navigation.integrate();		
 	}
 	
 	
