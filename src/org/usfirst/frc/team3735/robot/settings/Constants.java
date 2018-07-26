@@ -25,6 +25,8 @@ public class Constants {
 		public static final boolean isUsingLeftEncoders = true;
 		public static final boolean isUsingRightEncoders = true;
 
+		public static final double driveTolerance = 2;
+
 	}
 	
 	public class CubeIntake{

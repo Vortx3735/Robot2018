@@ -226,13 +226,12 @@ public class Robot extends VortxIterative {
 	
 	
 	public void log(){
-//		drive.log();
+		drive.log();
 		navigation.log();
 //		vision.log();
 		elevator.log();
-		elevator.debugLog();
 //		carriage.log();
-		carriage.debugLog();
+		//carriage.debugLog();
 		pivot.log();
 		
 	}
@@ -248,5 +247,3 @@ public class Robot extends VortxIterative {
 
 
 }
-
-//this is a test

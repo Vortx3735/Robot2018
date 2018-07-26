@@ -33,12 +33,12 @@ public class Navigation extends Subsystem implements PIDSource, PIDOutput {
 	private PIDCtrl controller;
 	//PID Controller stuff
 	private static Setting outputExponent = new Setting("Nav Output Exponent", 1, false);
-    public static Setting actingI = 		new Setting("Nav Acting I Value", 0.004);
+    public static Setting actingI = 		new Setting("Nav Acting I Value", 0.004, false);
     
 //    public static Setting hInitialOffset =	new Setting("Horizontal Offset", 0);
     
-	public static Setting navCo = 			new Setting("Nav Assist Coeffecient", 7);
-	public static Setting navVisCo = 		new Setting("Nav Vision Assist Coeffecient", 5);
+	public static Setting navCo = 			new Setting("Nav Assist Coeffecient", 7, false);
+	public static Setting navVisCo = 		new Setting("Nav Vision Assist Coeffecient", 5, false);
 
 	
 	Position pos = new Position(0,0,0);

@@ -53,7 +53,7 @@ public class Autonomous {
 			// PUT SECOND COMMANAD HERE WHEN READY
 			// mainCommand = VortxCommand.asSequence(firstCommand, new
 			// DoNothing());
-			firstCommand = new MuchoSimpleScaleRight(true);
+			firstCommand = new TestStraightLine();
 			mainCommand = VortxCommand.asSequence(firstCommand, secondCommand);
 
 			mainCommand.start();

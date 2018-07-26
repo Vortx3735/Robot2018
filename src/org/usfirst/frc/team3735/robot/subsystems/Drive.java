@@ -53,14 +53,14 @@ public class Drive extends Subsystem {
 	private double visionAssist = 0;
 	private double navxAssist = 0;
 
-	public static Setting moveExponent = new Setting("Move Exponent", Constants.Drive.moveExponent);
-	public static Setting turnExponent = new Setting("Turn Exponent", Constants.Drive.turnExponent);
-	public static Setting scaledMaxMove = new Setting("Scaled Max Move", Constants.Drive.scaledMaxMove);
-	public static Setting scaledMaxTurn = new Setting("Scaled Max Turn", Constants.Drive.scaledMaxTurn);
+	public static Setting moveExponent = new Setting("Move Exponent", Constants.Drive.moveExponent, false);
+	public static Setting turnExponent = new Setting("Turn Exponent", Constants.Drive.turnExponent, false);
+	public static Setting scaledMaxMove = new Setting("Scaled Max Move", Constants.Drive.scaledMaxMove, false);
+	public static Setting scaledMaxTurn = new Setting("Scaled Max Turn", Constants.Drive.scaledMaxTurn, false);
 	
 	private DDxDrive defCommand;
 	private PIDSetting driveV;
-	public static BooleanSetting brakeEnabled = new BooleanSetting("Brake Mode On", false){
+	public static BooleanSetting brakeEnabled = new BooleanSetting("Brake Mode On", false, false){
 		@Override
 		public void valueChanged(boolean val) {
 			if(Robot.drive != null) {
@@ -71,7 +71,7 @@ public class Drive extends Subsystem {
 		}
 	};
 	
-	public static BooleanSetting isLimiting = new BooleanSetting("Elevator Drive Limiting", false){
+	public static BooleanSetting isLimiting = new BooleanSetting("Elevator Drive Limiting", false, false){
 		@Override
 		public void valueChanged(boolean val) {
 			if(Robot.drive != null) {
@@ -116,8 +116,8 @@ public class Drive extends Subsystem {
 		l1.config_IntegralZone(0, iZone, 0);
 		
 		//slot, value, timeout
-		l1.configAllowableClosedloopError(0, 0, 0);
-		l1.config_IntegralZone(0, iZone, 0);
+		r1.configAllowableClosedloopError(0, 0, 0);
+		r1.config_IntegralZone(0, iZone, 0);
 
 		setEnableBrake(true);		
 	}
@@ -454,11 +454,45 @@ public class Drive extends Subsystem {
 			setEnableBrake(true);
 		}
     }
+    
+    /******************************************
+     * PID driving 
+     */
+    
+    public void setPIDSettings(double kp, double ki, double kd, double kf){
+		l1.setPIDF(kp, ki, kd, kf);
+		r1.setPIDF(kp, ki, kd, kf);
+	}
+    
+    public void setLeftPIDF(double kp, double ki, double kd, double kf){
+    	l1.setPIDF(kp, ki, kd, kf);
+	}
+	public void setRightPIDF(double kp, double ki, double kd, double kf){
+		r1.setPIDF(kp, ki, kd, kf);
+	}
+
+
+	public double getLeftPositionInches() {
+		return l1.getPosition();
+	}
+	public double getRightPositionInches() {
+		return r1.getPosition();
+	}
+	
+	public void setLeftRightDistance(double left, double right) {
+		l1.set(ControlMode.Position, left); //OneRotationInches //left / (Constants.Drive.InchesPerRotation 
+		r1.set(ControlMode.Position, right);
+	}
+
+	
 	/******************************************
 	 * The Logs
 	 ******************************************/
 	public void log() {
-		
+		SmartDashboard.putNumber("Drive Left Position", getLeftPosition());
+		SmartDashboard.putNumber("Drive Right Position", getRightPosition());
+		SmartDashboard.putNumber("Drive Left Ticks", getLeftPosition()/Constants.Drive.InchesPerTick);
+		SmartDashboard.putNumber("Drive Right Ticks", getRightPosition()/Constants.Drive.InchesPerTick);
 	}
 
 	public void debugLog() {
