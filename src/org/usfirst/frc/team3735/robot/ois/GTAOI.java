@@ -189,7 +189,8 @@ public class GTAOI implements DriveOI{
 	}
 
 	public double getElevatorMove() {
-		return VortxMath.handleDeadband(main.getRightY()+ co.getLeftY(), .05);
+		//return VortxMath.handleDeadband(main.getRightY()+ co.getLeftY(), .05);
+		return VortxMath.handleDeadband(co.getLeftY(), .05);
 	}
 	
 	

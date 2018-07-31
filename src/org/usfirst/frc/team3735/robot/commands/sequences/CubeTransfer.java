@@ -41,7 +41,7 @@ public class CubeTransfer extends CommandGroup {
     	
     	addParallel(new CubeSetRoller(.5),1);
     	addSequential(new CarriageSetRoller(-.35).addT(new CarriageOverload(900)),.45);
-    	addSequential(new PivotSetPID(0, false), .4);
+    	addSequential(new PivotSetPID(0, false), .6);
     	
     	
 //    	addParallel(new CubeSetRoller(-.3),2);

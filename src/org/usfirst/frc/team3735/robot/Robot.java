@@ -38,6 +38,7 @@ import org.usfirst.frc.team3735.robot.util.settings.StringSetting;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.InstantCommand;
@@ -74,7 +75,7 @@ public class Robot extends VortxIterative {
 	LEDS leds = new LEDS();
 	
 
-
+	PowerDistributionPanel pdp;
 	
 	
 	@Override
@@ -123,6 +124,20 @@ public class Robot extends VortxIterative {
 		SmartDashboard.putData("Side", sideChooser);
 
 		
+		pdp = new PowerDistributionPanel();
+//		SmartDashboard.putNumber("Talon 0", pdp.getCurrent(0));
+//		SmartDashboard.putNumber("Talon 1", pdp.getCurrent(1));
+//		SmartDashboard.putNumber("Talon 2", pdp.getCurrent(2));
+//		SmartDashboard.putNumber("Talon 3", pdp.getCurrent(3));
+//		SmartDashboard.putNumber("Talon 4", pdp.getCurrent(4));
+//		SmartDashboard.putNumber("Talon 5", pdp.getCurrent(5));
+//		SmartDashboard.putNumber("Talon 6", pdp.getCurrent(6));	
+//		SmartDashboard.putNumber("Talon 7", pdp.getCurrent(7));
+//		SmartDashboard.putNumber("Talon 8", pdp.getCurrent(8));
+//		SmartDashboard.putNumber("Talon 9", pdp.getCurrent(9));
+		//SmartDashboard.putNumber("PDP 10", pdp.getCurrent(10));
+		//SmartDashboard.putNumber("PDP 11", pdp.getCurrent(11));
+//		SmartDashboard.putNumber("Talon 12", pdp.getCurrent(12));
 		
 
 //		SmartDashboard.putData(new TurnTo(new Setting("Turning Setpoint")));
@@ -142,7 +157,22 @@ public class Robot extends VortxIterative {
 //        	leds.sendData(Data.);
         }
         
-        log();       
+//        System.out.println("Talon 0:  " + pdp.getCurrent(0));
+//        System.out.println("Talon 1:  " + pdp.getCurrent(1));
+//        System.out.println("Talon 2:  " + pdp.getCurrent(2));
+//        System.out.println("Talon 3:  " + pdp.getCurrent(3));
+//        System.out.println("Talon 4:  " + pdp.getCurrent(4));
+//        System.out.println("Talon 5:  " + pdp.getCurrent(5));
+//        System.out.println("Talon 6:  " + pdp.getCurrent(6));
+//        System.out.println("Talon 7:  " + pdp.getCurrent(7));
+//        System.out.println("Talon 8:  " + pdp.getCurrent(8));
+//        System.out.println("Talon 9:  " + pdp.getCurrent(9));
+//        System.out.println("PDP 10:  " + pdp.getCurrent(10));
+//        System.out.println("PDP 11: " + pdp.getCurrent(11));
+//        System.out.println("Talon 12: " + pdp.getCurrent(12));
+        
+        log();    
+        debugLog();
 	}
 	@Override
 	public void robotContinuous() {
@@ -234,6 +264,7 @@ public class Robot extends VortxIterative {
 		//carriage.debugLog();
 		pivot.log();
 		
+     
 	}
 	
 	public void debugLog(){

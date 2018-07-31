@@ -7,6 +7,7 @@ import org.usfirst.frc.team3735.robot.commands.cubeintake.PivotSetPID;
 import org.usfirst.frc.team3735.robot.commands.drive.TurnTo;
 import org.usfirst.frc.team3735.robot.commands.drive.movedistance.DriveExp;
 import org.usfirst.frc.team3735.robot.commands.drive.movedistance.MoveDDx;
+import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorNoCurrent;
 import org.usfirst.frc.team3735.robot.commands.elevator.ElevatorSetPosPID;
 import org.usfirst.frc.team3735.robot.settings.Dms;
 import org.usfirst.frc.team3735.robot.subsystems.Elevator;
@@ -29,6 +30,7 @@ public class MuchoSimpleRight extends CommandGroup {
     		addSequential(new ElevatorSetPosPID(Elevator.switchHeight, false),1);
     		addSequential(new DriveExp(-.7,0).addA(new NavxAssist()), .5);
     		addSequential(new CarriageSetRoller(-.5).addT(new CarriageOverload(900)),2);
+    		addSequential(new ElevatorNoCurrent(), 3);
     	}
     }
     

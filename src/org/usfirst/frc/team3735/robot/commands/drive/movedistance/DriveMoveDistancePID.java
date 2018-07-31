@@ -16,6 +16,11 @@ public class DriveMoveDistancePID extends Command {
 	private double endTicksLeft;
 	private double endTicksRight;
 	
+	private double startInchesLeft;
+	private double startInchesRight;
+	private double endInchesLeft;
+	private double endInchesRight;
+	
 	private double timeOnTarget = 0;
 	private double finishTime = 0.5;
 	
@@ -32,27 +37,32 @@ public class DriveMoveDistancePID extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	startTicksLeft = Robot.drive.getLeftPositionInches()/Constants.Drive.InchesPerTick;
-    	startTicksRight = Robot.drive.getRightPositionInches()/Constants.Drive.InchesPerTick;
-    	double ticksToGo = deltaDistance/Constants.Drive.InchesPerTick;
-    	endTicksLeft = startTicksLeft + ticksToGo;
-    	endTicksRight = startTicksRight + ticksToGo;
+//    	startTicksLeft = Robot.drive.getLeftPositionInches()/Constants.Drive.InchesPerTick;
+//    	startTicksRight = Robot.drive.getRightPositionInches()/Constants.Drive.InchesPerTick;
+//    	double ticksToGo = deltaDistance/Constants.Drive.InchesPerTick;
+//    	endTicksLeft = startTicksLeft + ticksToGo;
+//    	endTicksRight = startTicksRight + ticksToGo;
+    	
+    	startInchesLeft = Robot.drive.getLeftPositionInches();
+    	startInchesRight = Robot.drive.getRightPositionInches();
+    	endInchesLeft = startInchesLeft + deltaDistance;
+    	endInchesRight = startInchesRight + deltaDistance;
     	
     	Robot.drive.setupForPositionControl();
     	Robot.drive.setPIDSettings(p,i,d,f);
     	
     	timeOnTarget = 0;
     	
-    	System.out.println("Left ticks " + startTicksLeft);
-    	System.out.println("Right distance " + startTicksRight);
+//    	System.out.println("Left ticks " + startTicksLeft);
+//    	System.out.println("Right distance " + startTicksRight);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-		Robot.drive.setLeftRightDistance(endTicksLeft, endTicksRight);
-		double ticksRight = endTicksRight-Robot.drive.getRightPositionInches()/Constants.Drive.InchesPerTick;
-		double ticksLeft = endTicksRight-Robot.drive.getLeftPositionInches()/Constants.Drive.InchesPerTick;
-		System.out.println( " need to go " + ticksLeft +  ", " + ticksRight +  " ticks");
+		Robot.drive.setLeftRightDistance(endInchesLeft, endInchesRight);
+//		double ticksRight = endTicksRight-Robot.drive.getRightPositionInches()/Constants.Drive.InchesPerTick;
+//		double ticksLeft = endTicksRight-Robot.drive.getLeftPositionInches()/Constants.Drive.InchesPerTick;
+//		System.out.println( " need to go " + ticksLeft +  ", " + ticksRight +  " ticks");
     	if(isOnTarget()){
     		timeOnTarget += .02;
     	}else{
@@ -61,12 +71,18 @@ public class DriveMoveDistancePID extends Command {
     }
     
     private boolean isOnTarget(){
-    	return 	VortxMath.isWithinThreshold(Robot.drive.getLeftPositionInches()/Constants.Drive.InchesPerTick,
-										   	endTicksLeft,
-										   	Constants.Drive.driveTolerance) &&
-    			VortxMath.isWithinThreshold(Robot.drive.getRightPositionInches()/Constants.Drive.InchesPerTick,
-						   				   	endTicksRight,
-						   				   	Constants.Drive.driveTolerance);
+    	return VortxMath.isWithinThreshold(Robot.drive.getLeftPositionInches(),
+			   								endInchesLeft,
+			   								Constants.Drive.driveTolerance) &&
+    			VortxMath.isWithinThreshold(Robot.drive.getRightPositionInches(),
+    										endInchesRight,
+    										Constants.Drive.driveTolerance);
+//    	return 	VortxMath.isWithinThreshold(Robot.drive.getLeftPositionInches()/Constants.Drive.InchesPerTick,
+//										   	endTicksLeft,
+//										   	Constants.Drive.driveTolerance) &&
+//    			VortxMath.isWithinThreshold(Robot.drive.getRightPositionInches()/Constants.Drive.InchesPerTick,
+//						   				   	endTicksRight,
+//						   				   	Constants.Drive.driveTolerance);
     }
 
     // Make this return true when this Command no longer needs to run execute()

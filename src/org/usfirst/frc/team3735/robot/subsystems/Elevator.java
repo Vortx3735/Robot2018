@@ -43,13 +43,13 @@ public class Elevator extends Subsystem implements PIDSource, PIDOutput {
 	public static double switchHeight = 10;
 	public static double top = 36;
 	
-	public static double transferHeight = 4.3;
+	public static double transferHeight = 4.1;
 
 	public PIDCtrl controller;
 	private DDxLimiter limiter;
 	// private Setting carriageSpeed;
 
-	public Setting consPower = new Setting("Elevator ConsPower", 0.16);	//.183 on the final
+	public Setting consPower = new Setting("Elevator ConsPower", 0.15);	//.183 on the final
 
 
 	public Elevator() {

@@ -69,8 +69,8 @@ public class RobotMap {
 	
 	
 	public static class Elevator{
-		public static int elevatorLeft = 		 	 8;
-		public static int elevatorRight = 			-9;			//-6 for practice, -9 for final
+		public static int elevatorLeft = 		 	8;//8
+		public static int elevatorRight = 			-9;//-9			//-6 for practice, -9 for final
 		
 		public static boolean reversedSensor = 		true;
 		

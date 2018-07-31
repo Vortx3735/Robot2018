@@ -6,7 +6,8 @@ public class Constants {
 		
 //		public static final double InchesPerTick = .00309196;	//in inches (bempest)
 		
-		public static final double InchesPerTick = .018718924;	//in inches (jamal)
+		//54.7725 ticks per inch
+		public static final double InchesPerTick = .018257337;//.018718924;	//in inches (jamal)
 
 		//exp drive
 		public static final double moveReactivity = 1;	//(0,1] (least reactive, most reactive]

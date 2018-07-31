@@ -53,9 +53,9 @@ public class Autonomous {
 			// PUT SECOND COMMANAD HERE WHEN READY
 			// mainCommand = VortxCommand.asSequence(firstCommand, new
 			// DoNothing());
-			firstCommand = new TestStraightLine();
+			//firstCommand = new TestStraightLine();
 			mainCommand = VortxCommand.asSequence(firstCommand, secondCommand);
-
+			printAuto();
 			mainCommand.start();
 
 		}
@@ -73,7 +73,12 @@ public class Autonomous {
 			firstCommand = new UnknownStraight();
 			System.out.println("Doing Unknown Straight B");
 			return;
-		}
+		}//else if (priority.getSelected() == Priority.TESTING) {
+//			firstCommand = new TestStraightLine();
+//			System.out.println("Doing Testing");
+//			return;
+//		}
+		
 
 		boolean complex = complexity.getValue();
 
