@@ -41,6 +41,7 @@ public class Autonomous {
 		priority.addObject("Switch", Priority.SWITCH);
 		priority.addObject("Scale", Priority.SCALE);
 		priority.addObject("Scale if Easy", Priority.SCALEIFEASY);
+		priority.addObject("Testing", Priority.TESTING);
 		SmartDashboard.putData("Priority", priority);
 
 		complexity = new BooleanSetting("Complex Auto", false);
@@ -73,11 +74,12 @@ public class Autonomous {
 			firstCommand = new UnknownStraight();
 			System.out.println("Doing Unknown Straight B");
 			return;
-		}//else if (priority.getSelected() == Priority.TESTING) {
-//			firstCommand = new TestStraightLine();
-//			System.out.println("Doing Testing");
-//			return;
-//		}
+		}else if (priority.getSelected() == Priority.TESTING) {
+			System.out.println("Doing Testing");
+			firstCommand = new TestStraightLine();
+			
+			return;
+		}
 		
 
 		boolean complex = complexity.getValue();
@@ -291,7 +293,7 @@ public class Autonomous {
 	}
 
 	public enum Priority {
-		SWITCH, SCALE, SCALEIFEASY, LINE
+		SWITCH, SCALE, SCALEIFEASY, LINE, TESTING
 	}
 
 	public static enum StartingState {

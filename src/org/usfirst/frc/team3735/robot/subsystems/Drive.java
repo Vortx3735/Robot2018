@@ -2,6 +2,9 @@ package org.usfirst.frc.team3735.robot.subsystems;
 
 
 
+import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -11,6 +14,7 @@ import org.usfirst.frc.team3735.robot.commands.drive.ExpDrive;
 import org.usfirst.frc.team3735.robot.settings.Constants;
 import org.usfirst.frc.team3735.robot.settings.Dms;
 import org.usfirst.frc.team3735.robot.settings.RobotMap;
+import org.usfirst.frc.team3735.robot.util.PIDCtrl;
 import org.usfirst.frc.team3735.robot.util.hardware.VortxTalon;
 import org.usfirst.frc.team3735.robot.util.settings.BooleanSetting;
 import org.usfirst.frc.team3735.robot.util.settings.PIDSetting;
@@ -34,10 +38,6 @@ public class Drive extends Subsystem {
 	
 	private boolean switched = false;
 
-	private static double dP = 1.0;
-	private static double dI = 0.0;
-	private static double dD = 0.0;
-	private static double dF = 0.0;
 	private static int iZone = 2;
 	private static double maxV = 160;
 
@@ -52,14 +52,13 @@ public class Drive extends Subsystem {
 	private double rightAddTurn = 0;
 	private double visionAssist = 0;
 	private double navxAssist = 0;
-
+	
 	public static Setting moveExponent = new Setting("Move Exponent", Constants.Drive.moveExponent, false);
 	public static Setting turnExponent = new Setting("Turn Exponent", Constants.Drive.turnExponent, false);
 	public static Setting scaledMaxMove = new Setting("Scaled Max Move", Constants.Drive.scaledMaxMove, false);
 	public static Setting scaledMaxTurn = new Setting("Scaled Max Turn", Constants.Drive.scaledMaxTurn, false);
 	
 	private DDxDrive defCommand;
-	private PIDSetting driveV;
 	public static BooleanSetting brakeEnabled = new BooleanSetting("Brake Mode On", false, false){
 		@Override
 		public void valueChanged(boolean val) {
@@ -88,13 +87,9 @@ public class Drive extends Subsystem {
 		r1 = new VortxTalon(RobotMap.Drive.rightTrain, "Right Drive");
 		l1.setInchesPerTick(Constants.Drive.InchesPerTick);
 		r1.setInchesPerTick(Constants.Drive.InchesPerTick);
-
-		driveV = new PIDSetting(.001, 0, 0, 0,0,0);
-		l1.setPIDSetting(driveV);
-		r1.setPIDSetting(driveV);
+				
 		l1.setFMaxV(maxV);
 		r1.setFMaxV(maxV);
-		driveV.sendToDash("Drive PID");
 		brakeEnabled.setIsListening(true);
 		isLimiting.setIsListening(true);
 		initSensors();
@@ -507,8 +502,6 @@ public class Drive extends Subsystem {
 		
 		SmartDashboard.putNumber("Drive avg speed inches", getAverageSpeed());
 	}
-
-
 
 }
 

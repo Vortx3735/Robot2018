@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class TestStraightLine extends CommandGroup {
 
     public TestStraightLine() {
-        addSequential(new DriveMoveDistancePID(24));
+        addSequential(new DriveMoveDistancePID(12));
     }
     
     public void initialize() {
