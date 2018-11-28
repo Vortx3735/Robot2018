@@ -11,9 +11,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class PIDCtrl extends PIDController{
 
-
-
-
 	private Func iZone;
 	private double actingI;
 	
@@ -45,10 +42,6 @@ public class PIDCtrl extends PIDController{
 	 * these methods set and update the I-zone for the controller
 
 	 */
-	
-
-	
-	
 	public synchronized void updateI(){
 		if(Math.abs(super.getError()) < iZone.getValue()){
 			super.setPID(super.getP(), actingI, super.getD());
@@ -83,12 +76,5 @@ public class PIDCtrl extends PIDController{
 //	public void sendToDash(String name) {
 //		
 //	}
-
-
-
-	
-	
-	
-	
 
 }
